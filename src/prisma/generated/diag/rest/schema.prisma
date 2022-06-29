@@ -1,0 +1,179 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/diag/rest"
+}
+
+datasource db {
+  provider = "sqlserver"
+  url      = env("DATABASE_URL_ADN_DIAG_TEST")
+}
+
+model Dossier {
+  idDossier                 Int            @id(map: "PK_DOSSIER") @default(autoincrement())
+  numero                    Int
+  idRefDossier              Int?
+  idSiteGestion             String?        @db.NVarChar(50)
+  idBien                    Int?
+  idEmployeIntervention     Int?
+  idEmployeCommande         Int?
+  idEmployeRedaction        Int?
+  idEmployerPublication     Int?
+  reference                 String?        @db.NVarChar(255)
+  referenceExterne          String?        @db.NVarChar(255)
+  dateCommande              DateTime?      @db.DateTime
+  dateRapport               DateTime?      @db.DateTime
+  datePublication           DateTime?      @db.DateTime
+  dateSignatureNotaire      DateTime?      @db.SmallDateTime
+  idCadreMission            String?        @db.NVarChar(50)
+  contactPlace              String?        @db.NVarChar(100)
+  accompagnateur            String?        @db.NVarChar(100)
+  verrouille                Boolean?
+  idStatut                  Int?
+  dateDebutMission          DateTime?      @db.DateTime
+  dateFinMission            DateTime?      @db.DateTime
+  heureRDV                  DateTime?      @db.DateTime
+  heureFin                  DateTime?      @db.DateTime
+  idRdv                     Int?
+  commentaire               String?        @db.NVarChar(Max)
+  codeBien                  String?        @db.NVarChar(100)
+  discBien                  String?        @db.NVarChar(1)
+  typeProprieteBatiment     String?        @db.NVarChar(10)
+  typeProprieteLot          String?        @db.NVarChar(10)
+  usageBien                 String?        @db.NVarChar(10)
+  isBati                    Boolean
+  articleNature             String?        @db.NVarChar(50)
+  nature                    String?        @db.NVarChar(50)
+  nomBatiment               String?        @db.NVarChar(100)
+  adresse                   String?        @db.NVarChar(100)
+  cptAdresse                String?        @db.NVarChar(100)
+  codePostal                String?        @db.NVarChar(50)
+  ville                     String?        @db.NVarChar(50)
+  departement               String?        @db.NVarChar(50)
+  pays                      String?        @db.NVarChar(50)
+  numeroLot                 String?        @db.NVarChar(50)
+  niveau                    Float?         @db.Real
+  etage                     String?        @db.NVarChar(100)
+  sectionCadastrale         String?        @db.NVarChar(50)
+  parcelle                  String?        @db.NVarChar(50)
+  anneeConstruction         String?        @db.NVarChar(100)
+  anneePermisConstruire     String?        @db.NVarChar(100)
+  entree                    String?        @db.NVarChar(100)
+  escalier                  String?        @db.NVarChar(100)
+  porte                     String?        @db.NVarChar(100)
+  nbLocaux                  Int?
+  nbNiveaux                 Int?
+  quotePart                 Int?
+  quotePartTotale           Int?
+  digicode                  String?        @db.NVarChar(50)
+  categorieRAAA             Int?
+  isMitoyen                 Boolean
+  isIOP                     Boolean
+  isERP                     Boolean
+  typeERP                   String?        @db.NVarChar(5)
+  catERP                    Int?
+  isIGH                     Int
+  isAlimGazVille            Boolean
+  isChauffageCollectif      Boolean
+  isEcsCollectif            Boolean
+  occupant                  Int
+  dateCre                   DateTime?      @db.SmallDateTime
+  dateMaj                   DateTime?      @db.SmallDateTime
+  dateSup                   DateTime?      @db.SmallDateTime
+  IdUserCre                 Int?
+  idUserMaj                 Int?
+  idUserSup                 Int?
+  dateArchive               DateTime?      @db.SmallDateTime
+  idResCroquisBuilder       String?        @db.UniqueIdentifier
+  idResMemoVocal            String?        @db.UniqueIdentifier
+  idResPhoto                String?        @db.UniqueIdentifier
+  previewDataPhoto          Bytes?
+  titrePhoto                String?        @db.NVarChar(50)
+  RefSync                   Int?
+  guidSdl                   String?        @db.UniqueIdentifier
+  ChangeTime                DateTime?      @db.DateTime
+  LastSyncTime              DateTime?      @db.DateTime
+  idPub                     Int?
+  datePub                   DateTime?      @db.DateTime
+  statusPub                 Int
+  migratedData              Boolean?
+  DateLastRN                DateTime?      @db.DateTime
+  DateLastES                DateTime?      @db.DateTime
+  idUserLastRN              Int?
+  idUserLastES              Int?
+  tarifOM                   Decimal?       @db.Decimal(18, 2)
+  isExpirationNomade        Boolean?
+  DateLastRNdata            DateTime?      @db.DateTime
+  DateLastESdata            DateTime?      @db.DateTime
+  tempsIntervention         Decimal?       @db.Decimal(18, 1)
+  isReglementSurSite        Boolean
+  moyenPaiement             String?        @db.NVarChar(100)
+  numeroCheque              String?        @db.NVarChar(50)
+  banqueCheque              String?        @db.NVarChar(255)
+  typeCB                    String?        @db.NVarChar(100)
+  numeroCB                  String?        @db.NVarChar(20)
+  dateExpCB                 DateTime?      @db.DateTime
+  cryptoCB                  String?        @db.NVarChar(10)
+  numPermisConstruire       String?        @db.NVarChar(50)
+  isPermisGroupe            Boolean
+  dateArchiveData           DateTime?      @db.SmallDateTime
+  isArchivable              Boolean?
+  numVoie                   String?        @db.NVarChar(50)
+  cptNumVoie                String?        @db.NVarChar(10)
+  typeVoie                  String?        @db.NVarChar(10)
+  codeInsee                 Int?
+  anneeRehabilitation       String?        @db.NVarChar(255)
+  latitude                  Decimal?       @db.Decimal(18, 15)
+  longitude                 Decimal?       @db.Decimal(18, 15)
+  jeuMatrice                String?        @db.NVarChar(255)
+  nbCles                    Int?
+  infoCles                  String?        @db.NVarChar(Max)
+  priorite                  Int
+  isAPO                     Boolean
+  etapeAPO                  String?        @db.NVarChar(5)
+  statutAPO                 Int?
+  dateStartAPO              DateTime?      @db.DateTime
+  dateFinAPO                DateTime?      @db.DateTime
+  idContrat                 Int?
+  justifOccupant            String?        @db.NVarChar(Max)
+  natureTravaux             String?        @db.NVarChar(Max)
+  idSociete                 String         @db.NVarChar(50)
+  idSocieteIntervention     String         @db.NVarChar(50)
+  idSiteGestionIntervention String         @db.NVarChar(50)
+  numeroSociete             Int?
+  nbAnxCroquisDynamique     String?        @db.NVarChar(Max)
+  idFiscal                  String?        @db.NVarChar(100)
+  categorieBien             String?        @db.NVarChar(5)
+  poids                     Float?
+  largeur                   Float?
+  longueur                  Float?
+  hauteur                   Float?
+  constructeur              String?        @db.NVarChar(255)
+  surface                   Float?         @db.Real
+  volume                    Float?
+  uniteVolume               String?        @db.NVarChar(10)
+  commentaireIntervention   String?        @db.NVarChar(Max)
+  idMPOM                    String?        @db.UniqueIdentifier
+  idMPPG                    String?        @db.UniqueIdentifier
+  idMPNS                    String?        @db.UniqueIdentifier
+  SiaResultMLAD             String?        @db.NVarChar(Max)
+  SiaResultRAA              String?        @db.NVarChar(Max)
+  numCopro                  String?        @db.NVarChar(100)
+  infoBAN                   String?        @db.NVarChar(Max)
+  StatutDossier             StatutDossier? @relation(fields: [idStatut], references: [idStatut], onDelete: NoAction, onUpdate: NoAction, map: "FK_Dossier_StatutDossier")
+
+  @@index([idEmployeCommande], map: "idx_Dossier_idEmployeCommande")
+  @@index([idSociete, idSiteGestion], map: "idx_idSociete_idSiteGestion")
+  @@index([idStatut], map: "idx_idStatut")
+  @@index([numero], map: "idx_Numero")
+  @@index([RefSync], map: "idx_RefSync")
+}
+
+model StatutDossier {
+  idStatut   Int       @id(map: "PK_SuiviDossier") @default(autoincrement())
+  intitule   String?   @db.NVarChar(255)
+  ordre      Int
+  statutAuto String?   @db.NVarChar(10)
+  UpdateTime DateTime? @db.DateTime
+  InsertTime DateTime? @db.DateTime
+  Dossier    Dossier[]
+}

@@ -1,0 +1,62 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/fmdc/rest"
+}
+
+datasource db {
+  provider = "sqlserver"
+  url      = env("DATABASE_URL_ADN_FMDC")
+}
+
+model Dossier {
+  id            Int            @id @unique
+  isParkMarker  Boolean?
+  typologie     String?
+  docs          String?
+  interventions Intervention[]
+}
+
+model Intervention {
+  id                    Int           @id @unique @default(autoincrement())
+  dateDebutMission      DateTime?     @db.DateTime
+  dateFinMission        DateTime?     @db.DateTime
+  idEmployeIntervention Int?
+  zones                 String?
+  isFirstIntervention   Boolean?      @default(false)
+  idDossier             Int
+  dossier               Dossier       @relation(fields: [idDossier], references: [id])
+  prelevements          Prelevement[]
+}
+
+model Prelevement {
+  id                         Int           @id @unique @default(autoincrement())
+  date                       DateTime?
+  emplacement                String?
+  latitude                   String?
+  longitude                  String?
+  altitude                   String?
+  adresse                    String?
+  materiaux                  String?
+  taille                     Int?
+  couleur                    String?
+  images                     String?
+  laboratoire                String?
+  zone                       String?
+  resultat                   String?
+  PrelevementPossible        Boolean?
+  choixPrelevementImPossible String?
+  idIntervention             Int?
+  Intervention               Intervention? @relation(fields: [idIntervention], references: [id])
+  couches                    Couche[]
+}
+
+model Couche {
+  id            Int          @id @unique @default(autoincrement())
+  taille        String?
+  couleur       String?
+  amiante       Boolean?
+  materiaux     String?
+  HAP           String
+  idPrelevement Int?
+  Prelevement   Prelevement? @relation(fields: [idPrelevement], references: [id])
+}

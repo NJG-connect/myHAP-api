@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "target": "es2018",
+    "sourceMap": true,
+    "outDir": "dist",
+    "strict": true,
+    "lib": ["esnext","es2018", "esnext.asynciterable",  "es2019", "es5", "es6", "dom", "dom.iterable"],
+    "esModuleInterop": true,
+    "module": "commonjs",
+  },
+  "ts-node": {
+    "transpileOnly": true
+  }
+}

@@ -1,0 +1,1190 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/rg/rest"
+}
+
+datasource db {
+  provider = "sqlserver"
+  url      = env("DATABASE_URL_ADN_RG")
+}
+
+model Bien {
+  idBien                Int                    @id(map: "PK_BIEN") @default(autoincrement())
+  discBien              String                 @db.NVarChar(1)
+  idSite                Int?
+  idBatiment            Int?
+  idLotParent           Int?
+  code                  String?                @db.NVarChar(100)
+  codeICS               String?                @db.NVarChar(255)
+  typeProprieteBatiment String?                @db.NVarChar(10)
+  usage                 String?                @db.NVarChar(10)
+  isBati                Boolean                @default(dbgenerated("-1"), map: "DF_BIEN_isBati")
+  articleNature         String?                @default("un", map: "DF_BIEN_articleNat") @db.NVarChar(50)
+  nature                String?                @default("Appartement", map: "DF_BIEN_nature") @db.NVarChar(50)
+  nom                   String?                @db.NVarChar(100)
+  ordre                 Int?
+  numeroLot             String?                @db.NVarChar(50)
+  niveau                Float?                 @db.Real
+  etage                 String?                @db.NVarChar(50)
+  sectionCadastrale     String?                @default("NC", map: "DF_BIEN_sectionCad") @db.NVarChar(50)
+  parcelle              String?                @db.NVarChar(50)
+  anneeConstruction     String?                @db.NVarChar(50)
+  anneePermisConstruire String?                @db.NVarChar(50)
+  batiment              String?                @db.NVarChar(100)
+  escalier              String?                @db.NVarChar(100)
+  porte                 String?                @db.NVarChar(100)
+  surface               Float?                 @db.Real
+  nbLocaux              Int?
+  nbNiveaux             Int?
+  quotePart             Int?
+  quotePartTotale       Int?
+  digicode              String?                @db.NVarChar(50)
+  categorieRAAA         Int?
+  isMitoyen             Boolean                @default(true, map: "DF_Bien_isMitoyen")
+  isIOP                 Boolean                @default(false, map: "DF_Bien_isIOP")
+  isERP                 Boolean                @default(false, map: "DF_Bien_isERP")
+  typeERP               String?                @db.NVarChar(5)
+  catERP                Int?
+  isIGH                 Int                    @default(0, map: "DF_Bien_isIGH")
+  isAlimGazVille        Boolean                @default(false, map: "DF_Bien_isAlimGazVille")
+  isChauffageCollectif  Boolean                @default(false, map: "DF_Bien_isChauffageCollectif")
+  isEcsCollectif        Boolean                @default(false, map: "DF_Bien_isChauffageCollectif1")
+  inclureNomDansAdresse Boolean                @default(false, map: "DF_Bien_inclureNomDansAdresse")
+  dateCre               DateTime?              @db.SmallDateTime
+  dateMaj               DateTime?              @db.SmallDateTime
+  dateSup               DateTime?              @db.SmallDateTime
+  IdUserCre             Int?
+  idUserMaj             Int?
+  idUserSup             Int?
+  commentaire           String?                @db.NVarChar(255)
+  idResPhoto            String?                @db.UniqueIdentifier
+  previewDataPhoto      Bytes?
+  titrePhoto            String?                @db.NVarChar(50)
+  idSdl                 Int?
+  ChangeTime            DateTime?              @default(now(), map: "DF__Bien__ChangeTime__4924D839") @db.DateTime
+  UpdateTime            DateTime?              @db.DateTime
+  InsertTime            DateTime?              @default(now(), map: "DF__Bien__InsertTime__45DE573A") @db.DateTime
+  numPermisConstruire   String?                @db.NVarChar(50)
+  isPermisGroupe        Boolean                @default(false, map: "DF__Bien__isPermisGr__76EBA2E9")
+  anneeRehabilitation   String?                @db.NVarChar(50)
+  latitude              Decimal?               @db.Decimal(18, 15)
+  longitude             Decimal?               @db.Decimal(18, 15)
+  idFiscal              String?                @db.NVarChar(100)
+  categorieBien         String?                @db.NVarChar(5)
+  poids                 Float?
+  largeur               Float?
+  longueur              Float?
+  hauteur               Float?
+  constructeur          String?                @db.NVarChar(255)
+  volume                Float?
+  uniteVolume           String?                @db.NVarChar(10)
+  numCopro              String?                @db.NVarChar(100)
+  Bien                  Bien?                  @relation("BienToBien_idBatiment", fields: [idBatiment], references: [idBien], onDelete: NoAction, onUpdate: NoAction, map: "FK_PARTIEBATIMENT_REFERENCE_BATIMENT")
+  Site                  Site?                  @relation(fields: [idSite], references: [idSite], onDelete: NoAction, onUpdate: NoAction, map: "FK_BIEN_SITE")
+  other_Bien            Bien[]                 @relation("BienToBien_idBatiment")
+  Rdv                   Rdv[]
+  RelInterlocuteurBien  RelInterlocuteurBien[]
+
+  @@index([idBatiment], map: "idx_idBatiment")
+  @@index([idLotParent], map: "idx_idLotParent")
+  @@index([idSite], map: "idx_idSite")
+}
+
+model BienParam {
+  idParam                Int       @id(map: "PK_BienParam")
+  defautDescBatHabPP     String?   @db.NVarChar(225)
+  defautDescBatAutre     String?   @db.NVarChar(225)
+  defautDescNBatAutre    String?   @db.NVarChar(225)
+  defautDescBatLotHabPP  String?   @db.NVarChar(225)
+  defautDescNBatLotAutre String?   @db.NVarChar(225)
+  defautDescDependance   String?   @db.NVarChar(225)
+  formatCodeSite         String?   @db.NVarChar(255)
+  UpdateTime             DateTime? @db.DateTime
+  InsertTime             DateTime? @default(now(), map: "DF_BienParam_InsertTime") @db.DateTime
+}
+
+model CadrePrestation {
+  IdCadrePrestation            String                         @id(map: "PK_CadrePrestation") @db.NVarChar(10)
+  idSecteurActivite            String                         @db.NVarChar(10)
+  intitule                     String?                        @db.NVarChar(255)
+  UpdateTime                   DateTime?                      @db.DateTime
+  InsertTime                   DateTime?                      @default(now(), map: "DF__CadrePres__Inser__34C8D9D1") @db.DateTime
+  isPerso                      Boolean                        @default(false, map: "DF__CadrePres__isPer__6B44E613")
+  dateFin                      DateTime?                      @db.DateTime
+  SecteurActivite              SecteurActivite                @relation(fields: [idSecteurActivite], references: [idSecteurActivite], onUpdate: NoAction, map: "FK_CadrePrestation_SecteurActivite")
+  RelServiceInterlocuteurCadre RelServiceInterlocuteurCadre[]
+}
+
+model CategoriePrestation {
+  idCategoriePrestation     String                      @id(map: "PK_CategoriePrestation") @db.NVarChar(50)
+  idSecteurActivite         String?                     @db.NVarChar(10)
+  intitule                  String?                     @db.NVarChar(255)
+  intituleCourt             String?                     @db.NVarChar(20)
+  suffixeRefRapport         String?                     @db.NVarChar(50)
+  ordre                     Int?
+  UpdateTime                DateTime?                   @db.DateTime
+  InsertTime                DateTime?                   @default(now(), map: "DF__Categorie__Inser__15FA39EE") @db.DateTime
+  isPerso                   Boolean                     @default(false, map: "DF__Categorie__isPer__6A50C1DA")
+  dateFin                   DateTime?                   @db.DateTime
+  SecteurActivite           SecteurActivite?            @relation(fields: [idSecteurActivite], references: [idSecteurActivite], onDelete: NoAction, onUpdate: NoAction, map: "FK_CategoriePrestation_SecteurActivite")
+  Competence                Competence[]
+  RelDocument_CatPrestation RelDocument_CatPrestation[]
+  TypePrestation            TypePrestation[]
+}
+
+model CategorieRdv {
+  idCategorieRdv    Int              @id(map: "PK_CategorieRdv") @default(autoincrement())
+  idSecteurActivite String?          @db.NVarChar(10)
+  intitule          String?          @db.NVarChar(255)
+  couleurRGB        Int?
+  dureeRdvMinute    Int              @default(0, map: "DF_CategorieRdv_dureeRdvMinute")
+  UpdateTime        DateTime?        @db.DateTime
+  InsertTime        DateTime?        @default(now(), map: "DF__Categorie__Inser__69FBBC1F") @db.DateTime
+  WebSyncMode       String?          @db.NVarChar(10)
+  SecteurActivite   SecteurActivite? @relation(fields: [idSecteurActivite], references: [idSecteurActivite], onDelete: NoAction, onUpdate: NoAction, map: "FK_CategorieRdv_SecteurActivite")
+  Rdv               Rdv[]
+}
+
+model Competence {
+  idEmploye             Int
+  idCategoriePrestation String              @db.NVarChar(50)
+  UpdateTime            DateTime?           @db.DateTime
+  InsertTime            DateTime?           @default(now(), map: "DF__Competenc__Inser__33D4B598") @db.DateTime
+  CategoriePrestation   CategoriePrestation @relation(fields: [idCategoriePrestation], references: [idCategoriePrestation], onUpdate: NoAction, map: "FK_Competence_CategoriePrestation")
+  Employe               Employe             @relation(fields: [idEmploye], references: [idEmploye], onUpdate: NoAction, map: "FK_Competence_Employe")
+
+  @@id([idEmploye, idCategoriePrestation], map: "PK_Competence")
+}
+
+model Compteur {
+  idSociete  String @default("N'", map: "DF_Compteur_idSociete") @db.NVarChar(50)
+  idCompteur String @db.NVarChar(10)
+  valeur     Int    @default(0, map: "DF_Compteur_valeur")
+
+  @@id([idSociete, idCompteur], map: "PK_Compteur")
+}
+
+model CompteWeb {
+  idCompteWeb  Int           @id(map: "PK_CompteWeb") @default(autoincrement())
+  typeCompte   String        @db.NVarChar(10)
+  discCompte   String?       @db.NVarChar(10)
+  idSociete    String?       @db.NVarChar(50)
+  idEmploye    Int?
+  baseUrl      String?       @db.NVarChar(Max)
+  login        String?       @db.NVarChar(255)
+  encryptedMdp String?       @db.NVarChar(255)
+  customField1 String?       @db.NVarChar(255)
+  customField2 String?       @db.NVarChar(255)
+  customField3 String?       @db.NVarChar(255)
+  UpdateTime   DateTime?     @db.DateTime
+  InsertTime   DateTime?     @default(now(), map: "DF__CompteWeb__Inser__3B95D2F1") @db.DateTime
+  customField4 String?       @db.NVarChar(255)
+  customField5 String?       @db.NVarChar(255)
+  customField6 String?       @db.NVarChar(255)
+  customField7 String?       @db.NVarChar(255)
+  Employe      Employe?      @relation(fields: [idEmploye], references: [idEmploye], onDelete: NoAction, onUpdate: NoAction, map: "FK_CompteWeb_Employe")
+  Societe      Societe?      @relation(fields: [idSociete], references: [idSociete], onDelete: NoAction, onUpdate: NoAction, map: "FK_CompteWeb_Societe")
+  WebDataSync  WebDataSync[]
+}
+
+model Contact {
+  idContact                Int       @id(map: "PK_CONTACT") @default(autoincrement())
+  idInterlocuteur          Int?
+  fonction                 String?   @db.NVarChar(100)
+  titreContact             String?   @db.NVarChar(50)
+  nomContact               String?   @db.NVarChar(50)
+  prenomContact            String?   @db.NVarChar(50)
+  telephoneFixe            String?   @db.NVarChar(50)
+  telephoneIP              String?   @db.NVarChar(50)
+  telephonePortable        String?   @db.NVarChar(50)
+  email                    String?   @db.NVarChar(50)
+  fax                      String?   @db.NVarChar(50)
+  isDefaut                 Boolean
+  idSdl                    Int?
+  UpdateTime               DateTime? @db.DateTime
+  InsertTime               DateTime? @default(now(), map: "DF__Contact__InsertT__398D8EEE") @db.DateTime
+  dateFin                  DateTime? @db.DateTime
+  idMigrationInterlocuteur Int?
+}
+
+model Contrat {
+  idContrat                              Int               @id(map: "PK_Contrat") @default(autoincrement())
+  idInterlocuteur                        Int
+  idSiteGestion                          String?           @db.NVarChar(50)
+  idSite                                 Int?
+  numero                                 Int?
+  reference                              String?           @db.NVarChar(300)
+  referenceExt                           String?           @db.NVarChar(300)
+  dateDebutContrat                       DateTime?         @db.DateTime
+  dateFinContrat                         DateTime?         @db.DateTime
+  intitule                               String?           @db.NVarChar(300)
+  programme                              String?           @db.NVarChar(Max)
+  commentaire                            String?           @db.NVarChar(Max)
+  InsertTime                             DateTime?         @default(now(), map: "DF_Contrat_InsertTime") @db.DateTime
+  UpdateTime                             DateTime?         @db.DateTime
+  idUserCre                              Int?
+  idUserMaj                              Int?
+  idUserDesactivation                    Int?
+  dateDesactivation                      DateTime?         @db.SmallDateTime
+  idEmployeGestion                       Int?
+  dateSignature                          DateTime?         @db.DateTime
+  dateAvenant                            DateTime?         @db.DateTime
+  idSociete                              String            @default("N'SIEGE'", map: "DF_Contrat_idSociete") @db.NVarChar(50)
+  numeroSociete                          Int?
+  isModeleSpecific                       Boolean           @default(false, map: "DF_Contrat_isModeleSpecific")
+  codeExtDiag                            String?           @db.NVarChar(300)
+  Employe                                Employe?          @relation(fields: [idEmployeGestion], references: [idEmploye], onDelete: NoAction, onUpdate: NoAction, map: "FK_Contrat_Employe")
+  Interlocuteur                          Interlocuteur     @relation(fields: [idInterlocuteur], references: [idInterlocuteur], onUpdate: NoAction, map: "FK_Contrat_Interlocuteur")
+  Site                                   Site?             @relation(fields: [idSite], references: [idSite], onDelete: NoAction, onUpdate: NoAction, map: "FK_Contrat_Site")
+  Societe_Contrat_idSiteGestionToSociete Societe?          @relation("Contrat_idSiteGestionToSociete", fields: [idSiteGestion], references: [idSociete], onDelete: NoAction, onUpdate: NoAction, map: "FK_Contrat_Societe")
+  Societe_Contrat_idSocieteToSociete     Societe           @relation("Contrat_idSocieteToSociete", fields: [idSociete], references: [idSociete], onUpdate: NoAction, map: "FK_Contrat_Siege")
+  EnumTypeRapport                        EnumTypeRapport[]
+}
+
+model DbParam {
+  idBase                Int       @id(map: "PK_DBPARAM")
+  userNotificationDelay Int?
+  imagePreviewMaxWidth  Int?
+  imagePreviewMaxHeight Int?
+  imagePreviewMaxSize   Int?
+  imageMaxWidth         Int?
+  imageMaxHeight        Int?
+  imageMaxSize          Int?
+  DBStructureVersion    Int?
+  DBDataVersion         Int?
+  UpdateTime            DateTime? @db.DateTime
+  InsertTime            DateTime? @default(now(), map: "DF__DbParam__InsertT__37A5467C") @db.DateTime
+  DBMajorVersion        Int?
+}
+
+model Document {
+  idDocument                                                    Int                         @id(map: "PK_EmployeDocument") @default(autoincrement())
+  idTypeDocument                                                Int?
+  DiscDocument                                                  String?                     @db.NVarChar(50)
+  idEmploye                                                     Int?
+  idSociete                                                     String?                     @db.NVarChar(50)
+  idInterlocuteur                                               Int?
+  idResDocument                                                 String?                     @db.UniqueIdentifier
+  titreDocument                                                 String?                     @db.NVarChar(255)
+  previewDataDocument                                           Bytes?
+  numero                                                        String?                     @db.NVarChar(100)
+  organisme                                                     String?                     @db.NVarChar(255)
+  date                                                          DateTime?                   @db.DateTime
+  dateExpiration                                                DateTime?                   @db.DateTime
+  commentaire                                                   String?                     @db.NVarChar(Max)
+  dateFin                                                       DateTime?                   @db.DateTime
+  ordre                                                         Int?
+  UpdateTime                                                    DateTime?                   @db.DateTime
+  InsertTime                                                    DateTime?                   @default(now(), map: "DF__Document__Insert__1BFD2C07") @db.DateTime
+  idMachinePlomb                                                Int?
+  idMachineIFT                                                  Int?
+  isUseDateParMission                                           Boolean                     @default(false, map: "DF_Document_isUseDateParMission")
+  numero2                                                       String?                     @db.NVarChar(100)
+  date2                                                         DateTime?                   @db.DateTime
+  dateExpiration2                                               DateTime?                   @db.DateTime
+  Employe                                                       Employe?                    @relation(fields: [idEmploye], references: [idEmploye], onDelete: NoAction, onUpdate: NoAction, map: "FK_Document_Employe")
+  Interlocuteur_Document_idInterlocuteurToInterlocuteur         Interlocuteur?              @relation("Document_idInterlocuteurToInterlocuteur", fields: [idInterlocuteur], references: [idInterlocuteur], onDelete: NoAction, onUpdate: NoAction, map: "FK_Document_Interlocuteur")
+  Societe                                                       Societe?                    @relation(fields: [idSociete], references: [idSociete], onDelete: NoAction, onUpdate: NoAction, map: "FK_Document_Societe")
+  TypeDocument                                                  TypeDocument?               @relation(fields: [idTypeDocument], references: [idTypeDocument], onDelete: NoAction, onUpdate: NoAction, map: "FK_Document_TypeDocument")
+  Interlocuteur_DocumentToInterlocuteur_idDocumentAccreditation Interlocuteur[]             @relation("DocumentToInterlocuteur_idDocumentAccreditation")
+  RelDocument_CatPrestation                                     RelDocument_CatPrestation[]
+}
+
+model DomaineActivite {
+  idDomaine       String            @id(map: "PK_DomaineActivite") @db.NVarChar(10)
+  intitule        String?           @db.NVarChar(255)
+  UpdateTime      DateTime?         @db.DateTime
+  InsertTime      DateTime?         @default(now(), map: "DF__DomaineAc__Inser__300424B4") @db.DateTime
+  SecteurActivite SecteurActivite[]
+}
+
+model Droit {
+  idDroit                      Int                            @id(map: "PK_Droit")
+  produit                      String?                        @db.NVarChar(10)
+  zoneProduit                  String?                        @db.NVarChar(50)
+  description                  String?                        @db.NVarChar(200)
+  UpdateTime                   DateTime?                      @db.DateTime
+  InsertTime                   DateTime?                      @default(now(), map: "DF__Droit__InsertTim__22AA2996") @db.DateTime
+  restrictionNomade            Boolean                        @default(false, map: "DF__Droit__restricti__6D6238AF")
+  zoneModule                   String?                        @db.NVarChar(50)
+  typeDroit                    String                         @default("M", map: "DF__Droit__typeDroit__6E565CE8") @db.NVarChar(1)
+  defaultValue                 Boolean                        @default(false, map: "DF_Droit_defaultValue")
+  RestrictionGroupeUtilisateur RestrictionGroupeUtilisateur[]
+  RestrictionsUtilisateur      RestrictionsUtilisateur[]
+}
+
+model Employe {
+  idEmploye                                           Int                  @id(map: "PK_EMPLOYE") @default(autoincrement())
+  idSociete                                           String               @db.NVarChar(50)
+  idService                                           Int?
+  discService                                         String?              @db.NVarChar(5)
+  idFonction                                          Int?
+  discFonction                                        String?              @db.NVarChar(5)
+  isIntervenant                                       Boolean              @default(false, map: "DF_Employe_isIntervenant")
+  isResponsable                                       Boolean              @default(false, map: "DF_Employe_isResponsable")
+  titre                                               String?              @db.NVarChar(50)
+  nom                                                 String?              @db.NVarChar(100)
+  prenom                                              String?              @db.NVarChar(50)
+  numeroFixe                                          String?              @db.NVarChar(50)
+  numeroPortable                                      String?              @db.NVarChar(50)
+  numeroFax                                           String?              @db.NVarChar(50)
+  mail                                                String?              @db.NVarChar(255)
+  idResSignature                                      String?              @db.UniqueIdentifier
+  titreSignature                                      String?              @db.NVarChar(255)
+  previewDataSignature                                Bytes?
+  cleSignature                                        Bytes?
+  dateCre                                             DateTime?            @db.DateTime
+  dateMaj                                             DateTime?            @db.DateTime
+  dateSup                                             DateTime?            @db.DateTime
+  numeroProFixe                                       String?              @db.NVarChar(50)
+  numeroProPort                                       String?              @db.NVarChar(50)
+  numeroProIp                                         String?              @db.NVarChar(50)
+  numeroProFax                                        String?              @db.NVarChar(50)
+  mailPro                                             String?              @db.NVarChar(50)
+  adresse1                                            String?              @db.NVarChar(255)
+  adresse2                                            String?              @db.NVarChar(255)
+  codePostal                                          String?              @db.NVarChar(50)
+  ville                                               String?              @db.NVarChar(50)
+  departement                                         String?              @db.NVarChar(50)
+  pays                                                String?              @db.NVarChar(50)
+  idResPhoto                                          String?              @db.UniqueIdentifier
+  previewDataPhoto                                    Bytes?
+  couleurRdvHexa                                      String?              @db.NVarChar(10)
+  couleurRdvRGB                                       Int?
+  UpdateTime                                          DateTime?            @db.DateTime
+  InsertTime                                          DateTime?            @default(now(), map: "DF__Employe__InsertT__1DE57479") @db.DateTime
+  isCommercial                                        Boolean              @default(false, map: "DF_Employe_isCommercial")
+  loginAdeme                                          String?              @db.NVarChar(255)
+  mdpAdeme                                            String?              @db.NVarChar(255)
+  matricule                                           String?              @db.NVarChar(255)
+  IdSiege                                             String               @default("N'SIEGE'", map: "DF_Employe_IdSiege") @db.NVarChar(50)
+  Societe_Employe_IdSiegeToSociete                    Societe              @relation("Employe_IdSiegeToSociete", fields: [IdSiege], references: [idSociete], onUpdate: NoAction, map: "FK_Employe_Siege")
+  Fonction                                            Fonction?            @relation(fields: [idFonction], references: [idFonction], onDelete: NoAction, onUpdate: NoAction, map: "FK_Employe_Fonction")
+  Service                                             Service?             @relation(fields: [idService], references: [idService], onDelete: NoAction, onUpdate: NoAction, map: "FK_Employe_Service")
+  Societe_Employe_idSocieteToSociete                  Societe              @relation("Employe_idSocieteToSociete", fields: [idSociete], references: [idSociete], onUpdate: NoAction, map: "FK_Employe_Societe")
+  Competence                                          Competence[]
+  CompteWeb                                           CompteWeb[]
+  Contrat                                             Contrat[]
+  Document                                            Document[]
+  Interlocuteur_EmployeToInterlocuteur_idGestionnaire Interlocuteur[]      @relation("EmployeToInterlocuteur_idGestionnaire")
+  Interlocuteur_EmployeToInterlocuteur_idResponsable  Interlocuteur[]      @relation("EmployeToInterlocuteur_idResponsable")
+  Rdv                                                 Rdv[]
+  SuiviInterlocuteur                                  SuiviInterlocuteur[]
+  Utilisateur                                         Utilisateur[]
+
+  @@index([IdSiege], map: "idx_IdSiege")
+  @@index([idSociete], map: "idx_idSociete")
+}
+
+model EnumDescriptifBien {
+  idDescriptif     Int       @id(map: "PK_EnumDescriptifBien") @default(autoincrement())
+  intitule         String?   @db.NVarChar(255)
+  isBatiment       Boolean?
+  isPartieBatiment Boolean?
+  usage            String?   @db.NVarChar(10)
+  PP               Boolean?
+  PC               Boolean?
+  isBati           Boolean   @default(true, map: "DF_EnumDescriptifBien_isBati")
+  isDependance     Boolean   @default(false, map: "DF_EnumDescriptifBien_isDependance")
+  UpdateTime       DateTime? @db.DateTime
+  InsertTime       DateTime? @default(now(), map: "DF_EnumDescriptifBien_InsertTime") @db.DateTime
+  categorieBien    String?   @db.NVarChar(5)
+}
+
+model EnumEtage {
+  idEtage        Int       @id(map: "enumereEtage$PrimaryKey") @default(autoincrement())
+  intitule       String?   @db.NVarChar(50)
+  intituleAbrege String?   @db.NVarChar(15)
+  niveau         Float?    @db.Real
+  UpdateTime     DateTime? @db.DateTime
+  InsertTime     DateTime? @default(now(), map: "DF__EnumEtage__Inser__2704CA5F") @db.DateTime
+  categorieBien  String?   @db.NVarChar(5)
+}
+
+model EnumFAI {
+  idFAI       Int       @id(map: "PK_EnumFAI") @default(autoincrement())
+  nom         String?   @db.NVarChar(255)
+  serveurSmtp String?   @db.NVarChar(255)
+  portSmtp    Int?
+  isSSL       Boolean?  @default(false, map: "DF_EnumFAI_Ssl")
+  UpdateTime  DateTime? @db.DateTime
+  InsertTime  DateTime? @default(now(), map: "DF__EnumFAI__InsertT__7CD98669") @db.DateTime
+}
+
+model EnumFamQualite {
+  idFamQualite String    @id(map: "PK_EnumFamQualite") @db.NVarChar(10)
+  intitule     String?   @db.NVarChar(100)
+  UpdateTime   DateTime? @db.DateTime
+  InsertTime   DateTime? @default(now(), map: "DF__EnumFamQu__Inser__36B12243") @db.DateTime
+  Qualite      Qualite[]
+}
+
+model EnumLdcBien {
+  idEnumLdcBien Int       @id(map: "PK_EnumLdcBien") @default(autoincrement())
+  discLdc       String    @db.NVarChar(10)
+  intitule      String?   @db.NVarChar(255)
+  UpdateTime    DateTime? @db.DateTime
+  InsertTime    DateTime? @default(now(), map: "DF_EnumLdcBien_InsertTime") @db.DateTime
+}
+
+model EnumLoi {
+  idLoi              Int               @id(map: "PK_EnumLoi") @default(autoincrement())
+  idCategorieMission String?           @db.NVarChar(50)
+  intitule           String?           @db.NVarChar(255)
+  texteLoi           String?           @db.NVarChar(Max)
+  isObsolete         Boolean?          @default(false, map: "DF_EnumLoi_isObsolete")
+  UpdateTime         DateTime?         @db.DateTime
+  InsertTime         DateTime?         @default(now(), map: "DF__EnumLoi__InsertT__4924D839") @db.DateTime
+  texteLoiRtf        String?           @db.NVarChar(Max)
+  EnumTypeRapport    EnumTypeRapport[]
+}
+
+model EnumTitre {
+  IdTitre      Int                       @id(map: "PK_ENUMTITRE") @default(autoincrement())
+  typePersonne String?                   @db.NVarChar(1)
+  titre        String?                   @db.NVarChar(50)
+  dataVersion  Unsupported("timestamp")?
+  UpdateTime   DateTime?                 @db.DateTime
+  InsertTime   DateTime?                 @default(now(), map: "DF__EnumTitre__Inser__286302EC") @db.DateTime
+}
+
+model EnumTypeRapport {
+  idTypeRapport      Int       @id(map: "PK_TypeRapport") @default(autoincrement())
+  productCode        String?   @db.NVarChar(50)
+  reportType         String?   @db.NVarChar(50)
+  reportSubType      String?   @db.NVarChar(255)
+  idCategorieMission String?   @db.NVarChar(50)
+  idTypeMission      String?   @db.NVarChar(50)
+  idCadreMission     String?   @db.NVarChar(50)
+  intitule           String?   @db.NVarChar(255)
+  titreRapport       String?   @db.NVarChar(255)
+  isConcerneMI       Boolean?  @default(true, map: "DF_EnumTypeRapport_isConcernePP1")
+  isConcerneIC       Boolean?  @default(true, map: "DF_EnumTypeRapport_isConcerneHAB_INDIV1")
+  isConcernePP       Boolean?  @default(true, map: "DF_EnumTypeRapport_isPP")
+  isConcernePC       Boolean?  @default(false, map: "DF_EnumTypeRapport_isPC")
+  isConcerneHAB      Boolean?  @default(false, map: "DF_EnumTypeRapport_isConcerneTER1")
+  isConcerneTER      Boolean?  @default(true, map: "DF_EnumTypeRapport_isConcerneTER")
+  isConcerneERP      Boolean?  @default(false, map: "DF_EnumTypeRapport_isConcerneERP")
+  conditionReperage  String?   @db.NVarChar(Max)
+  note               String?   @db.NVarChar(Max)
+  dureeValiditeMois  Int?
+  texteLoi           String?   @db.NVarChar(Max)
+  idLoi              Int?
+  isRapportMission   Boolean?
+  isPublier          Boolean?
+  isSigner           Boolean?
+  UpdateTime         DateTime? @db.DateTime
+  InsertTime         DateTime? @default(now(), map: "DF__EnumTypeR__Inser__34B3CB38") @db.DateTime
+  isSelectionDefaut  Boolean   @default(false, map: "DF__EnumTypeR__isSel__558AAF1E")
+  isEnrPDFNomade     Boolean   @default(false, map: "DF__EnumTypeR__isEnr__6B79F03D")
+  isEnrPDF           Boolean   @default(false, map: "DF__EnumTypeR__isEnr__6C6E1476")
+  idNorme            Int?
+  ecartDefaut        String?   @db.NVarChar(Max)
+  isAPO              Boolean   @default(false, map: "DF_EnumTypeRapport_isAPO")
+  isAPOGeneration    Boolean   @default(false, map: "DF_EnumTypeRapport_isAPOGeneration")
+  dateFin            DateTime? @db.DateTime
+  idModelePerso      String?   @db.UniqueIdentifier
+  idContrat          Int?
+  isBati             Boolean   @default(true, map: "DF_EnumTypeRapport_isBati")
+  isConcerneRoute    Boolean?  @default(false, map: "DF_EnumTypeRapport_isRoute")
+  categorieBien      String?   @db.NVarChar(5)
+  customFileFormat   String?   @db.NVarChar(Max)
+  typeRapportExt     String?   @db.NVarChar(100)
+  Contrat            Contrat?  @relation(fields: [idContrat], references: [idContrat], onDelete: NoAction, onUpdate: NoAction, map: "FK_EnumTypeRapport_Contrat")
+  EnumLoi            EnumLoi?  @relation(fields: [idLoi], references: [idLoi], onDelete: NoAction, onUpdate: NoAction, map: "FK_TypeRapport_Loi")
+
+  @@index([productCode, idCategorieMission, idTypeMission], map: "idx_productCodeIdCategorieMissionIdTypeMission")
+  @@index([productCode, idCategorieMission, idTypeMission, idCadreMission], map: "idx_productCodeIdCategorieMissionIdTypeMissionIdCadreMission")
+  @@index([productCode, reportType, reportSubType], map: "idx_productCodeReportTypeReportSubType")
+}
+
+model EnumVille {
+  idVille     Int       @id(map: "PK_EnumVille") @default(autoincrement())
+  Commune     String?   @db.NVarChar(255)
+  Codepos     Float?
+  Departement String?   @db.NVarChar(255)
+  INSEE       Float?
+  idPays      Int?
+  UpdateTime  DateTime? @db.DateTime
+  InsertTime  DateTime? @default(now(), map: "DF__EnumVille__Inser__2E1BDC42") @db.DateTime
+  Pays        Pays?     @relation(fields: [idPays], references: [idPays], onDelete: NoAction, onUpdate: NoAction, map: "FK_EnumVille_Pays")
+
+  @@index([Codepos], map: "idx_Codepos")
+}
+
+model Fonction {
+  idFonction   Int       @id(map: "PK_Fonction") @default(autoincrement())
+  discFonction String?   @db.NVarChar(5)
+  idService    Int?
+  discService  String?   @db.NVarChar(5)
+  intitule     String?   @db.NVarChar(255)
+  isVerrou     Boolean
+  UpdateTime   DateTime? @db.DateTime
+  InsertTime   DateTime? @default(now(), map: "DF__Fonction__Insert__2A4B4B5E") @db.DateTime
+  Service      Service?  @relation(fields: [idService], references: [idService], onDelete: NoAction, onUpdate: NoAction, map: "FK_Fonction_Service")
+  Employe      Employe[]
+}
+
+model GroupeUtilisateur {
+  idGroupeUtilisateur          String                         @id(map: "PK_GroupeUtilisateur") @db.NVarChar(10)
+  nom                          String?                        @db.NVarChar(100)
+  UpdateTime                   DateTime?                      @db.DateTime
+  InsertTime                   DateTime?                      @default(now(), map: "DF__GroupeUti__Inser__38996AB5") @db.DateTime
+  RestrictionGroupeUtilisateur RestrictionGroupeUtilisateur[]
+  Utilisateur                  Utilisateur[]
+}
+
+model Interlocuteur {
+  idInterlocuteur                                                                Int                       @id(map: "PK_INTERLOCUTEUR") @default(autoincrement())
+  idSiteGestion                                                                  String?                   @db.NVarChar(50)
+  catInterlocuteur                                                               Int                       @default(0, map: "DF_Interlocuteur_catInterlocuteur")
+  code                                                                           String?                   @db.NVarChar(10)
+  codeICS                                                                        String?                   @db.NVarChar(255)
+  typePersonne                                                                   String?                   @db.NVarChar(1)
+  idQualite                                                                      Int?
+  titre                                                                          String?                   @db.NVarChar(50)
+  nom                                                                            String?                   @db.NVarChar(100)
+  prenom                                                                         String?                   @db.NVarChar(50)
+  adresse1                                                                       String?                   @db.NVarChar(255)
+  adresse2                                                                       String?                   @db.NVarChar(255)
+  codePostal                                                                     String?                   @db.NVarChar(50)
+  ville                                                                          String?                   @db.NVarChar(50)
+  departement                                                                    String?                   @db.NVarChar(50)
+  idPays                                                                         Int?
+  telephoneFixe                                                                  String?                   @db.NVarChar(50)
+  telephoneIP                                                                    String?                   @db.NVarChar(50)
+  telephoneMobile                                                                String?                   @db.NVarChar(50)
+  fax                                                                            String?                   @db.NVarChar(50)
+  email                                                                          String?                   @db.NVarChar(255)
+  siteWeb                                                                        String?                   @db.NVarChar(255)
+  txComDefaut                                                                    Float?                    @default(0, map: "DF__INTERLOCU__txCom__1273C1CD")
+  commentaire                                                                    String?                   @db.NVarChar(Max)
+  origine                                                                        String?                   @db.NVarChar(100)
+  dateCre                                                                        DateTime?                 @db.SmallDateTime
+  dateMaj                                                                        DateTime?                 @db.SmallDateTime
+  dateSup                                                                        DateTime?                 @db.SmallDateTime
+  IdUserCre                                                                      Int?
+  idUserMaj                                                                      Int?
+  idUserSup                                                                      Int?
+  idOrigine                                                                      Int?
+  detailOrigine                                                                  String?                   @db.NVarChar(255)
+  idSdl                                                                          Int?
+  UpdateTime                                                                     DateTime?                 @db.DateTime
+  InsertTime                                                                     DateTime?                 @default(now(), map: "DF__Interlocu__Inser__7D0E9093") @db.DateTime
+  idPub                                                                          Int?
+  datePub                                                                        DateTime?                 @db.DateTime
+  statusPub                                                                      Int                       @default(0, map: "DF_Interlocuteur_statusPub")
+  migratedData                                                                   Boolean?
+  idResponsable                                                                  Int?
+  isSync                                                                         Boolean                   @default(false, map: "DF_Interlocuteur_isSync")
+  isInactif                                                                      Boolean                   @default(false, map: "DF_Interlocuteur_isInactif")
+  numAccreditation                                                               String?                   @db.NVarChar(100)
+  heurePMDebut                                                                   DateTime?                 @db.DateTime
+  heurePMFin                                                                     DateTime?                 @db.DateTime
+  heureAMDebut                                                                   DateTime?                 @db.DateTime
+  heureAMFin                                                                     DateTime?                 @db.DateTime
+  discWebLabo                                                                    String?                   @db.NVarChar(10)
+  codExt                                                                         String?                   @db.NVarChar(100)
+  idSociete                                                                      String                    @default("N'SIEGE'", map: "DF_Interlocuteur_idSociete") @db.NVarChar(50)
+  isMailLabo                                                                     Boolean                   @default(false, map: "DF_Interlocuteur_isMailLabo")
+  idGestionnaire                                                                 Int?
+  idDocumentAccreditation                                                        Int?
+  codeExtDiag                                                                    String?                   @db.NVarChar(300)
+  infoBAN                                                                        String?                   @db.NVarChar(Max)
+  Document_DocumentToInterlocuteur_idDocumentAccreditation                       Document?                 @relation("DocumentToInterlocuteur_idDocumentAccreditation", fields: [idDocumentAccreditation], references: [idDocument], onDelete: NoAction, onUpdate: NoAction, map: "FK_Interlocuteur_Document")
+  Employe_EmployeToInterlocuteur_idGestionnaire                                  Employe?                  @relation("EmployeToInterlocuteur_idGestionnaire", fields: [idGestionnaire], references: [idEmploye], onDelete: NoAction, onUpdate: NoAction, map: "FK_Interlocuteur_Gestionnaire")
+  OrigineInterlocuteur                                                           OrigineInterlocuteur?     @relation(fields: [idOrigine], references: [idOrigine], onDelete: NoAction, onUpdate: NoAction, map: "FK_Interlocuteur_OrigineInterlocuteur")
+  Pays                                                                           Pays?                     @relation(fields: [idPays], references: [idPays], onDelete: NoAction, onUpdate: NoAction, map: "FK_Interlocuteur_Pays")
+  Qualite                                                                        Qualite?                  @relation(fields: [idQualite], references: [idQualite], onDelete: NoAction, onUpdate: NoAction, map: "FK_Interlocuteur_Qualite")
+  Employe_EmployeToInterlocuteur_idResponsable                                   Employe?                  @relation("EmployeToInterlocuteur_idResponsable", fields: [idResponsable], references: [idEmploye], onDelete: NoAction, onUpdate: NoAction, map: "FK_Interlocuteur_Responsable")
+  Societe_Interlocuteur_idSiteGestionToSociete                                   Societe?                  @relation("Interlocuteur_idSiteGestionToSociete", fields: [idSiteGestion], references: [idSociete], onDelete: NoAction, onUpdate: NoAction, map: "FK_Interlocuteur_Societe")
+  Societe_Interlocuteur_idSocieteToSociete                                       Societe                   @relation("Interlocuteur_idSocieteToSociete", fields: [idSociete], references: [idSociete], onUpdate: NoAction, map: "FK_Interlocuteur_Siege")
+  Contrat                                                                        Contrat[]
+  Document_Document_idInterlocuteurToInterlocuteur                               Document[]                @relation("Document_idInterlocuteurToInterlocuteur")
+  Rdv                                                                            Rdv[]
+  RelInterlocuteurBien                                                           RelInterlocuteurBien[]
+  RelInterlocuteurContact_InterlocuteurToRelInterlocuteurContact_idContact       RelInterlocuteurContact[] @relation("InterlocuteurToRelInterlocuteurContact_idContact")
+  RelInterlocuteurContact_InterlocuteurToRelInterlocuteurContact_idInterlocuteur RelInterlocuteurContact[] @relation("InterlocuteurToRelInterlocuteurContact_idInterlocuteur")
+  ServiceInterlocuteur                                                           ServiceInterlocuteur[]
+  SuiviInterlocuteur                                                             SuiviInterlocuteur[]
+
+  @@index([catInterlocuteur], map: "idx_catInterlocuteur")
+  @@index([code], map: "idx_Code")
+  @@index([idQualite], map: "idx_idQualite")
+  @@index([idSiteGestion], map: "idx_idSiteGestion")
+  @@index([idSociete], map: "idx_idSociete")
+}
+
+model MDI_EnqueteExclusion {
+  idEnqueteExclusion Int     @id(map: "PK_ENQUETEEXCLUSION") @default(autoincrement())
+  idContact          Int?
+  idInterlocuteur    Int?
+  isactif            Boolean @default(true, map: "DF_EnqueteExclusion_isactif")
+  email              String? @db.NVarChar(50)
+}
+
+model MDI_EnumEnquete {
+  idEnumEnquete Int     @id(map: "PK_ENUMENQUETE") @default(autoincrement())
+  isactif       Boolean @default(true, map: "DF_EnumEnquete_isactif")
+  isdefaut      Boolean @default(false, map: "DF_EnumEnquete_isdefaut")
+  descrip       String? @db.NVarChar(64)
+  objmail       String? @db.NVarChar(128)
+  fichiermail   String? @db.NVarChar(64)
+  permalien     String? @db.NVarChar(250)
+}
+
+model OrigineInterlocuteur {
+  idOrigine     Int             @id(map: "PK_OrigineInterlocuteur") @default(autoincrement())
+  intitule      String?         @db.NVarChar(255)
+  UpdateTime    DateTime?       @db.DateTime
+  InsertTime    DateTime?       @default(now(), map: "DF__OrigineIn__Inser__075714DC") @db.DateTime
+  Interlocuteur Interlocuteur[]
+}
+
+model ParamContrat {
+  idParametre Int
+  idContrat   Int
+  zone        String?   @db.NVarChar(50)
+  intitule    String?   @db.NVarChar(255)
+  valeur      String?   @db.NVarChar(Max)
+  UpdateTime  DateTime? @db.DateTime
+  InsertTime  DateTime? @default(now(), map: "DF__ParamCont__Inser__43F60EC8") @db.DateTime
+
+  @@id([idParametre, idContrat], map: "PK_ParamContrat")
+}
+
+model ParamGeneric {
+  idParametre Int       @id(map: "PK_ParamGeneric")
+  zone        String?   @db.NVarChar(50)
+  intitule    String?   @db.NVarChar(255)
+  valeur      String?   @db.NVarChar(Max)
+  UpdateTime  DateTime? @db.DateTime
+  InsertTime  DateTime? @default(now(), map: "DF__ParamGene__Inser__50C5FA01") @db.DateTime
+}
+
+model ParamLog {
+  tableName      String    @id(map: "PK_ParamChangeSet") @db.NVarChar(100)
+  date           DateTime? @db.DateTime
+  SentAnchor     Bytes?    @db.Image
+  ReceivedAnchor Bytes?    @db.Image
+}
+
+model ParamMailing {
+  idParamMailing        Int       @id(map: "PK_ParamMailing") @default(autoincrement())
+  adresseMail           String?   @db.NVarChar(255)
+  nomFAI                String?   @db.NVarChar(255)
+  serveurSmtp           String?   @db.NVarChar(255)
+  Port                  Int?
+  idMessagerie          String?   @db.NVarChar(255)
+  mdpMessagerie         String?   @db.NVarChar(255)
+  isAuthentificationSSL Boolean?  @default(false, map: "DF_ParamMailing_isAuthentificationSSL")
+  isDefautAccount       Boolean?  @default(false, map: "DF_ParamMailing_isDefautAccount")
+  UpdateTime            DateTime? @db.DateTime
+  InsertTime            DateTime? @default(now(), map: "DF__ParamMail__Inser__0A338187") @db.DateTime
+}
+
+model ParamMailModele {
+  idModele    Int       @id(map: "PK_ParamMailModele") @default(autoincrement())
+  productCode String?   @db.NVarChar(50)
+  titre       String?   @db.NVarChar(255)
+  texte       String?   @db.NVarChar(Max)
+  isDefaut    Boolean   @default(false, map: "DF__ParamMail__isDef__78D3EB5B")
+  UpdateTime  DateTime? @db.DateTime
+  InsertTime  DateTime? @default(now(), map: "DF__ParamMail__Inser__79C80F94") @db.DateTime
+  intitule    String?   @db.NVarChar(255)
+  dscModele   String?   @db.NVarChar(10)
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by the Prisma Client.
+model ParamSync {
+  idServer String? @db.UniqueIdentifier
+
+  @@ignore
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by the Prisma Client.
+model ParamTombstone {
+  tableName  String?   @db.NVarChar(255)
+  rowId      String?   @db.NVarChar(50)
+  rowId2     String?   @db.NVarChar(50)
+  rowId3     String?   @db.NVarChar(50)
+  DeleteTime DateTime? @default(now(), map: "DF__ParamTomb__Delet__1ED998B2") @db.DateTime
+
+  @@ignore
+}
+
+model Pays {
+  idPays        Int                       @id(map: "PK_Pays") @default(autoincrement())
+  intitule      String?                   @db.NVarChar(255)
+  dataVersion   Unsupported("timestamp")?
+  UpdateTime    DateTime?                 @db.DateTime
+  InsertTime    DateTime?                 @default(now(), map: "DF__Pays__InsertTime__2B3F6F97") @db.DateTime
+  EnumVille     EnumVille[]
+  Interlocuteur Interlocuteur[]
+}
+
+model ProcessLog {
+  idProcessLog         Int              @id(map: "PK_ProcessLog") @default(autoincrement())
+  idProcessLogParent   Int?
+  produit              String?          @db.NVarChar(10)
+  typeProcess          String?          @db.NVarChar(10)
+  code                 String?          @db.NVarChar(50)
+  intitule             String?          @db.NVarChar(255)
+  dateDebut            DateTime?        @db.DateTime
+  dateFin              DateTime?        @db.DateTime
+  statut               Int?
+  dateCreation         DateTime?        @db.DateTime
+  idUserCreation       Int?
+  dateMaj              DateTime?        @db.DateTime
+  processConfigData    String?          @db.NVarChar(Max)
+  processConfigVersion String?          @db.NVarChar(10)
+  errorLog             String?          @db.NVarChar(Max)
+  ProcessLog           ProcessLog?      @relation("ProcessLogToProcessLog_idProcessLogParent", fields: [idProcessLogParent], references: [idProcessLog], onDelete: NoAction, onUpdate: NoAction, map: "FK_ProcessLog_ProcessParent")
+  other_ProcessLog     ProcessLog[]     @relation("ProcessLogToProcessLog_idProcessLogParent")
+  ProcessLogItem       ProcessLogItem[]
+}
+
+model ProcessLogItem {
+  idProcessLogItem Int        @id(map: "PK_ProcessLogItem") @default(autoincrement())
+  idProcessLog     Int
+  itemSourceId     Int?
+  itemSourceName   String?    @db.NVarChar(255)
+  itemCibleId      Int?
+  itemCibleName    String?    @db.NVarChar(255)
+  dateDebut        DateTime?  @db.DateTime
+  dateFin          DateTime?  @db.DateTime
+  statut           Int?
+  errorLog         String?    @db.NVarChar(Max)
+  ProcessLog       ProcessLog @relation(fields: [idProcessLog], references: [idProcessLog], onUpdate: NoAction, map: "FK_ProcessLogItem_ProcessLog")
+}
+
+model Qualite {
+  idQualite      Int             @id(map: "PK_Qualite") @default(autoincrement())
+  idFamQualite   String?         @db.NVarChar(10)
+  typePersonne   String?         @db.NVarChar(1)
+  libelleQualite String?         @db.NVarChar(100)
+  UpdateTime     DateTime?       @db.DateTime
+  InsertTime     DateTime?       @default(now(), map: "DF__Qualite__InsertT__21B6055D") @db.DateTime
+  EnumFamQualite EnumFamQualite? @relation(fields: [idFamQualite], references: [idFamQualite], onDelete: NoAction, onUpdate: NoAction, map: "FK_Qualite_FamilleQualite")
+  Interlocuteur  Interlocuteur[]
+}
+
+model Rdv {
+  idRdv           Int            @id(map: "PK_RDV") @default(autoincrement())
+  idEmploye       Int?
+  idCategorieRdv  Int
+  sujet           String?        @db.NVarChar(512)
+  dateDebut       DateTime?      @db.SmallDateTime
+  dateFin         DateTime?      @db.SmallDateTime
+  description     String?        @db.NVarChar(Max)
+  typeLien        String?        @db.NVarChar(10)
+  recurrence      String?        @db.NVarChar(Max)
+  isVerrou        Boolean        @default(false, map: "DF_Rdv_isVerrou")
+  idSdl           Int?
+  UpdateTime      DateTime?      @db.DateTime
+  InsertTime      DateTime?      @default(now(), map: "DF__Rdv__InsertTime__7E02B4CC") @db.DateTime
+  idInterlocuteur Int?
+  idBien          Int?
+  adresse         String?        @db.NVarChar(255)
+  Bien            Bien?          @relation(fields: [idBien], references: [idBien], onDelete: NoAction, onUpdate: NoAction, map: "FK_Rdv_Bien")
+  CategorieRdv    CategorieRdv   @relation(fields: [idCategorieRdv], references: [idCategorieRdv], onUpdate: NoAction, map: "FK_Rdv_CategorieRdv")
+  Employe         Employe?       @relation(fields: [idEmploye], references: [idEmploye], onDelete: NoAction, onUpdate: NoAction, map: "FK_Rdv_Employe")
+  Interlocuteur   Interlocuteur? @relation(fields: [idInterlocuteur], references: [idInterlocuteur], onDelete: NoAction, onUpdate: NoAction, map: "FK_Rdv_Interlocuteur")
+
+  @@index([idEmploye], map: "idx_idEmploye")
+}
+
+model RelDocument_CatPrestation {
+  idDocument            Int
+  idCategoriePrestation String              @db.NVarChar(50)
+  isGenRapportDefaut    Boolean
+  isGenSyntheseDefaut   Boolean
+  UpdateTime            DateTime?           @db.DateTime
+  InsertTime            DateTime?           @default(now(), map: "DF__RelDocume__Inser__16EE5E27") @db.DateTime
+  dateDebut             DateTime?           @db.DateTime
+  dateExpiration        DateTime?           @db.DateTime
+  CategoriePrestation   CategoriePrestation @relation(fields: [idCategoriePrestation], references: [idCategoriePrestation], onUpdate: NoAction, map: "FK_RelDocument_CatPrestation_CategoriePrestation")
+  Document              Document            @relation(fields: [idDocument], references: [idDocument], onUpdate: NoAction, map: "FK_RelDocument_CatPrestation_Document")
+
+  @@id([idDocument, idCategoriePrestation], map: "PK_RelEmployeDoc_CatPrestation")
+  @@index([idCategoriePrestation], map: "idx_idCategoriePrestation")
+}
+
+model RelInterlocuteurBien {
+  idRelInterlocuteurBien  Int                    @id(map: "PK_RelInterlocuteurBien") @default(autoincrement())
+  idSite                  Int?
+  idBien                  Int?
+  idInterlocuteur         Int?
+  idRoleInterlocuteurBien String?                @db.NVarChar(50)
+  dateFin                 DateTime?              @db.DateTime
+  UpdateTime              DateTime?              @db.DateTime
+  InsertTime              DateTime?              @default(now(), map: "DF__RelInterl__Inser__28ED12D1") @db.DateTime
+  Bien                    Bien?                  @relation(fields: [idBien], references: [idBien], onDelete: NoAction, onUpdate: NoAction, map: "FK_RelInterlocuteurBien_Bien")
+  Interlocuteur           Interlocuteur?         @relation(fields: [idInterlocuteur], references: [idInterlocuteur], onDelete: NoAction, onUpdate: NoAction, map: "FK_RelInterlocuteurBien_Interlocuteur")
+  RoleInterlocuteurBien   RoleInterlocuteurBien? @relation(fields: [idRoleInterlocuteurBien], references: [idRoleInterlocuteurBien], onDelete: NoAction, onUpdate: NoAction, map: "FK_RelInterlocuteurBien_RoleInterlocuteurBien")
+  Site                    Site?                  @relation(fields: [idSite], references: [idSite], onDelete: NoAction, onUpdate: NoAction, map: "FK_RelInterlocuteurBien_Site")
+
+  @@index([idBien], map: "idx_idBien")
+  @@index([idInterlocuteur], map: "idx_idInterlocuteur")
+  @@index([idRoleInterlocuteurBien], map: "idx_idRoleInterlocuteurBien")
+  @@index([idSite], map: "idx_idSite")
+}
+
+model RelInterlocuteurContact {
+  idRelInterlocuteurContact                                            Int                   @id(map: "PK_RelInterlocuteurContact_1") @default(autoincrement())
+  idInterlocuteur                                                      Int
+  idContact                                                            Int
+  idService                                                            Int?
+  typeContact                                                          String?               @db.NVarChar(10)
+  InsertTime                                                           DateTime?             @default(now(), map: "DF_RelInterlocuteurContact_InsertTime_1") @db.DateTime
+  UpdateTime                                                           DateTime?             @db.DateTime
+  dateFin                                                              DateTime?             @db.DateTime
+  isDefaut                                                             Boolean               @default(false, map: "DF_RelInterlocuteurContact_isDefaut")
+  fonction                                                             String?               @db.NVarChar(100)
+  idSdl                                                                Int?
+  Interlocuteur_InterlocuteurToRelInterlocuteurContact_idContact       Interlocuteur         @relation("InterlocuteurToRelInterlocuteurContact_idContact", fields: [idContact], references: [idInterlocuteur], onUpdate: NoAction, map: "FK_RelInterlocuteurContact_Contact")
+  Interlocuteur_InterlocuteurToRelInterlocuteurContact_idInterlocuteur Interlocuteur         @relation("InterlocuteurToRelInterlocuteurContact_idInterlocuteur", fields: [idInterlocuteur], references: [idInterlocuteur], onUpdate: NoAction, map: "FK_RelInterlocuteurContact_Interlocuteur")
+  ServiceInterlocuteur                                                 ServiceInterlocuteur? @relation(fields: [idService], references: [idServiceInterlocuteur], onDelete: NoAction, onUpdate: NoAction, map: "FK_RelInterlocuteurContact_ServiceInterlocuteur")
+
+  @@index([idContact], map: "idx_idContact")
+  @@index([idInterlocuteur], map: "idx_idInterlocuteur")
+}
+
+model RelServiceInterlocuteurCadre {
+  idServiceInterlocuteur Int
+  idCadrePrestation      String               @db.NVarChar(10)
+  UpdateTime             DateTime?            @db.DateTime
+  InsertTime             DateTime?            @default(now(), map: "DF__RelServic__Inser__60083D91") @db.DateTime
+  CadrePrestation        CadrePrestation      @relation(fields: [idCadrePrestation], references: [IdCadrePrestation], onUpdate: NoAction, map: "FK_RelServiceInterlocuteurCadre_CadrePrestation")
+  ServiceInterlocuteur   ServiceInterlocuteur @relation(fields: [idServiceInterlocuteur], references: [idServiceInterlocuteur], onUpdate: NoAction, map: "FK_RelServiceInterlocuteurCadre_ServiceInterlocuteur")
+
+  @@id([idServiceInterlocuteur, idCadrePrestation], map: "PK_RelServiceInterlocuteurCadre")
+}
+
+model RestrictionGroupeUtilisateur {
+  idGroupeUtilisateur String            @db.NVarChar(10)
+  idDroit             Int
+  UpdateTime          DateTime?         @db.DateTime
+  InsertTime          DateTime?         @default(now(), map: "DF_RestrictionGroupeUtilisateur_InsertTime") @db.DateTime
+  isActif             Boolean?
+  Droit               Droit             @relation(fields: [idDroit], references: [idDroit], onUpdate: NoAction, map: "FK_RestrictionGroupeUtilisateur_Droit")
+  GroupeUtilisateur   GroupeUtilisateur @relation(fields: [idGroupeUtilisateur], references: [idGroupeUtilisateur], onUpdate: NoAction, map: "FK_RestrictionGroupeUtilisateur_GroupeUtilisateur")
+
+  @@id([idGroupeUtilisateur, idDroit], map: "PK_RestrictionGroupeUtilisateur")
+}
+
+model RestrictionsUtilisateur {
+  idUtilisateur Int
+  idDroit       Int
+  UpdateTime    DateTime?   @db.DateTime
+  InsertTime    DateTime?   @default(now(), map: "DF__Restricti__Inser__276EDEB3") @db.DateTime
+  isActif       Boolean?
+  Droit         Droit       @relation(fields: [idDroit], references: [idDroit], onUpdate: NoAction, map: "FK_RestrictionsUtilisateur_Droit")
+  Utilisateur   Utilisateur @relation(fields: [idUtilisateur], references: [idUtilisateur], onUpdate: NoAction, map: "FK_RestrictionsUtilisateur_Utilisateur")
+
+  @@id([idUtilisateur, idDroit], map: "PK_DroitsUtilisateur")
+}
+
+model RoleInterlocuteurBien {
+  idRoleInterlocuteurBien String                 @id(map: "PK_RoleInterlocuteurBien") @db.NVarChar(50)
+  intitule                String?                @db.NVarChar(255)
+  UpdateTime              DateTime?              @db.DateTime
+  InsertTime              DateTime?              @default(now(), map: "DF__RoleInter__Inser__29E1370A") @db.DateTime
+  RelInterlocuteurBien    RelInterlocuteurBien[]
+}
+
+model SecteurActivite {
+  idSecteurActivite   String                @id(map: "PK_SECTEUR_ACTIVITE") @db.NVarChar(10)
+  idDomaine           String?               @db.NVarChar(10)
+  intitule            String?               @db.NVarChar(255)
+  isVerrou            Boolean
+  UpdateTime          DateTime?             @db.DateTime
+  InsertTime          DateTime?             @default(now(), map: "DF__SecteurAc__Inser__30F848ED") @db.DateTime
+  DomaineActivite     DomaineActivite?      @relation(fields: [idDomaine], references: [idDomaine], onDelete: NoAction, onUpdate: NoAction, map: "FK_SecteurActivite_DomaineActivite")
+  CadrePrestation     CadrePrestation[]
+  CategoriePrestation CategoriePrestation[]
+  CategorieRdv        CategorieRdv[]
+}
+
+model Service {
+  idService   Int        @id(map: "PK_Service") @default(autoincrement())
+  discService String?    @db.NVarChar(5)
+  intitule    String?    @db.NVarChar(255)
+  UpdateTime  DateTime?  @db.DateTime
+  InsertTime  DateTime?  @default(now(), map: "DF__Service__InsertT__29572725") @db.DateTime
+  Employe     Employe[]
+  Fonction    Fonction[]
+}
+
+model ServiceInterlocuteur {
+  idServiceInterlocuteur       Int                            @id(map: "PK_ServiceInterlocuteur") @default(autoincrement())
+  idInterlocuteur              Int
+  nom                          String?                        @db.NVarChar(255)
+  telephone                    String?                        @db.NVarChar(50)
+  fax                          String?                        @db.NVarChar(50)
+  email                        String?                        @db.NVarChar(255)
+  isDefaut                     Boolean?
+  idfamillearticle             Int?
+  UpdateTime                   DateTime?                      @db.DateTime
+  InsertTime                   DateTime?                      @default(now(), map: "DF__ServiceIn__Inser__60FC61CA") @db.DateTime
+  heurePMDebut                 DateTime?                      @db.DateTime
+  heurePMFin                   DateTime?                      @db.DateTime
+  heureAMDebut                 DateTime?                      @db.DateTime
+  heureAMFin                   DateTime?                      @db.DateTime
+  idSdl                        Int?
+  codeService                  String?                        @db.NVarChar(255)
+  Interlocuteur                Interlocuteur                  @relation(fields: [idInterlocuteur], references: [idInterlocuteur], onUpdate: NoAction, map: "FK_ServiceInterlocuteur_Interlocuteur")
+  RelInterlocuteurContact      RelInterlocuteurContact[]
+  RelServiceInterlocuteurCadre RelServiceInterlocuteurCadre[]
+}
+
+model Signature {
+  idSignature   Int       @id(map: "PK_Signature") @default(autoincrement())
+  nomSignataire String    @db.NVarChar(255)
+  certificat    String?   @db.NVarChar(255)
+  type          Int?
+  motif         String?   @db.NVarChar(Max)
+  isDefaut      Boolean?  @default(false, map: "DF_Signature_isDefaut")
+  idEmploye     Int?
+  UpdateTime    DateTime? @db.DateTime
+  InsertTime    DateTime? @default(now(), map: "DF__Signature__Inser__35FCF52C") @db.DateTime
+}
+
+model Site {
+  idSite               Int                    @id(map: "PK_SITE") @default(autoincrement())
+  code                 String?                @db.NVarChar(100)
+  typeProprieteSite    String?                @db.NVarChar(10)
+  usage                String?                @db.NVarChar(10)
+  numVoie              String?                @db.NVarChar(50)
+  cptNumVoie           String?                @db.NVarChar(10)
+  typeVoie             String?                @db.NVarChar(10)
+  nomVoie              String?                @db.NVarChar(100)
+  cptAdresse           String?                @db.NVarChar(100)
+  codePostal           String?                @db.NVarChar(50)
+  ville                String?                @db.NVarChar(50)
+  departement          String?                @db.NVarChar(50)
+  pays                 String?                @db.NVarChar(50)
+  quotePartTotale      Int?
+  digicode             String?                @db.NVarChar(50)
+  dateCre              DateTime?              @db.SmallDateTime
+  dateMaj              DateTime?              @db.SmallDateTime
+  dateSup              DateTime?              @db.SmallDateTime
+  IdUserCre            Int?
+  idUserMaj            Int?
+  idUserSup            Int?
+  idSdl                Int?
+  ChangeTime           DateTime?              @default(now(), map: "DF__Site__ChangeTime__025D5595") @db.DateTime
+  UpdateTime           DateTime?              @db.DateTime
+  InsertTime           DateTime?              @default(now(), map: "DF__Site__InsertTime__46D27B73") @db.DateTime
+  codeInsee            Int?
+  latitude             Decimal?               @db.Decimal(18, 15)
+  longitude            Decimal?               @db.Decimal(18, 15)
+  infoBAN              String?                @db.NVarChar(Max)
+  numCopro             String?                @db.NVarChar(100)
+  Bien                 Bien[]
+  Contrat              Contrat[]
+  RelInterlocuteurBien RelInterlocuteurBien[]
+
+  @@index([code], map: "idx_code")
+  @@index([ville], map: "idx_ville")
+}
+
+model Societe {
+  idSociete                                          String          @id(map: "PK_Societe") @db.NVarChar(50)
+  intitule                                           String?         @db.NVarChar(100)
+  nom                                                String?         @db.NVarChar(255)
+  idSiege                                            String?         @db.NVarChar(50)
+  statut                                             String?         @db.NVarChar(50)
+  activite                                           String?         @db.NVarChar(255)
+  adresse1                                           String?         @db.NVarChar(255)
+  adresse2                                           String?         @db.NVarChar(255)
+  codePostal                                         String?         @db.NVarChar(50)
+  ville                                              String?         @db.NVarChar(50)
+  departement                                        String?         @db.NVarChar(50)
+  pays                                               String?         @db.NVarChar(50)
+  telephoneFixe                                      String?         @db.NVarChar(50)
+  fax                                                String?         @db.NVarChar(50)
+  email                                              String?         @db.NVarChar(255)
+  siteWeb                                            String?         @db.NVarChar(255)
+  nomContact                                         String?         @db.NVarChar(255)
+  prenomContact                                      String?         @db.NVarChar(255)
+  fonction                                           String?         @db.NVarChar(255)
+  telephoneContact                                   String?         @db.NVarChar(50)
+  faxContact                                         String?         @db.NVarChar(50)
+  emailContact                                       String?         @db.NVarChar(255)
+  notesContact                                       String?         @db.NVarChar(255)
+  numeroIdentification                               String?         @db.NVarChar(255)
+  numeroSiret                                        String?         @db.NVarChar(255)
+  numeroTva                                          String?         @db.NVarChar(255)
+  codeAPE                                            String?         @db.NVarChar(255)
+  capitalSocial                                      String?         @db.NVarChar(255)
+  policeAssurance                                    String?         @db.NVarChar(255)
+  isGenInfosSiege                                    Boolean?        @default(false, map: "DF_Societe_isGenInfosSiege")
+  idResLogo                                          String?         @db.UniqueIdentifier
+  previewDataLogo                                    Bytes?
+  dateFin                                            DateTime?       @db.DateTime
+  UpdateTime                                         DateTime?       @db.DateTime
+  InsertTime                                         DateTime?       @default(now(), map: "DF__Societe__InsertT__2A01329B") @db.DateTime
+  outputPath                                         String?         @db.NVarChar(255)
+  templatePath                                       String?         @db.NVarChar(255)
+  defaultTemplateSet                                 String?         @db.NVarChar(255)
+  isGroupByIntitule                                  Boolean?
+  oldOutputPath                                      String?         @db.NVarChar(255)
+  isLimiterListeEmploye                              Boolean         @default(false, map: "DF_Societe_isLimiterListeEmploye")
+  isLimiterListeInterlocuteur                        Boolean         @default(false, map: "DF_Societe_isLimiterListeInterlocuteur")
+  isLimiterListeArticle                              Boolean         @default(false, map: "DF_Societe_isLimiterListeArticle")
+  idResTampon                                        String?         @db.UniqueIdentifier
+  previewDataTampon                                  Bytes?
+  numeroRCS                                          String?         @db.NVarChar(255)
+  adresse1EP                                         String?         @db.NVarChar(255)
+  adresse2EP                                         String?         @db.NVarChar(255)
+  codePostalEP                                       String?         @db.NVarChar(50)
+  villeEP                                            String?         @db.NVarChar(50)
+  departementEP                                      String?         @db.NVarChar(50)
+  paysEP                                             String?         @db.NVarChar(50)
+  telephoneFixeEP                                    String?         @db.NVarChar(50)
+  faxEP                                              String?         @db.NVarChar(50)
+  emailEP                                            String?         @db.NVarChar(255)
+  siteWebEP                                          String?         @db.NVarChar(255)
+  isAdresseEPSpecific                                Boolean         @default(false, map: "DF_Societe_isAdresseEPSpecific")
+  codeInterne                                        String?         @db.NVarChar(100)
+  Societe                                            Societe?        @relation("SocieteToSociete_idSiege", fields: [idSiege], references: [idSociete], onDelete: NoAction, onUpdate: NoAction, map: "FK_Societe_Societe")
+  CompteWeb                                          CompteWeb[]
+  Contrat_Contrat_idSiteGestionToSociete             Contrat[]       @relation("Contrat_idSiteGestionToSociete")
+  Contrat_Contrat_idSocieteToSociete                 Contrat[]       @relation("Contrat_idSocieteToSociete")
+  Document                                           Document[]
+  Employe_Employe_IdSiegeToSociete                   Employe[]       @relation("Employe_IdSiegeToSociete")
+  Employe_Employe_idSocieteToSociete                 Employe[]       @relation("Employe_idSocieteToSociete")
+  Interlocuteur_Interlocuteur_idSiteGestionToSociete Interlocuteur[] @relation("Interlocuteur_idSiteGestionToSociete")
+  Interlocuteur_Interlocuteur_idSocieteToSociete     Interlocuteur[] @relation("Interlocuteur_idSocieteToSociete")
+  other_Societe                                      Societe[]       @relation("SocieteToSociete_idSiege")
+  Utilisateur_SocieteToUtilisateur_idSiege           Utilisateur[]   @relation("SocieteToUtilisateur_idSiege")
+  Utilisateur_SocieteToUtilisateur_idSocieteDefaut   Utilisateur[]   @relation("SocieteToUtilisateur_idSocieteDefaut")
+
+  @@index([idSiege], map: "idx_idSiege")
+}
+
+model SuiviInterlocuteur {
+  idSuivi         Int           @id(map: "PK_Historique")
+  typeSuivi       Int
+  info            String?       @db.NVarChar(Max)
+  idInterlocuteur Int
+  idEmploye       Int
+  dateCre         DateTime?     @db.SmallDateTime
+  dateMaj         DateTime?     @db.SmallDateTime
+  UpdateTime      DateTime?     @db.DateTime
+  InsertTime      DateTime?     @default(now(), map: "DF__SuiviInte__Inser__662B2B3B") @db.DateTime
+  Employe         Employe       @relation(fields: [idEmploye], references: [idEmploye], onUpdate: NoAction, map: "FK_Historique_Employe")
+  Interlocuteur   Interlocuteur @relation(fields: [idInterlocuteur], references: [idInterlocuteur], onUpdate: NoAction, map: "FK_Historique_Interlocuteur")
+}
+
+model TypeDocument {
+  idTypeDocument Int        @id(map: "PK_TypeDocument") @default(autoincrement())
+  DiscDocument   String?    @db.NVarChar(50)
+  intitule       String?    @db.NVarChar(255)
+  isVerrou       Boolean
+  UpdateTime     DateTime?  @db.DateTime
+  InsertTime     DateTime?  @default(now(), map: "DF__TypeDocum__Inser__31EC6D26") @db.DateTime
+  Document       Document[]
+}
+
+model TypePrestation {
+  idCategoriePrestation String              @db.NVarChar(50)
+  idTypePrestation      String              @db.NVarChar(10)
+  intitule              String?             @db.NVarChar(255)
+  UpdateTime            DateTime?           @db.DateTime
+  InsertTime            DateTime?           @default(now(), map: "DF__TypePrest__Inser__35BCFE0A") @db.DateTime
+  dateFin               DateTime?           @db.DateTime
+  CategoriePrestation   CategoriePrestation @relation(fields: [idCategoriePrestation], references: [idCategoriePrestation], onUpdate: NoAction, map: "FK_TypePrestation_CategoriePrestation")
+
+  @@id([idCategoriePrestation, idTypePrestation], map: "PK_TypePrestation")
+}
+
+model Utilisateur {
+  idUtilisateur                                Int                       @id(map: "PK_UTILISATEUR") @default(autoincrement())
+  idGroupeUtilisateur                          String?                   @db.NVarChar(10)
+  idSocieteDefaut                              String?                   @db.NVarChar(50)
+  idEmploye                                    Int?
+  typeUtilisateur                              String?                   @db.NVarChar(1)
+  login                                        String?                   @db.NVarChar(50)
+  mdp                                          String?                   @db.NVarChar(50)
+  dateCre                                      DateTime?                 @db.DateTime
+  dateMaj                                      DateTime?                 @db.DateTime
+  dateSup                                      DateTime?                 @db.DateTime
+  layoutAccueil                                String?                   @db.NVarChar(4000)
+  layoutDossier                                String?                   @db.NVarChar(4000)
+  layoutCroquisBuilder                         String?                   @db.NVarChar(4000)
+  lastNotification                             DateTime?                 @db.DateTime
+  UpdateTime                                   DateTime?                 @db.DateTime
+  InsertTime                                   DateTime?                 @default(now(), map: "DF__Utilisate__Inser__1A14E395") @db.DateTime
+  idSiege                                      String                    @default("N'SIEGE'", map: "DF_Utilisateur_idSiege_1") @db.NVarChar(50)
+  layoutAccueilNomade                          String?                   @db.NVarChar(4000)
+  Employe                                      Employe?                  @relation(fields: [idEmploye], references: [idEmploye], onDelete: NoAction, onUpdate: NoAction, map: "FK_UTILISAT_REFERENCE_EMPLOYE")
+  GroupeUtilisateur                            GroupeUtilisateur?        @relation(fields: [idGroupeUtilisateur], references: [idGroupeUtilisateur], onDelete: NoAction, onUpdate: NoAction, map: "FK_Utilisateur_GroupeUtilisateur")
+  Societe_SocieteToUtilisateur_idSiege         Societe                   @relation("SocieteToUtilisateur_idSiege", fields: [idSiege], references: [idSociete], onUpdate: NoAction, map: "FK_Utilisateur_Siege")
+  Societe_SocieteToUtilisateur_idSocieteDefaut Societe?                  @relation("SocieteToUtilisateur_idSocieteDefaut", fields: [idSocieteDefaut], references: [idSociete], onDelete: NoAction, onUpdate: NoAction, map: "FK_Utilisateur_Societe")
+  RestrictionsUtilisateur                      RestrictionsUtilisateur[]
+  Verrou                                       Verrou[]
+
+  @@index([idEmploye], map: "idx_idEmploye")
+  @@index([idSiege], map: "idx_idSiege")
+  @@index([idSocieteDefaut], map: "idx_idSocieteDefaut")
+}
+
+model ValidateurSaisie {
+  idValidateurSaisie Int       @id(map: "PK_ValidateurSaisie")
+  productCode        String?   @db.NVarChar(50)
+  idCategorieMission String?   @db.NVarChar(50)
+  idTypeMission      String?   @db.NVarChar(50)
+  idCadreMission     String?   @db.NVarChar(50)
+  intitule           String?   @db.NVarChar(255)
+  description        String?   @db.NVarChar(Max)
+  isActif            Boolean   @default(false, map: "DF_ValidateurSaisie_isActif")
+  isObligatoire      Boolean   @default(false, map: "DF_ValidateurSaisie_isObligatoire")
+  UpdateTime         DateTime? @db.DateTime
+  InsertTime         DateTime? @default(now(), map: "DF_ValidateurSaisie_InsertTime") @db.DateTime
+
+  @@index([productCode, idCategorieMission, isActif], map: "idx_productCodeIdCategorieMissionIsActif")
+}
+
+model Verrou {
+  objectType    String       @db.NVarChar(255)
+  objectId      Int
+  idUtilisateur Int?
+  dateVerrou    DateTime     @default(now(), map: "DF_VERROU_dateVerrou") @db.DateTime
+  Utilisateur   Utilisateur? @relation(fields: [idUtilisateur], references: [idUtilisateur], onDelete: NoAction, onUpdate: NoAction, map: "FK_Verrou_Utilisateur1")
+
+  @@id([objectType, objectId], map: "PK_VERROU_1")
+  @@index([idUtilisateur], map: "idx_idUtilisateur")
+}
+
+model Version {
+  idVersion          Int                @id(map: "PK_Version") @default(autoincrement())
+  DBMajorVersion     Int
+  DBStructureVersion Int
+  DBDataVersion      Int
+  UpdateTime         DateTime?          @db.DateTime
+  InsertTime         DateTime?          @default(now(), map: "DF__Version__InsertT__4242D080") @db.DateTime
+  VersionSqlNomade   VersionSqlNomade[]
+}
+
+model VersionSqlNomade {
+  idVersionSqlNomade Int       @id(map: "PK_VersionSql") @default(autoincrement())
+  idVersion          Int?
+  ordre              Int?
+  script             String?   @db.NVarChar(Max)
+  dbName             String?   @db.NVarChar(50)
+  UpdateTime         DateTime? @db.DateTime
+  InsertTime         DateTime? @default(now(), map: "DF__VersionSq__Inser__4336F4B9") @db.DateTime
+  Version            Version?  @relation(fields: [idVersion], references: [idVersion], onDelete: NoAction, onUpdate: NoAction, map: "FK_VersionSqlNomade_Version")
+}
+
+model WebDataSync {
+  wd_id        Int        @id(map: "PK_WebDataSync") @default(autoincrement())
+  wd_type      String?    @db.NVarChar(10)
+  idLocal      String?    @db.NVarChar(50)
+  idDistant    String?    @db.NVarChar(50)
+  idCompteWeb  Int?
+  dateLastSync DateTime?  @db.DateTime
+  CompteWeb    CompteWeb? @relation(fields: [idCompteWeb], references: [idCompteWeb], onDelete: NoAction, onUpdate: NoAction, map: "FK_WebDataSync_CompteWeb")
+}
