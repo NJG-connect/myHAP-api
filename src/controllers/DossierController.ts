@@ -133,4 +133,176 @@ const getDossierById = async (req: Request, res: Response) => {
   return res.json("something wrong");
 };
 
-export default { getDossierById };
+interface DiagBody {
+  dateCommande: Date;
+  commentaire: string;
+  idStatut: number;
+}
+
+const updateDossierById = async (req: Request, res: Response) => {
+  const idDossier = req.params.idDossier;
+
+  if (!idDossier) {
+    return res
+      .status(400)
+      .json("Veuillez renseigner un id pour trouver votre dossier");
+  }
+  if (!Number(idDossier)) {
+    return res
+      .status(400)
+      .json("Veuillez renseigner un id valable pour trouver votre dossier");
+  }
+
+  const { diag, myHAP }: { diag: DiagBody; myHAP: any } = req.body;
+  let resDossier: any = {};
+
+  // update diag Field
+  if (diag) {
+    const diagArrFormated = Object.entries(diag).filter(
+      (el) =>
+        ["dateCommande", "commentaire", "idStatut"].includes(el[0]) &&
+        ![null, undefined, NaN].includes(el[1])
+    );
+    if (diagArrFormated.length) {
+      const diagFormated = Object.fromEntries(diagArrFormated);
+
+      try {
+        const dossierDiag = await prismaDiag.dossier.update({
+          where: {
+            idDossier: Number(idDossier) as number,
+          },
+          data: diagFormated,
+          select: {
+            numero: true,
+            idDossier: true,
+            reference: true,
+            adresse: true,
+            cptAdresse: true,
+            ville: true,
+            pays: true,
+            departement: true,
+            longitude: true,
+            latitude: true,
+            dateCommande: true,
+            idStatut: true,
+            commentaire: true,
+            StatutDossier: {
+              select: {
+                intitule: true,
+              },
+            },
+          },
+        });
+        resDossier = { ...resDossier, diag: dossierDiag };
+      } catch (error) {
+        resDossier = {
+          ...resDossier,
+          error: resDossier.error ? [...resDossier.error, "diag"] : ["diag"],
+        };
+      }
+    }
+  }
+
+  // take diagDossier if diagDossier is empty
+  if (!resDossier.diag) {
+    const dossierDiag = await prismaDiag.dossier.findUnique({
+      where: {
+        idDossier: Number(idDossier),
+      },
+      select: {
+        numero: true,
+        idDossier: true,
+        reference: true,
+        adresse: true,
+        cptAdresse: true,
+        ville: true,
+        pays: true,
+        departement: true,
+        longitude: true,
+        latitude: true,
+        dateCommande: true,
+        idStatut: true,
+        commentaire: true,
+        StatutDossier: {
+          select: {
+            intitule: true,
+          },
+        },
+      },
+    });
+    resDossier = {
+      ...resDossier,
+      diag: dossierDiag,
+    };
+  }
+
+  // update myHAP Field
+  if (myHAP) {
+    const myHAPArrFormated = Object.entries(myHAP).filter(
+      (el) =>
+        ["typologie", "isParkMarker", "docs"].includes(el[0]) &&
+        ![null, undefined, NaN].includes(el[1] as any)
+    );
+    if (myHAPArrFormated.length) {
+      const myHAPFormated = Object.fromEntries(myHAPArrFormated);
+
+      try {
+        const dossierMyHAP = await prismaFmdc.dossier.update({
+          where: {
+            id: Number(idDossier) as number,
+          },
+          data: myHAPFormated,
+          include: {
+            interventions: {
+              include: {
+                prelevements: {
+                  include: {
+                    couches: true,
+                  },
+                },
+              },
+            },
+          },
+        });
+        resDossier = { ...resDossier, myHAP: dossierMyHAP };
+      } catch (error) {
+        resDossier = {
+          ...resDossier,
+          error: resDossier.error ? [...resDossier.error, "myHAP"] : ["myHAP"],
+        };
+      }
+    }
+  }
+
+  // take myHAPDossier if myHAP is empty
+  if (!resDossier.myHAP) {
+    const dossierMyHAP = await prismaFmdc.dossier.findFirst({
+      where: {
+        id: Number(idDossier),
+      },
+      include: {
+        interventions: {
+          include: {
+            prelevements: {
+              include: {
+                couches: true,
+              },
+            },
+          },
+        },
+      },
+    });
+    resDossier = {
+      ...resDossier,
+      myHAP: dossierMyHAP,
+    };
+  }
+
+  res.status(200).json(resDossier);
+};
+
+// dateCommande
+// commentaire
+// idStatut
+
+export default { getDossierById, updateDossierById };

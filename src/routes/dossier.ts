@@ -7,4 +7,5 @@ import { Roles } from "../types/roles";
 const router = Router();
 
 router.get("/:idDossier", [checkJwt], DossierController.getDossierById);
+router.patch("/:idDossier", [checkJwt], DossierController.updateDossierById);
 export default router;
