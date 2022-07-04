@@ -373,8 +373,16 @@ export namespace Prisma {
   export type DecimalJsLike = runtime.DecimalJsLike
 
   /**
-   * Prisma Client JS version: 3.15.2
-   * Query Engine version: 461d6a05159055555eb7dfb337c9fb271cbd4d7e
+   * Metrics 
+   */
+  export import Metrics = runtime.Metrics
+  export import Metric = runtime.Metric
+  export import MetricHistogram = runtime.MetricHistogram
+  export import MetricHistogramBucket = runtime.MetricHistogramBucket
+
+  /**
+   * Prisma Client JS version: 4.0.0
+   * Query Engine version: da41d2bb3406da22087b849f0e911199ba4fbf11
    */
   export type PrismaVersion = {
     client: string
@@ -433,25 +441,68 @@ export namespace Prisma {
   export type InputJsonValue = string | number | boolean | InputJsonObject | InputJsonArray
 
   /**
+   * Types of the values used to represent different kinds of `null` values when working with JSON fields.
+   * 
+   * @see https://www.prisma.io/docs/concepts/components/prisma-client/working-with-fields/working-with-json-fields#filtering-on-a-json-field
+   */
+  namespace NullTypes {
+    /**
+    * Type of `Prisma.DbNull`.
+    * 
+    * You cannot use other instances of this class. Please use the `Prisma.DbNull` value.
+    * 
+    * @see https://www.prisma.io/docs/concepts/components/prisma-client/working-with-fields/working-with-json-fields#filtering-on-a-json-field
+    */
+    class DbNull {
+      private DbNull: never
+      private constructor()
+    }
+
+    /**
+    * Type of `Prisma.JsonNull`.
+    * 
+    * You cannot use other instances of this class. Please use the `Prisma.JsonNull` value.
+    * 
+    * @see https://www.prisma.io/docs/concepts/components/prisma-client/working-with-fields/working-with-json-fields#filtering-on-a-json-field
+    */
+    class JsonNull {
+      private JsonNull: never
+      private constructor()
+    }
+
+    /**
+    * Type of `Prisma.AnyNull`.
+    * 
+    * You cannot use other instances of this class. Please use the `Prisma.AnyNull` value.
+    * 
+    * @see https://www.prisma.io/docs/concepts/components/prisma-client/working-with-fields/working-with-json-fields#filtering-on-a-json-field
+    */
+    class AnyNull {
+      private AnyNull: never
+      private constructor()
+    }
+  }
+
+  /**
    * Helper for filtering JSON entries that have `null` on the database (empty on the db)
    * 
    * @see https://www.prisma.io/docs/concepts/components/prisma-client/working-with-fields/working-with-json-fields#filtering-on-a-json-field
    */
-  export const DbNull: 'DbNull'
+  export const DbNull: NullTypes.DbNull
 
   /**
    * Helper for filtering JSON entries that have JSON `null` values (not empty on the db)
    * 
    * @see https://www.prisma.io/docs/concepts/components/prisma-client/working-with-fields/working-with-json-fields#filtering-on-a-json-field
    */
-  export const JsonNull: 'JsonNull'
+  export const JsonNull: NullTypes.JsonNull
 
   /**
    * Helper for filtering JSON entries that are `Prisma.DbNull` or `Prisma.JsonNull`
    * 
    * @see https://www.prisma.io/docs/concepts/components/prisma-client/working-with-fields/working-with-json-fields#filtering-on-a-json-field
    */
-  export const AnyNull: 'AnyNull'
+  export const AnyNull: NullTypes.AnyNull
 
   type SelectAndInclude = {
     select: any
@@ -796,7 +847,8 @@ export namespace Prisma {
   export interface PrismaClientOptions {
     /**
      * Configure findUnique/findFirst to throw an error if the query returns null. 
-     *  * @example
+     * @deprecated since 4.0.0. Use `findUniqueOrThrow`/`findFirstOrThrow` methods instead.
+     * @example
      * ```
      * // Reject on both findUnique/findFirst
      * rejectOnNotFound: true
@@ -2717,6 +2769,40 @@ export namespace Prisma {
     ): CheckSelect<T, Prisma__DossierClient<Dossier>, Prisma__DossierClient<DossierGetPayload<T>>>
 
     /**
+     * Find one Dossier that matches the filter or throw
+     * `NotFoundError` if no matches were found.
+     * @param {DossierFindUniqueOrThrowArgs} args - Arguments to find a Dossier
+     * @example
+     * // Get one Dossier
+     * const dossier = await prisma.dossier.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findUniqueOrThrow<T extends DossierFindUniqueOrThrowArgs>(
+      args?: SelectSubset<T, DossierFindUniqueOrThrowArgs>
+    ): CheckSelect<T, Prisma__DossierClient<Dossier>, Prisma__DossierClient<DossierGetPayload<T>>>
+
+    /**
+     * Find the first Dossier that matches the filter or
+     * throw `NotFoundError` if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DossierFindFirstOrThrowArgs} args - Arguments to find a Dossier
+     * @example
+     * // Get one Dossier
+     * const dossier = await prisma.dossier.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findFirstOrThrow<T extends DossierFindFirstOrThrowArgs>(
+      args?: SelectSubset<T, DossierFindFirstOrThrowArgs>
+    ): CheckSelect<T, Prisma__DossierClient<Dossier>, Prisma__DossierClient<DossierGetPayload<T>>>
+
+    /**
      * Count the number of Dossiers.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
@@ -2894,9 +2980,9 @@ export namespace Prisma {
   // Custom InputTypes
 
   /**
-   * Dossier findUnique
+   * Dossier base type for findUnique actions
    */
-  export type DossierFindUniqueArgs = {
+  export type DossierFindUniqueArgsBase = {
     /**
      * Select specific fields to fetch from the Dossier
      * 
@@ -2907,11 +2993,6 @@ export namespace Prisma {
      * 
     **/
     include?: DossierInclude | null
-    /**
-     * Throw an Error if a Dossier can't be found
-     * 
-    **/
-    rejectOnNotFound?: RejectOnNotFound
     /**
      * Filter, which Dossier to fetch.
      * 
@@ -2919,11 +3000,22 @@ export namespace Prisma {
     where: DossierWhereUniqueInput
   }
 
+  /**
+   * Dossier: findUnique
+   */
+  export interface DossierFindUniqueArgs extends DossierFindUniqueArgsBase {
+   /**
+    * Throw an Error if query returns no results
+    * @deprecated since 4.0.0: use `findUniqueOrThrow` method instead
+    */
+    rejectOnNotFound?: RejectOnNotFound
+  }
+      
 
   /**
-   * Dossier findFirst
+   * Dossier base type for findFirst actions
    */
-  export type DossierFindFirstArgs = {
+  export type DossierFindFirstArgsBase = {
     /**
      * Select specific fields to fetch from the Dossier
      * 
@@ -2934,11 +3026,6 @@ export namespace Prisma {
      * 
     **/
     include?: DossierInclude | null
-    /**
-     * Throw an Error if a Dossier can't be found
-     * 
-    **/
-    rejectOnNotFound?: RejectOnNotFound
     /**
      * Filter, which Dossier to fetch.
      * 
@@ -2981,6 +3068,17 @@ export namespace Prisma {
     distinct?: Enumerable<DossierScalarFieldEnum>
   }
 
+  /**
+   * Dossier: findFirst
+   */
+  export interface DossierFindFirstArgs extends DossierFindFirstArgsBase {
+   /**
+    * Throw an Error if query returns no results
+    * @deprecated since 4.0.0: use `findFirstOrThrow` method instead
+    */
+    rejectOnNotFound?: RejectOnNotFound
+  }
+      
 
   /**
    * Dossier findMany
@@ -3176,6 +3274,18 @@ export namespace Prisma {
     where?: DossierWhereInput
   }
 
+
+  /**
+   * Dossier: findUniqueOrThrow
+   */
+  export type DossierFindUniqueOrThrowArgs = DossierFindUniqueArgsBase
+      
+
+  /**
+   * Dossier: findFirstOrThrow
+   */
+  export type DossierFindFirstOrThrowArgs = DossierFindFirstArgsBase
+      
 
   /**
    * Dossier without action
@@ -3630,6 +3740,40 @@ export namespace Prisma {
     ): CheckSelect<T, Prisma__StatutDossierClient<StatutDossier>, Prisma__StatutDossierClient<StatutDossierGetPayload<T>>>
 
     /**
+     * Find one StatutDossier that matches the filter or throw
+     * `NotFoundError` if no matches were found.
+     * @param {StatutDossierFindUniqueOrThrowArgs} args - Arguments to find a StatutDossier
+     * @example
+     * // Get one StatutDossier
+     * const statutDossier = await prisma.statutDossier.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findUniqueOrThrow<T extends StatutDossierFindUniqueOrThrowArgs>(
+      args?: SelectSubset<T, StatutDossierFindUniqueOrThrowArgs>
+    ): CheckSelect<T, Prisma__StatutDossierClient<StatutDossier>, Prisma__StatutDossierClient<StatutDossierGetPayload<T>>>
+
+    /**
+     * Find the first StatutDossier that matches the filter or
+     * throw `NotFoundError` if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {StatutDossierFindFirstOrThrowArgs} args - Arguments to find a StatutDossier
+     * @example
+     * // Get one StatutDossier
+     * const statutDossier = await prisma.statutDossier.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findFirstOrThrow<T extends StatutDossierFindFirstOrThrowArgs>(
+      args?: SelectSubset<T, StatutDossierFindFirstOrThrowArgs>
+    ): CheckSelect<T, Prisma__StatutDossierClient<StatutDossier>, Prisma__StatutDossierClient<StatutDossierGetPayload<T>>>
+
+    /**
      * Count the number of StatutDossiers.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
@@ -3807,9 +3951,9 @@ export namespace Prisma {
   // Custom InputTypes
 
   /**
-   * StatutDossier findUnique
+   * StatutDossier base type for findUnique actions
    */
-  export type StatutDossierFindUniqueArgs = {
+  export type StatutDossierFindUniqueArgsBase = {
     /**
      * Select specific fields to fetch from the StatutDossier
      * 
@@ -3820,11 +3964,6 @@ export namespace Prisma {
      * 
     **/
     include?: StatutDossierInclude | null
-    /**
-     * Throw an Error if a StatutDossier can't be found
-     * 
-    **/
-    rejectOnNotFound?: RejectOnNotFound
     /**
      * Filter, which StatutDossier to fetch.
      * 
@@ -3832,11 +3971,22 @@ export namespace Prisma {
     where: StatutDossierWhereUniqueInput
   }
 
+  /**
+   * StatutDossier: findUnique
+   */
+  export interface StatutDossierFindUniqueArgs extends StatutDossierFindUniqueArgsBase {
+   /**
+    * Throw an Error if query returns no results
+    * @deprecated since 4.0.0: use `findUniqueOrThrow` method instead
+    */
+    rejectOnNotFound?: RejectOnNotFound
+  }
+      
 
   /**
-   * StatutDossier findFirst
+   * StatutDossier base type for findFirst actions
    */
-  export type StatutDossierFindFirstArgs = {
+  export type StatutDossierFindFirstArgsBase = {
     /**
      * Select specific fields to fetch from the StatutDossier
      * 
@@ -3847,11 +3997,6 @@ export namespace Prisma {
      * 
     **/
     include?: StatutDossierInclude | null
-    /**
-     * Throw an Error if a StatutDossier can't be found
-     * 
-    **/
-    rejectOnNotFound?: RejectOnNotFound
     /**
      * Filter, which StatutDossier to fetch.
      * 
@@ -3894,6 +4039,17 @@ export namespace Prisma {
     distinct?: Enumerable<StatutDossierScalarFieldEnum>
   }
 
+  /**
+   * StatutDossier: findFirst
+   */
+  export interface StatutDossierFindFirstArgs extends StatutDossierFindFirstArgsBase {
+   /**
+    * Throw an Error if query returns no results
+    * @deprecated since 4.0.0: use `findFirstOrThrow` method instead
+    */
+    rejectOnNotFound?: RejectOnNotFound
+  }
+      
 
   /**
    * StatutDossier findMany
@@ -4089,6 +4245,18 @@ export namespace Prisma {
     where?: StatutDossierWhereInput
   }
 
+
+  /**
+   * StatutDossier: findUniqueOrThrow
+   */
+  export type StatutDossierFindUniqueOrThrowArgs = StatutDossierFindUniqueArgsBase
+      
+
+  /**
+   * StatutDossier: findFirstOrThrow
+   */
+  export type StatutDossierFindFirstOrThrowArgs = StatutDossierFindFirstArgsBase
+      
 
   /**
    * StatutDossier without action
@@ -5432,7 +5600,7 @@ export namespace Prisma {
     SiaResultRAA?: NullableStringFieldUpdateOperationsInput | string | null
     numCopro?: NullableStringFieldUpdateOperationsInput | string | null
     infoBAN?: NullableStringFieldUpdateOperationsInput | string | null
-    StatutDossier?: StatutDossierUpdateOneWithoutDossierInput
+    StatutDossier?: StatutDossierUpdateOneWithoutDossierNestedInput
   }
 
   export type DossierUncheckedUpdateInput = {
@@ -6069,7 +6237,7 @@ export namespace Prisma {
     statutAuto?: NullableStringFieldUpdateOperationsInput | string | null
     UpdateTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     InsertTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    Dossier?: DossierUpdateManyWithoutStatutDossierInput
+    Dossier?: DossierUpdateManyWithoutStatutDossierNestedInput
   }
 
   export type StatutDossierUncheckedUpdateInput = {
@@ -6079,7 +6247,7 @@ export namespace Prisma {
     statutAuto?: NullableStringFieldUpdateOperationsInput | string | null
     UpdateTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     InsertTime?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    Dossier?: DossierUncheckedUpdateManyWithoutStatutDossierInput
+    Dossier?: DossierUncheckedUpdateManyWithoutStatutDossierNestedInput
   }
 
   export type StatutDossierCreateManyInput = {
@@ -7010,7 +7178,7 @@ export namespace Prisma {
     set?: string
   }
 
-  export type StatutDossierUpdateOneWithoutDossierInput = {
+  export type StatutDossierUpdateOneWithoutDossierNestedInput = {
     create?: XOR<StatutDossierCreateWithoutDossierInput, StatutDossierUncheckedCreateWithoutDossierInput>
     connectOrCreate?: StatutDossierCreateOrConnectWithoutDossierInput
     upsert?: StatutDossierUpsertWithoutDossierInput
@@ -7034,7 +7202,7 @@ export namespace Prisma {
     connect?: Enumerable<DossierWhereUniqueInput>
   }
 
-  export type DossierUpdateManyWithoutStatutDossierInput = {
+  export type DossierUpdateManyWithoutStatutDossierNestedInput = {
     create?: XOR<Enumerable<DossierCreateWithoutStatutDossierInput>, Enumerable<DossierUncheckedCreateWithoutStatutDossierInput>>
     connectOrCreate?: Enumerable<DossierCreateOrConnectWithoutStatutDossierInput>
     upsert?: Enumerable<DossierUpsertWithWhereUniqueWithoutStatutDossierInput>
@@ -7048,7 +7216,7 @@ export namespace Prisma {
     deleteMany?: Enumerable<DossierScalarWhereInput>
   }
 
-  export type DossierUncheckedUpdateManyWithoutStatutDossierInput = {
+  export type DossierUncheckedUpdateManyWithoutStatutDossierNestedInput = {
     create?: XOR<Enumerable<DossierCreateWithoutStatutDossierInput>, Enumerable<DossierUncheckedCreateWithoutStatutDossierInput>>
     connectOrCreate?: Enumerable<DossierCreateOrConnectWithoutStatutDossierInput>
     upsert?: Enumerable<DossierUpsertWithWhereUniqueWithoutStatutDossierInput>
@@ -8458,5 +8626,5 @@ export namespace Prisma {
   /**
    * DMMF
    */
-  export const dmmf: runtime.DMMF.Document;
+  export const dmmf: runtime.BaseDMMF
 }

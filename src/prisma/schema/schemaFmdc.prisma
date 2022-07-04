@@ -56,7 +56,7 @@ model Couche {
   couleur       String?
   amiante       Boolean?
   materiaux     String?
-  HAP           String
+  HAP           String?
   idPrelevement Int?
   Prelevement   Prelevement? @relation(fields: [idPrelevement], references: [id])
 }

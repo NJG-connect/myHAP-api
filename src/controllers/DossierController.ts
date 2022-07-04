@@ -3,7 +3,7 @@ import { prismaDiag, prismaFmdc, prismaRg } from "../prisma/clients";
 
 const getDossierById = async (req: Request, res: Response) => {
   const idDossier = req.params.idDossier;
-
+  const employesParam = req.query.employes;
   if (!idDossier) {
     return res
       .status(400)
@@ -100,37 +100,38 @@ const getDossierById = async (req: Request, res: Response) => {
       ...dossierDiagUtils
     } = dossierDiag;
 
-    //where 4 equals Technicien
-    const employes = await prismaRg.employe.findMany({
-      where: {
-        idFonction: 4, //
-      },
-      select: {
-        nom: true,
-        idEmploye: true,
-        prenom: true,
-      },
-    });
-
-    const employesFormated = employes.map((el) => ({
-      name: `${el.prenom} ${el.nom}`,
-      id: el.idEmploye,
-    }));
-
     // create dossier with diag and MyHAP
-    const dossier = {
+    const dossier: any = {
       diag: dossierDiagUtils,
       myHAP: dossierMyHAP,
-      employes: employesFormated,
     };
+
+    if (employesParam) {
+      //where 4 equals Technicien
+      const employes = await prismaRg.employe.findMany({
+        where: {
+          idFonction: 4, //
+        },
+        select: {
+          nom: true,
+          idEmploye: true,
+          prenom: true,
+        },
+      });
+
+      const employesFormated = employes.map((el) => ({
+        name: `${el.prenom} ${el.nom}`,
+        id: el.idEmploye,
+      }));
+
+      dossier.employes = employesFormated;
+    }
 
     return res.status(200).json(dossier);
   } catch (error) {
-    console.log("error", error);
+    console.error("error", error);
     return res.json(error);
   }
-
-  return res.json("something wrong");
 };
 
 interface DiagBody {
@@ -300,9 +301,5 @@ const updateDossierById = async (req: Request, res: Response) => {
 
   res.status(200).json(resDossier);
 };
-
-// dateCommande
-// commentaire
-// idStatut
 
 export default { getDossierById, updateDossierById };

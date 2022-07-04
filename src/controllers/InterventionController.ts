@@ -87,10 +87,7 @@ const updateInterventionById = async (req: Request, res: Response) => {
   const interventionField: any = req.body;
 
   const interventionArrFormated = Object.entries(interventionField).filter(
-    (el) =>
-      ["dateDebutMission", "idEmployeIntervention", "dateFinMission"].includes(
-        el[0]
-      ) && ![null, undefined, NaN].includes(el[1] as any)
+    (el) => ![null, undefined, NaN].includes(el[1] as any)
   );
 
   if (!interventionArrFormated.length) {
@@ -100,11 +97,14 @@ const updateInterventionById = async (req: Request, res: Response) => {
   }
 
   try {
-    await prismaFmdc.intervention.findUnique({
+    const interventionExist = await prismaFmdc.intervention.findUnique({
       where: {
         id: Number(idIntervention),
       },
     });
+    if (!interventionExist) {
+      return res.status(400).json("Votre Intervention n'existe pas");
+    }
   } catch (error) {
     return res.status(400).json("Votre Intervention n'existe pas");
   }
@@ -121,7 +121,9 @@ const updateInterventionById = async (req: Request, res: Response) => {
   } catch (error) {
     return res
       .status(400)
-      .json("Une erreur est survenue dans la création de votre Intervention");
+      .json(
+        "Une erreur est survenue dans la modification de votre Intervention"
+      );
   }
 
   return DossierController.getDossierById(req, res);

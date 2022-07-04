@@ -71,7 +71,7 @@ export type Couche = {
   couleur: string | null
   amiante: boolean | null
   materiaux: string | null
-  HAP: string
+  HAP: string | null
   idPrelevement: number | null
 }
 
@@ -286,8 +286,16 @@ export namespace Prisma {
   export type DecimalJsLike = runtime.DecimalJsLike
 
   /**
-   * Prisma Client JS version: 3.15.2
-   * Query Engine version: 461d6a05159055555eb7dfb337c9fb271cbd4d7e
+   * Metrics 
+   */
+  export import Metrics = runtime.Metrics
+  export import Metric = runtime.Metric
+  export import MetricHistogram = runtime.MetricHistogram
+  export import MetricHistogramBucket = runtime.MetricHistogramBucket
+
+  /**
+   * Prisma Client JS version: 4.0.0
+   * Query Engine version: da41d2bb3406da22087b849f0e911199ba4fbf11
    */
   export type PrismaVersion = {
     client: string
@@ -346,25 +354,68 @@ export namespace Prisma {
   export type InputJsonValue = string | number | boolean | InputJsonObject | InputJsonArray
 
   /**
+   * Types of the values used to represent different kinds of `null` values when working with JSON fields.
+   * 
+   * @see https://www.prisma.io/docs/concepts/components/prisma-client/working-with-fields/working-with-json-fields#filtering-on-a-json-field
+   */
+  namespace NullTypes {
+    /**
+    * Type of `Prisma.DbNull`.
+    * 
+    * You cannot use other instances of this class. Please use the `Prisma.DbNull` value.
+    * 
+    * @see https://www.prisma.io/docs/concepts/components/prisma-client/working-with-fields/working-with-json-fields#filtering-on-a-json-field
+    */
+    class DbNull {
+      private DbNull: never
+      private constructor()
+    }
+
+    /**
+    * Type of `Prisma.JsonNull`.
+    * 
+    * You cannot use other instances of this class. Please use the `Prisma.JsonNull` value.
+    * 
+    * @see https://www.prisma.io/docs/concepts/components/prisma-client/working-with-fields/working-with-json-fields#filtering-on-a-json-field
+    */
+    class JsonNull {
+      private JsonNull: never
+      private constructor()
+    }
+
+    /**
+    * Type of `Prisma.AnyNull`.
+    * 
+    * You cannot use other instances of this class. Please use the `Prisma.AnyNull` value.
+    * 
+    * @see https://www.prisma.io/docs/concepts/components/prisma-client/working-with-fields/working-with-json-fields#filtering-on-a-json-field
+    */
+    class AnyNull {
+      private AnyNull: never
+      private constructor()
+    }
+  }
+
+  /**
    * Helper for filtering JSON entries that have `null` on the database (empty on the db)
    * 
    * @see https://www.prisma.io/docs/concepts/components/prisma-client/working-with-fields/working-with-json-fields#filtering-on-a-json-field
    */
-  export const DbNull: 'DbNull'
+  export const DbNull: NullTypes.DbNull
 
   /**
    * Helper for filtering JSON entries that have JSON `null` values (not empty on the db)
    * 
    * @see https://www.prisma.io/docs/concepts/components/prisma-client/working-with-fields/working-with-json-fields#filtering-on-a-json-field
    */
-  export const JsonNull: 'JsonNull'
+  export const JsonNull: NullTypes.JsonNull
 
   /**
    * Helper for filtering JSON entries that are `Prisma.DbNull` or `Prisma.JsonNull`
    * 
    * @see https://www.prisma.io/docs/concepts/components/prisma-client/working-with-fields/working-with-json-fields#filtering-on-a-json-field
    */
-  export const AnyNull: 'AnyNull'
+  export const AnyNull: NullTypes.AnyNull
 
   type SelectAndInclude = {
     select: any
@@ -711,7 +762,8 @@ export namespace Prisma {
   export interface PrismaClientOptions {
     /**
      * Configure findUnique/findFirst to throw an error if the query returns null. 
-     *  * @example
+     * @deprecated since 4.0.0. Use `findUniqueOrThrow`/`findFirstOrThrow` methods instead.
+     * @example
      * ```
      * // Reject on both findUnique/findFirst
      * rejectOnNotFound: true
@@ -1398,6 +1450,40 @@ export namespace Prisma {
     ): CheckSelect<T, Prisma__DossierClient<Dossier>, Prisma__DossierClient<DossierGetPayload<T>>>
 
     /**
+     * Find one Dossier that matches the filter or throw
+     * `NotFoundError` if no matches were found.
+     * @param {DossierFindUniqueOrThrowArgs} args - Arguments to find a Dossier
+     * @example
+     * // Get one Dossier
+     * const dossier = await prisma.dossier.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findUniqueOrThrow<T extends DossierFindUniqueOrThrowArgs>(
+      args?: SelectSubset<T, DossierFindUniqueOrThrowArgs>
+    ): CheckSelect<T, Prisma__DossierClient<Dossier>, Prisma__DossierClient<DossierGetPayload<T>>>
+
+    /**
+     * Find the first Dossier that matches the filter or
+     * throw `NotFoundError` if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DossierFindFirstOrThrowArgs} args - Arguments to find a Dossier
+     * @example
+     * // Get one Dossier
+     * const dossier = await prisma.dossier.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findFirstOrThrow<T extends DossierFindFirstOrThrowArgs>(
+      args?: SelectSubset<T, DossierFindFirstOrThrowArgs>
+    ): CheckSelect<T, Prisma__DossierClient<Dossier>, Prisma__DossierClient<DossierGetPayload<T>>>
+
+    /**
      * Count the number of Dossiers.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
@@ -1575,9 +1661,9 @@ export namespace Prisma {
   // Custom InputTypes
 
   /**
-   * Dossier findUnique
+   * Dossier base type for findUnique actions
    */
-  export type DossierFindUniqueArgs = {
+  export type DossierFindUniqueArgsBase = {
     /**
      * Select specific fields to fetch from the Dossier
      * 
@@ -1588,11 +1674,6 @@ export namespace Prisma {
      * 
     **/
     include?: DossierInclude | null
-    /**
-     * Throw an Error if a Dossier can't be found
-     * 
-    **/
-    rejectOnNotFound?: RejectOnNotFound
     /**
      * Filter, which Dossier to fetch.
      * 
@@ -1600,11 +1681,22 @@ export namespace Prisma {
     where: DossierWhereUniqueInput
   }
 
+  /**
+   * Dossier: findUnique
+   */
+  export interface DossierFindUniqueArgs extends DossierFindUniqueArgsBase {
+   /**
+    * Throw an Error if query returns no results
+    * @deprecated since 4.0.0: use `findUniqueOrThrow` method instead
+    */
+    rejectOnNotFound?: RejectOnNotFound
+  }
+      
 
   /**
-   * Dossier findFirst
+   * Dossier base type for findFirst actions
    */
-  export type DossierFindFirstArgs = {
+  export type DossierFindFirstArgsBase = {
     /**
      * Select specific fields to fetch from the Dossier
      * 
@@ -1615,11 +1707,6 @@ export namespace Prisma {
      * 
     **/
     include?: DossierInclude | null
-    /**
-     * Throw an Error if a Dossier can't be found
-     * 
-    **/
-    rejectOnNotFound?: RejectOnNotFound
     /**
      * Filter, which Dossier to fetch.
      * 
@@ -1662,6 +1749,17 @@ export namespace Prisma {
     distinct?: Enumerable<DossierScalarFieldEnum>
   }
 
+  /**
+   * Dossier: findFirst
+   */
+  export interface DossierFindFirstArgs extends DossierFindFirstArgsBase {
+   /**
+    * Throw an Error if query returns no results
+    * @deprecated since 4.0.0: use `findFirstOrThrow` method instead
+    */
+    rejectOnNotFound?: RejectOnNotFound
+  }
+      
 
   /**
    * Dossier findMany
@@ -1857,6 +1955,18 @@ export namespace Prisma {
     where?: DossierWhereInput
   }
 
+
+  /**
+   * Dossier: findUniqueOrThrow
+   */
+  export type DossierFindUniqueOrThrowArgs = DossierFindUniqueArgsBase
+      
+
+  /**
+   * Dossier: findFirstOrThrow
+   */
+  export type DossierFindFirstOrThrowArgs = DossierFindFirstArgsBase
+      
 
   /**
    * Dossier without action
@@ -2327,6 +2437,40 @@ export namespace Prisma {
     ): CheckSelect<T, Prisma__InterventionClient<Intervention>, Prisma__InterventionClient<InterventionGetPayload<T>>>
 
     /**
+     * Find one Intervention that matches the filter or throw
+     * `NotFoundError` if no matches were found.
+     * @param {InterventionFindUniqueOrThrowArgs} args - Arguments to find a Intervention
+     * @example
+     * // Get one Intervention
+     * const intervention = await prisma.intervention.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findUniqueOrThrow<T extends InterventionFindUniqueOrThrowArgs>(
+      args?: SelectSubset<T, InterventionFindUniqueOrThrowArgs>
+    ): CheckSelect<T, Prisma__InterventionClient<Intervention>, Prisma__InterventionClient<InterventionGetPayload<T>>>
+
+    /**
+     * Find the first Intervention that matches the filter or
+     * throw `NotFoundError` if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {InterventionFindFirstOrThrowArgs} args - Arguments to find a Intervention
+     * @example
+     * // Get one Intervention
+     * const intervention = await prisma.intervention.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findFirstOrThrow<T extends InterventionFindFirstOrThrowArgs>(
+      args?: SelectSubset<T, InterventionFindFirstOrThrowArgs>
+    ): CheckSelect<T, Prisma__InterventionClient<Intervention>, Prisma__InterventionClient<InterventionGetPayload<T>>>
+
+    /**
      * Count the number of Interventions.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
@@ -2506,9 +2650,9 @@ export namespace Prisma {
   // Custom InputTypes
 
   /**
-   * Intervention findUnique
+   * Intervention base type for findUnique actions
    */
-  export type InterventionFindUniqueArgs = {
+  export type InterventionFindUniqueArgsBase = {
     /**
      * Select specific fields to fetch from the Intervention
      * 
@@ -2519,11 +2663,6 @@ export namespace Prisma {
      * 
     **/
     include?: InterventionInclude | null
-    /**
-     * Throw an Error if a Intervention can't be found
-     * 
-    **/
-    rejectOnNotFound?: RejectOnNotFound
     /**
      * Filter, which Intervention to fetch.
      * 
@@ -2531,11 +2670,22 @@ export namespace Prisma {
     where: InterventionWhereUniqueInput
   }
 
+  /**
+   * Intervention: findUnique
+   */
+  export interface InterventionFindUniqueArgs extends InterventionFindUniqueArgsBase {
+   /**
+    * Throw an Error if query returns no results
+    * @deprecated since 4.0.0: use `findUniqueOrThrow` method instead
+    */
+    rejectOnNotFound?: RejectOnNotFound
+  }
+      
 
   /**
-   * Intervention findFirst
+   * Intervention base type for findFirst actions
    */
-  export type InterventionFindFirstArgs = {
+  export type InterventionFindFirstArgsBase = {
     /**
      * Select specific fields to fetch from the Intervention
      * 
@@ -2546,11 +2696,6 @@ export namespace Prisma {
      * 
     **/
     include?: InterventionInclude | null
-    /**
-     * Throw an Error if a Intervention can't be found
-     * 
-    **/
-    rejectOnNotFound?: RejectOnNotFound
     /**
      * Filter, which Intervention to fetch.
      * 
@@ -2593,6 +2738,17 @@ export namespace Prisma {
     distinct?: Enumerable<InterventionScalarFieldEnum>
   }
 
+  /**
+   * Intervention: findFirst
+   */
+  export interface InterventionFindFirstArgs extends InterventionFindFirstArgsBase {
+   /**
+    * Throw an Error if query returns no results
+    * @deprecated since 4.0.0: use `findFirstOrThrow` method instead
+    */
+    rejectOnNotFound?: RejectOnNotFound
+  }
+      
 
   /**
    * Intervention findMany
@@ -2788,6 +2944,18 @@ export namespace Prisma {
     where?: InterventionWhereInput
   }
 
+
+  /**
+   * Intervention: findUniqueOrThrow
+   */
+  export type InterventionFindUniqueOrThrowArgs = InterventionFindUniqueArgsBase
+      
+
+  /**
+   * Intervention: findFirstOrThrow
+   */
+  export type InterventionFindFirstOrThrowArgs = InterventionFindFirstArgsBase
+      
 
   /**
    * Intervention without action
@@ -3338,6 +3506,40 @@ export namespace Prisma {
     ): CheckSelect<T, Prisma__PrelevementClient<Prelevement>, Prisma__PrelevementClient<PrelevementGetPayload<T>>>
 
     /**
+     * Find one Prelevement that matches the filter or throw
+     * `NotFoundError` if no matches were found.
+     * @param {PrelevementFindUniqueOrThrowArgs} args - Arguments to find a Prelevement
+     * @example
+     * // Get one Prelevement
+     * const prelevement = await prisma.prelevement.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findUniqueOrThrow<T extends PrelevementFindUniqueOrThrowArgs>(
+      args?: SelectSubset<T, PrelevementFindUniqueOrThrowArgs>
+    ): CheckSelect<T, Prisma__PrelevementClient<Prelevement>, Prisma__PrelevementClient<PrelevementGetPayload<T>>>
+
+    /**
+     * Find the first Prelevement that matches the filter or
+     * throw `NotFoundError` if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PrelevementFindFirstOrThrowArgs} args - Arguments to find a Prelevement
+     * @example
+     * // Get one Prelevement
+     * const prelevement = await prisma.prelevement.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findFirstOrThrow<T extends PrelevementFindFirstOrThrowArgs>(
+      args?: SelectSubset<T, PrelevementFindFirstOrThrowArgs>
+    ): CheckSelect<T, Prisma__PrelevementClient<Prelevement>, Prisma__PrelevementClient<PrelevementGetPayload<T>>>
+
+    /**
      * Count the number of Prelevements.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
@@ -3517,9 +3719,9 @@ export namespace Prisma {
   // Custom InputTypes
 
   /**
-   * Prelevement findUnique
+   * Prelevement base type for findUnique actions
    */
-  export type PrelevementFindUniqueArgs = {
+  export type PrelevementFindUniqueArgsBase = {
     /**
      * Select specific fields to fetch from the Prelevement
      * 
@@ -3530,11 +3732,6 @@ export namespace Prisma {
      * 
     **/
     include?: PrelevementInclude | null
-    /**
-     * Throw an Error if a Prelevement can't be found
-     * 
-    **/
-    rejectOnNotFound?: RejectOnNotFound
     /**
      * Filter, which Prelevement to fetch.
      * 
@@ -3542,11 +3739,22 @@ export namespace Prisma {
     where: PrelevementWhereUniqueInput
   }
 
+  /**
+   * Prelevement: findUnique
+   */
+  export interface PrelevementFindUniqueArgs extends PrelevementFindUniqueArgsBase {
+   /**
+    * Throw an Error if query returns no results
+    * @deprecated since 4.0.0: use `findUniqueOrThrow` method instead
+    */
+    rejectOnNotFound?: RejectOnNotFound
+  }
+      
 
   /**
-   * Prelevement findFirst
+   * Prelevement base type for findFirst actions
    */
-  export type PrelevementFindFirstArgs = {
+  export type PrelevementFindFirstArgsBase = {
     /**
      * Select specific fields to fetch from the Prelevement
      * 
@@ -3557,11 +3765,6 @@ export namespace Prisma {
      * 
     **/
     include?: PrelevementInclude | null
-    /**
-     * Throw an Error if a Prelevement can't be found
-     * 
-    **/
-    rejectOnNotFound?: RejectOnNotFound
     /**
      * Filter, which Prelevement to fetch.
      * 
@@ -3604,6 +3807,17 @@ export namespace Prisma {
     distinct?: Enumerable<PrelevementScalarFieldEnum>
   }
 
+  /**
+   * Prelevement: findFirst
+   */
+  export interface PrelevementFindFirstArgs extends PrelevementFindFirstArgsBase {
+   /**
+    * Throw an Error if query returns no results
+    * @deprecated since 4.0.0: use `findFirstOrThrow` method instead
+    */
+    rejectOnNotFound?: RejectOnNotFound
+  }
+      
 
   /**
    * Prelevement findMany
@@ -3799,6 +4013,18 @@ export namespace Prisma {
     where?: PrelevementWhereInput
   }
 
+
+  /**
+   * Prelevement: findUniqueOrThrow
+   */
+  export type PrelevementFindUniqueOrThrowArgs = PrelevementFindUniqueArgsBase
+      
+
+  /**
+   * Prelevement: findFirstOrThrow
+   */
+  export type PrelevementFindFirstOrThrowArgs = PrelevementFindFirstArgsBase
+      
 
   /**
    * Prelevement without action
@@ -4012,7 +4238,7 @@ export namespace Prisma {
     couleur: string | null
     amiante: boolean | null
     materiaux: string | null
-    HAP: string
+    HAP: string | null
     idPrelevement: number | null
     _count: CoucheCountAggregateOutputType | null
     _avg: CoucheAvgAggregateOutputType | null
@@ -4257,6 +4483,40 @@ export namespace Prisma {
     ): CheckSelect<T, Prisma__CoucheClient<Couche>, Prisma__CoucheClient<CoucheGetPayload<T>>>
 
     /**
+     * Find one Couche that matches the filter or throw
+     * `NotFoundError` if no matches were found.
+     * @param {CoucheFindUniqueOrThrowArgs} args - Arguments to find a Couche
+     * @example
+     * // Get one Couche
+     * const couche = await prisma.couche.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findUniqueOrThrow<T extends CoucheFindUniqueOrThrowArgs>(
+      args?: SelectSubset<T, CoucheFindUniqueOrThrowArgs>
+    ): CheckSelect<T, Prisma__CoucheClient<Couche>, Prisma__CoucheClient<CoucheGetPayload<T>>>
+
+    /**
+     * Find the first Couche that matches the filter or
+     * throw `NotFoundError` if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CoucheFindFirstOrThrowArgs} args - Arguments to find a Couche
+     * @example
+     * // Get one Couche
+     * const couche = await prisma.couche.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findFirstOrThrow<T extends CoucheFindFirstOrThrowArgs>(
+      args?: SelectSubset<T, CoucheFindFirstOrThrowArgs>
+    ): CheckSelect<T, Prisma__CoucheClient<Couche>, Prisma__CoucheClient<CoucheGetPayload<T>>>
+
+    /**
      * Count the number of Couches.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
@@ -4434,9 +4694,9 @@ export namespace Prisma {
   // Custom InputTypes
 
   /**
-   * Couche findUnique
+   * Couche base type for findUnique actions
    */
-  export type CoucheFindUniqueArgs = {
+  export type CoucheFindUniqueArgsBase = {
     /**
      * Select specific fields to fetch from the Couche
      * 
@@ -4447,11 +4707,6 @@ export namespace Prisma {
      * 
     **/
     include?: CoucheInclude | null
-    /**
-     * Throw an Error if a Couche can't be found
-     * 
-    **/
-    rejectOnNotFound?: RejectOnNotFound
     /**
      * Filter, which Couche to fetch.
      * 
@@ -4459,11 +4714,22 @@ export namespace Prisma {
     where: CoucheWhereUniqueInput
   }
 
+  /**
+   * Couche: findUnique
+   */
+  export interface CoucheFindUniqueArgs extends CoucheFindUniqueArgsBase {
+   /**
+    * Throw an Error if query returns no results
+    * @deprecated since 4.0.0: use `findUniqueOrThrow` method instead
+    */
+    rejectOnNotFound?: RejectOnNotFound
+  }
+      
 
   /**
-   * Couche findFirst
+   * Couche base type for findFirst actions
    */
-  export type CoucheFindFirstArgs = {
+  export type CoucheFindFirstArgsBase = {
     /**
      * Select specific fields to fetch from the Couche
      * 
@@ -4474,11 +4740,6 @@ export namespace Prisma {
      * 
     **/
     include?: CoucheInclude | null
-    /**
-     * Throw an Error if a Couche can't be found
-     * 
-    **/
-    rejectOnNotFound?: RejectOnNotFound
     /**
      * Filter, which Couche to fetch.
      * 
@@ -4521,6 +4782,17 @@ export namespace Prisma {
     distinct?: Enumerable<CoucheScalarFieldEnum>
   }
 
+  /**
+   * Couche: findFirst
+   */
+  export interface CoucheFindFirstArgs extends CoucheFindFirstArgsBase {
+   /**
+    * Throw an Error if query returns no results
+    * @deprecated since 4.0.0: use `findFirstOrThrow` method instead
+    */
+    rejectOnNotFound?: RejectOnNotFound
+  }
+      
 
   /**
    * Couche findMany
@@ -4716,6 +4988,18 @@ export namespace Prisma {
     where?: CoucheWhereInput
   }
 
+
+  /**
+   * Couche: findUniqueOrThrow
+   */
+  export type CoucheFindUniqueOrThrowArgs = CoucheFindUniqueArgsBase
+      
+
+  /**
+   * Couche: findFirstOrThrow
+   */
+  export type CoucheFindFirstOrThrowArgs = CoucheFindFirstArgsBase
+      
 
   /**
    * Couche without action
@@ -5026,7 +5310,7 @@ export namespace Prisma {
     couleur?: StringNullableFilter | string | null
     amiante?: BoolNullableFilter | boolean | null
     materiaux?: StringNullableFilter | string | null
-    HAP?: StringFilter | string
+    HAP?: StringNullableFilter | string | null
     idPrelevement?: IntNullableFilter | number | null
     Prelevement?: XOR<PrelevementRelationFilter, PrelevementWhereInput> | null
   }
@@ -5070,7 +5354,7 @@ export namespace Prisma {
     couleur?: StringNullableWithAggregatesFilter | string | null
     amiante?: BoolNullableWithAggregatesFilter | boolean | null
     materiaux?: StringNullableWithAggregatesFilter | string | null
-    HAP?: StringWithAggregatesFilter | string
+    HAP?: StringNullableWithAggregatesFilter | string | null
     idPrelevement?: IntNullableWithAggregatesFilter | number | null
   }
 
@@ -5095,7 +5379,7 @@ export namespace Prisma {
     isParkMarker?: NullableBoolFieldUpdateOperationsInput | boolean | null
     typologie?: NullableStringFieldUpdateOperationsInput | string | null
     docs?: NullableStringFieldUpdateOperationsInput | string | null
-    interventions?: InterventionUpdateManyWithoutDossierInput
+    interventions?: InterventionUpdateManyWithoutDossierNestedInput
   }
 
   export type DossierUncheckedUpdateInput = {
@@ -5103,7 +5387,7 @@ export namespace Prisma {
     isParkMarker?: NullableBoolFieldUpdateOperationsInput | boolean | null
     typologie?: NullableStringFieldUpdateOperationsInput | string | null
     docs?: NullableStringFieldUpdateOperationsInput | string | null
-    interventions?: InterventionUncheckedUpdateManyWithoutDossierInput
+    interventions?: InterventionUncheckedUpdateManyWithoutDossierNestedInput
   }
 
   export type DossierCreateManyInput = {
@@ -5154,8 +5438,8 @@ export namespace Prisma {
     idEmployeIntervention?: NullableIntFieldUpdateOperationsInput | number | null
     zones?: NullableStringFieldUpdateOperationsInput | string | null
     isFirstIntervention?: NullableBoolFieldUpdateOperationsInput | boolean | null
-    dossier?: DossierUpdateOneRequiredWithoutInterventionsInput
-    prelevements?: PrelevementUpdateManyWithoutInterventionInput
+    dossier?: DossierUpdateOneRequiredWithoutInterventionsNestedInput
+    prelevements?: PrelevementUpdateManyWithoutInterventionNestedInput
   }
 
   export type InterventionUncheckedUpdateInput = {
@@ -5166,7 +5450,7 @@ export namespace Prisma {
     zones?: NullableStringFieldUpdateOperationsInput | string | null
     isFirstIntervention?: NullableBoolFieldUpdateOperationsInput | boolean | null
     idDossier?: IntFieldUpdateOperationsInput | number
-    prelevements?: PrelevementUncheckedUpdateManyWithoutInterventionInput
+    prelevements?: PrelevementUncheckedUpdateManyWithoutInterventionNestedInput
   }
 
   export type InterventionCreateManyInput = {
@@ -5253,8 +5537,8 @@ export namespace Prisma {
     resultat?: NullableStringFieldUpdateOperationsInput | string | null
     PrelevementPossible?: NullableBoolFieldUpdateOperationsInput | boolean | null
     choixPrelevementImPossible?: NullableStringFieldUpdateOperationsInput | string | null
-    Intervention?: InterventionUpdateOneWithoutPrelevementsInput
-    couches?: CoucheUpdateManyWithoutPrelevementInput
+    Intervention?: InterventionUpdateOneWithoutPrelevementsNestedInput
+    couches?: CoucheUpdateManyWithoutPrelevementNestedInput
   }
 
   export type PrelevementUncheckedUpdateInput = {
@@ -5275,7 +5559,7 @@ export namespace Prisma {
     PrelevementPossible?: NullableBoolFieldUpdateOperationsInput | boolean | null
     choixPrelevementImPossible?: NullableStringFieldUpdateOperationsInput | string | null
     idIntervention?: NullableIntFieldUpdateOperationsInput | number | null
-    couches?: CoucheUncheckedUpdateManyWithoutPrelevementInput
+    couches?: CoucheUncheckedUpdateManyWithoutPrelevementNestedInput
   }
 
   export type PrelevementCreateManyInput = {
@@ -5340,7 +5624,7 @@ export namespace Prisma {
     couleur?: string | null
     amiante?: boolean | null
     materiaux?: string | null
-    HAP: string
+    HAP?: string | null
     Prelevement?: PrelevementCreateNestedOneWithoutCouchesInput
   }
 
@@ -5350,7 +5634,7 @@ export namespace Prisma {
     couleur?: string | null
     amiante?: boolean | null
     materiaux?: string | null
-    HAP: string
+    HAP?: string | null
     idPrelevement?: number | null
   }
 
@@ -5359,8 +5643,8 @@ export namespace Prisma {
     couleur?: NullableStringFieldUpdateOperationsInput | string | null
     amiante?: NullableBoolFieldUpdateOperationsInput | boolean | null
     materiaux?: NullableStringFieldUpdateOperationsInput | string | null
-    HAP?: StringFieldUpdateOperationsInput | string
-    Prelevement?: PrelevementUpdateOneWithoutCouchesInput
+    HAP?: NullableStringFieldUpdateOperationsInput | string | null
+    Prelevement?: PrelevementUpdateOneWithoutCouchesNestedInput
   }
 
   export type CoucheUncheckedUpdateInput = {
@@ -5369,7 +5653,7 @@ export namespace Prisma {
     couleur?: NullableStringFieldUpdateOperationsInput | string | null
     amiante?: NullableBoolFieldUpdateOperationsInput | boolean | null
     materiaux?: NullableStringFieldUpdateOperationsInput | string | null
-    HAP?: StringFieldUpdateOperationsInput | string
+    HAP?: NullableStringFieldUpdateOperationsInput | string | null
     idPrelevement?: NullableIntFieldUpdateOperationsInput | number | null
   }
 
@@ -5378,7 +5662,7 @@ export namespace Prisma {
     couleur?: string | null
     amiante?: boolean | null
     materiaux?: string | null
-    HAP: string
+    HAP?: string | null
     idPrelevement?: number | null
   }
 
@@ -5387,7 +5671,7 @@ export namespace Prisma {
     couleur?: NullableStringFieldUpdateOperationsInput | string | null
     amiante?: NullableBoolFieldUpdateOperationsInput | boolean | null
     materiaux?: NullableStringFieldUpdateOperationsInput | string | null
-    HAP?: StringFieldUpdateOperationsInput | string
+    HAP?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type CoucheUncheckedUpdateManyInput = {
@@ -5396,7 +5680,7 @@ export namespace Prisma {
     couleur?: NullableStringFieldUpdateOperationsInput | string | null
     amiante?: NullableBoolFieldUpdateOperationsInput | boolean | null
     materiaux?: NullableStringFieldUpdateOperationsInput | string | null
-    HAP?: StringFieldUpdateOperationsInput | string
+    HAP?: NullableStringFieldUpdateOperationsInput | string | null
     idPrelevement?: NullableIntFieldUpdateOperationsInput | number | null
   }
 
@@ -5706,20 +5990,6 @@ export namespace Prisma {
     idIntervention?: SortOrder
   }
 
-  export type StringFilter = {
-    equals?: string
-    in?: Enumerable<string>
-    notIn?: Enumerable<string>
-    lt?: string
-    lte?: string
-    gt?: string
-    gte?: string
-    contains?: string
-    startsWith?: string
-    endsWith?: string
-    not?: NestedStringFilter | string
-  }
-
   export type PrelevementRelationFilter = {
     is?: PrelevementWhereInput | null
     isNot?: PrelevementWhereInput | null
@@ -5765,23 +6035,6 @@ export namespace Prisma {
     idPrelevement?: SortOrder
   }
 
-  export type StringWithAggregatesFilter = {
-    equals?: string
-    in?: Enumerable<string>
-    notIn?: Enumerable<string>
-    lt?: string
-    lte?: string
-    gt?: string
-    gte?: string
-    contains?: string
-    startsWith?: string
-    endsWith?: string
-    not?: NestedStringWithAggregatesFilter | string
-    _count?: NestedIntFilter
-    _min?: NestedStringFilter
-    _max?: NestedStringFilter
-  }
-
   export type InterventionCreateNestedManyWithoutDossierInput = {
     create?: XOR<Enumerable<InterventionCreateWithoutDossierInput>, Enumerable<InterventionUncheckedCreateWithoutDossierInput>>
     connectOrCreate?: Enumerable<InterventionCreateOrConnectWithoutDossierInput>
@@ -5812,7 +6065,7 @@ export namespace Prisma {
     set?: string | null
   }
 
-  export type InterventionUpdateManyWithoutDossierInput = {
+  export type InterventionUpdateManyWithoutDossierNestedInput = {
     create?: XOR<Enumerable<InterventionCreateWithoutDossierInput>, Enumerable<InterventionUncheckedCreateWithoutDossierInput>>
     connectOrCreate?: Enumerable<InterventionCreateOrConnectWithoutDossierInput>
     upsert?: Enumerable<InterventionUpsertWithWhereUniqueWithoutDossierInput>
@@ -5826,7 +6079,7 @@ export namespace Prisma {
     deleteMany?: Enumerable<InterventionScalarWhereInput>
   }
 
-  export type InterventionUncheckedUpdateManyWithoutDossierInput = {
+  export type InterventionUncheckedUpdateManyWithoutDossierNestedInput = {
     create?: XOR<Enumerable<InterventionCreateWithoutDossierInput>, Enumerable<InterventionUncheckedCreateWithoutDossierInput>>
     connectOrCreate?: Enumerable<InterventionCreateOrConnectWithoutDossierInput>
     upsert?: Enumerable<InterventionUpsertWithWhereUniqueWithoutDossierInput>
@@ -5872,7 +6125,7 @@ export namespace Prisma {
     divide?: number
   }
 
-  export type DossierUpdateOneRequiredWithoutInterventionsInput = {
+  export type DossierUpdateOneRequiredWithoutInterventionsNestedInput = {
     create?: XOR<DossierCreateWithoutInterventionsInput, DossierUncheckedCreateWithoutInterventionsInput>
     connectOrCreate?: DossierCreateOrConnectWithoutInterventionsInput
     upsert?: DossierUpsertWithoutInterventionsInput
@@ -5880,7 +6133,7 @@ export namespace Prisma {
     update?: XOR<DossierUpdateWithoutInterventionsInput, DossierUncheckedUpdateWithoutInterventionsInput>
   }
 
-  export type PrelevementUpdateManyWithoutInterventionInput = {
+  export type PrelevementUpdateManyWithoutInterventionNestedInput = {
     create?: XOR<Enumerable<PrelevementCreateWithoutInterventionInput>, Enumerable<PrelevementUncheckedCreateWithoutInterventionInput>>
     connectOrCreate?: Enumerable<PrelevementCreateOrConnectWithoutInterventionInput>
     upsert?: Enumerable<PrelevementUpsertWithWhereUniqueWithoutInterventionInput>
@@ -5894,7 +6147,7 @@ export namespace Prisma {
     deleteMany?: Enumerable<PrelevementScalarWhereInput>
   }
 
-  export type PrelevementUncheckedUpdateManyWithoutInterventionInput = {
+  export type PrelevementUncheckedUpdateManyWithoutInterventionNestedInput = {
     create?: XOR<Enumerable<PrelevementCreateWithoutInterventionInput>, Enumerable<PrelevementUncheckedCreateWithoutInterventionInput>>
     connectOrCreate?: Enumerable<PrelevementCreateOrConnectWithoutInterventionInput>
     upsert?: Enumerable<PrelevementUpsertWithWhereUniqueWithoutInterventionInput>
@@ -5928,7 +6181,7 @@ export namespace Prisma {
     connect?: Enumerable<CoucheWhereUniqueInput>
   }
 
-  export type InterventionUpdateOneWithoutPrelevementsInput = {
+  export type InterventionUpdateOneWithoutPrelevementsNestedInput = {
     create?: XOR<InterventionCreateWithoutPrelevementsInput, InterventionUncheckedCreateWithoutPrelevementsInput>
     connectOrCreate?: InterventionCreateOrConnectWithoutPrelevementsInput
     upsert?: InterventionUpsertWithoutPrelevementsInput
@@ -5938,7 +6191,7 @@ export namespace Prisma {
     update?: XOR<InterventionUpdateWithoutPrelevementsInput, InterventionUncheckedUpdateWithoutPrelevementsInput>
   }
 
-  export type CoucheUpdateManyWithoutPrelevementInput = {
+  export type CoucheUpdateManyWithoutPrelevementNestedInput = {
     create?: XOR<Enumerable<CoucheCreateWithoutPrelevementInput>, Enumerable<CoucheUncheckedCreateWithoutPrelevementInput>>
     connectOrCreate?: Enumerable<CoucheCreateOrConnectWithoutPrelevementInput>
     upsert?: Enumerable<CoucheUpsertWithWhereUniqueWithoutPrelevementInput>
@@ -5952,7 +6205,7 @@ export namespace Prisma {
     deleteMany?: Enumerable<CoucheScalarWhereInput>
   }
 
-  export type CoucheUncheckedUpdateManyWithoutPrelevementInput = {
+  export type CoucheUncheckedUpdateManyWithoutPrelevementNestedInput = {
     create?: XOR<Enumerable<CoucheCreateWithoutPrelevementInput>, Enumerable<CoucheUncheckedCreateWithoutPrelevementInput>>
     connectOrCreate?: Enumerable<CoucheCreateOrConnectWithoutPrelevementInput>
     upsert?: Enumerable<CoucheUpsertWithWhereUniqueWithoutPrelevementInput>
@@ -5972,11 +6225,7 @@ export namespace Prisma {
     connect?: PrelevementWhereUniqueInput
   }
 
-  export type StringFieldUpdateOperationsInput = {
-    set?: string
-  }
-
-  export type PrelevementUpdateOneWithoutCouchesInput = {
+  export type PrelevementUpdateOneWithoutCouchesNestedInput = {
     create?: XOR<PrelevementCreateWithoutCouchesInput, PrelevementUncheckedCreateWithoutCouchesInput>
     connectOrCreate?: PrelevementCreateOrConnectWithoutCouchesInput
     upsert?: PrelevementUpsertWithoutCouchesInput
@@ -6129,37 +6378,6 @@ export namespace Prisma {
     gt?: number
     gte?: number
     not?: NestedFloatNullableFilter | number | null
-  }
-
-  export type NestedStringFilter = {
-    equals?: string
-    in?: Enumerable<string>
-    notIn?: Enumerable<string>
-    lt?: string
-    lte?: string
-    gt?: string
-    gte?: string
-    contains?: string
-    startsWith?: string
-    endsWith?: string
-    not?: NestedStringFilter | string
-  }
-
-  export type NestedStringWithAggregatesFilter = {
-    equals?: string
-    in?: Enumerable<string>
-    notIn?: Enumerable<string>
-    lt?: string
-    lte?: string
-    gt?: string
-    gte?: string
-    contains?: string
-    startsWith?: string
-    endsWith?: string
-    not?: NestedStringWithAggregatesFilter | string
-    _count?: NestedIntFilter
-    _min?: NestedStringFilter
-    _max?: NestedStringFilter
   }
 
   export type InterventionCreateWithoutDossierInput = {
@@ -6373,7 +6591,7 @@ export namespace Prisma {
     couleur?: string | null
     amiante?: boolean | null
     materiaux?: string | null
-    HAP: string
+    HAP?: string | null
   }
 
   export type CoucheUncheckedCreateWithoutPrelevementInput = {
@@ -6382,7 +6600,7 @@ export namespace Prisma {
     couleur?: string | null
     amiante?: boolean | null
     materiaux?: string | null
-    HAP: string
+    HAP?: string | null
   }
 
   export type CoucheCreateOrConnectWithoutPrelevementInput = {
@@ -6405,7 +6623,7 @@ export namespace Prisma {
     idEmployeIntervention?: NullableIntFieldUpdateOperationsInput | number | null
     zones?: NullableStringFieldUpdateOperationsInput | string | null
     isFirstIntervention?: NullableBoolFieldUpdateOperationsInput | boolean | null
-    dossier?: DossierUpdateOneRequiredWithoutInterventionsInput
+    dossier?: DossierUpdateOneRequiredWithoutInterventionsNestedInput
   }
 
   export type InterventionUncheckedUpdateWithoutPrelevementsInput = {
@@ -6443,7 +6661,7 @@ export namespace Prisma {
     couleur?: StringNullableFilter | string | null
     amiante?: BoolNullableFilter | boolean | null
     materiaux?: StringNullableFilter | string | null
-    HAP?: StringFilter | string
+    HAP?: StringNullableFilter | string | null
     idPrelevement?: IntNullableFilter | number | null
   }
 
@@ -6512,7 +6730,7 @@ export namespace Prisma {
     resultat?: NullableStringFieldUpdateOperationsInput | string | null
     PrelevementPossible?: NullableBoolFieldUpdateOperationsInput | boolean | null
     choixPrelevementImPossible?: NullableStringFieldUpdateOperationsInput | string | null
-    Intervention?: InterventionUpdateOneWithoutPrelevementsInput
+    Intervention?: InterventionUpdateOneWithoutPrelevementsNestedInput
   }
 
   export type PrelevementUncheckedUpdateWithoutCouchesInput = {
@@ -6549,7 +6767,7 @@ export namespace Prisma {
     idEmployeIntervention?: NullableIntFieldUpdateOperationsInput | number | null
     zones?: NullableStringFieldUpdateOperationsInput | string | null
     isFirstIntervention?: NullableBoolFieldUpdateOperationsInput | boolean | null
-    prelevements?: PrelevementUpdateManyWithoutInterventionInput
+    prelevements?: PrelevementUpdateManyWithoutInterventionNestedInput
   }
 
   export type InterventionUncheckedUpdateWithoutDossierInput = {
@@ -6559,7 +6777,7 @@ export namespace Prisma {
     idEmployeIntervention?: NullableIntFieldUpdateOperationsInput | number | null
     zones?: NullableStringFieldUpdateOperationsInput | string | null
     isFirstIntervention?: NullableBoolFieldUpdateOperationsInput | boolean | null
-    prelevements?: PrelevementUncheckedUpdateManyWithoutInterventionInput
+    prelevements?: PrelevementUncheckedUpdateManyWithoutInterventionNestedInput
   }
 
   export type InterventionUncheckedUpdateManyWithoutInterventionsInput = {
@@ -6605,7 +6823,7 @@ export namespace Prisma {
     resultat?: NullableStringFieldUpdateOperationsInput | string | null
     PrelevementPossible?: NullableBoolFieldUpdateOperationsInput | boolean | null
     choixPrelevementImPossible?: NullableStringFieldUpdateOperationsInput | string | null
-    couches?: CoucheUpdateManyWithoutPrelevementInput
+    couches?: CoucheUpdateManyWithoutPrelevementNestedInput
   }
 
   export type PrelevementUncheckedUpdateWithoutInterventionInput = {
@@ -6625,7 +6843,7 @@ export namespace Prisma {
     resultat?: NullableStringFieldUpdateOperationsInput | string | null
     PrelevementPossible?: NullableBoolFieldUpdateOperationsInput | boolean | null
     choixPrelevementImPossible?: NullableStringFieldUpdateOperationsInput | string | null
-    couches?: CoucheUncheckedUpdateManyWithoutPrelevementInput
+    couches?: CoucheUncheckedUpdateManyWithoutPrelevementNestedInput
   }
 
   export type PrelevementUncheckedUpdateManyWithoutPrelevementsInput = {
@@ -6652,7 +6870,7 @@ export namespace Prisma {
     couleur?: string | null
     amiante?: boolean | null
     materiaux?: string | null
-    HAP: string
+    HAP?: string | null
   }
 
   export type CoucheUpdateWithoutPrelevementInput = {
@@ -6660,7 +6878,7 @@ export namespace Prisma {
     couleur?: NullableStringFieldUpdateOperationsInput | string | null
     amiante?: NullableBoolFieldUpdateOperationsInput | boolean | null
     materiaux?: NullableStringFieldUpdateOperationsInput | string | null
-    HAP?: StringFieldUpdateOperationsInput | string
+    HAP?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type CoucheUncheckedUpdateWithoutPrelevementInput = {
@@ -6669,7 +6887,7 @@ export namespace Prisma {
     couleur?: NullableStringFieldUpdateOperationsInput | string | null
     amiante?: NullableBoolFieldUpdateOperationsInput | boolean | null
     materiaux?: NullableStringFieldUpdateOperationsInput | string | null
-    HAP?: StringFieldUpdateOperationsInput | string
+    HAP?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type CoucheUncheckedUpdateManyWithoutCouchesInput = {
@@ -6678,7 +6896,7 @@ export namespace Prisma {
     couleur?: NullableStringFieldUpdateOperationsInput | string | null
     amiante?: NullableBoolFieldUpdateOperationsInput | boolean | null
     materiaux?: NullableStringFieldUpdateOperationsInput | string | null
-    HAP?: StringFieldUpdateOperationsInput | string
+    HAP?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
 
@@ -6694,5 +6912,5 @@ export namespace Prisma {
   /**
    * DMMF
    */
-  export const dmmf: runtime.DMMF.Document;
+  export const dmmf: runtime.BaseDMMF
 }
