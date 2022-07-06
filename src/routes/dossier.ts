@@ -4,12 +4,21 @@ import InterventionController from "../controllers/InterventionController";
 import PrelevementController from "../controllers/PrelevementController";
 import { checkJwt } from "../middlewares/checkJwt";
 import { checkRole } from "../middlewares/checkRole";
+import { addFileMiddleware } from "../middlewares/addFile";
 import { Roles } from "../types/roles";
+import fileUpload from "express-fileupload";
 
 const router = Router();
 
 router.get("/:idDossier", [checkJwt], DossierController.getDossierById);
 router.patch("/:idDossier", [checkJwt], DossierController.updateDossierById);
+router.post(
+  "/:idDossier/file",
+  [checkJwt],
+  fileUpload(),
+  [addFileMiddleware],
+  DossierController.postFileOnDossier
+);
 
 // Intervention
 router.post(
@@ -21,6 +30,14 @@ router.patch(
   "/:idDossier/intervention/:idIntervention",
   [checkJwt],
   InterventionController.updateInterventionById
+);
+
+router.post(
+  "/:idDossier/intervention/:idIntervention/file",
+  [checkJwt],
+  fileUpload(),
+  [addFileMiddleware],
+  InterventionController.postFileOnIntervention
 );
 
 // Prelevement

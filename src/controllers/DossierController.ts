@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { prismaDiag, prismaFmdc, prismaRg } from "../prisma/clients";
+import { File, FileResponseUpload } from "../types/file";
 
 const getDossierById = async (req: Request, res: Response) => {
   const idDossier = req.params.idDossier;
@@ -302,4 +303,60 @@ const updateDossierById = async (req: Request, res: Response) => {
   res.status(200).json(resDossier);
 };
 
-export default { getDossierById, updateDossierById };
+const postFileOnDossier = async (req: Request, res: Response) => {
+  const files: FileResponseUpload | undefined =
+    (req.headers.files && JSON.parse(JSON.stringify(req.headers.files))) ||
+    undefined;
+
+  const idDossier = req.params.idDossier;
+  if (!idDossier) {
+    return res
+      .status(400)
+      .json("Veuillez renseigner un id pour trouver votre dossier");
+  }
+
+  if (!files) {
+    return res.status(400).json("Une Erreur est survenue");
+  }
+
+  try {
+    const dossier = await prismaFmdc.dossier.findUnique({
+      where: {
+        id: Number(idDossier),
+      },
+      select: {
+        docs: true,
+        id: true,
+      },
+    });
+    if (!dossier) {
+      return res
+        .status(400)
+        .json(
+          "Pas de Dossier avec cette Id, commencez par le retrouver avant d'ajouter des fichiers"
+        );
+    }
+
+    let docs: File[] = [];
+    if (dossier.docs) {
+      docs = [...JSON.parse(dossier.docs), ...files.sucess];
+    } else {
+      docs = [...files.sucess];
+    }
+
+    await prismaFmdc.dossier.update({
+      where: {
+        id: Number(idDossier),
+      },
+      data: {
+        docs: JSON.stringify(docs),
+      },
+    });
+
+    return getDossierById(req, res);
+  } catch (error) {
+    return res.status(400).json(error);
+  }
+};
+
+export default { getDossierById, updateDossierById, postFileOnDossier };

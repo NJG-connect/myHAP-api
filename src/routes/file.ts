@@ -1,5 +1,4 @@
 import { Router, Request } from "express";
-import fs from "fs";
 import FilesController from "../controllers/FilesController";
 import fileUpload from "express-fileupload";
 

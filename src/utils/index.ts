@@ -1,25 +1,31 @@
 import fs from "fs";
 import fileUpload, { UploadedFile } from "express-fileupload";
+import { FileResponseUpload } from "../types/file";
 
 export const upload = async (
   files: fileUpload.FileArray,
-  directory: string
-): Promise<{ sucess: string[]; errors: string[] }> => {
-  // create directory
-  fs.mkdirSync(directory, { recursive: true });
-
+  types: { [key in string]: { emplacement: string; type: string } }
+): Promise<FileResponseUpload> => {
   // convert files to flat array
   const formatFiles = Object.values(files).flat(Infinity) as UploadedFile[];
 
-  const namesOfFiles: { sucess: string[]; errors: string[] } = {
+  let namesOfFiles: FileResponseUpload = {
     sucess: [],
     errors: [],
   };
 
   for await (const el of formatFiles) {
+    // create directory
+    fs.mkdirSync(types[el.name].emplacement, { recursive: true });
+
     try {
-      fs.writeFileSync(`${directory}${el.name}`, el.data);
-      namesOfFiles.sucess.push(el.name);
+      fs.writeFileSync(`${types[el.name].emplacement}/${el.name}`, el.data);
+      namesOfFiles.sucess.push({
+        name: el.name,
+        emplacement: `${types[el.name].emplacement}/${el.name}`,
+        type: types[el.name].type,
+        date: new Date(),
+      });
     } catch (err) {
       namesOfFiles.errors.push(el.name);
     }

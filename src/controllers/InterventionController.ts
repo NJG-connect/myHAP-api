@@ -1,7 +1,8 @@
 import { Request, Response } from "express";
 import { prismaFmdc } from "../prisma/clients";
+import { File, FileResponseUpload } from "../types/file";
 import DossierController from "./DossierController";
-// idDossier idIntervention
+
 const createIntervention = async (req: Request, res: Response) => {
   const idDossier = req.params.idDossier;
 
@@ -129,4 +130,78 @@ const updateInterventionById = async (req: Request, res: Response) => {
   return DossierController.getDossierById(req, res);
 };
 
-export default { createIntervention, updateInterventionById };
+const postFileOnIntervention = async (req: Request, res: Response) => {
+  const { idDossier, idIntervention } = req.params;
+  const files: FileResponseUpload | undefined =
+    (req.headers.files && JSON.parse(JSON.stringify(req.headers.files))) ||
+    undefined;
+
+  if (!idDossier || !idIntervention) {
+    return res
+      .status(400)
+      .json(
+        `Veuillez renseigner un id ${!idDossier && "dossier"} ${
+          !idIntervention && "intervention"
+        } pour trouver votre intervention`
+      );
+  }
+  if (!Number(idDossier) || !Number(idIntervention)) {
+    return res
+      .status(400)
+      .json(
+        `Veuillez renseigner un id ${!Number(idDossier) && "dossier"} ${
+          !Number(idIntervention) && "idIntervention"
+        } valable pour trouver votre intervention`
+      );
+  }
+
+  if (!files) {
+    return res
+      .status(400)
+      .json("Une Erreur est survenue lors de l'import des fichiers");
+  }
+
+  try {
+    const interventionExist = await prismaFmdc.intervention.findUnique({
+      where: {
+        id: Number(idIntervention),
+      },
+      select: {
+        id: true,
+        zones: true,
+      },
+    });
+    if (!interventionExist) {
+      return res.status(400).json("Votre Intervention n'existe pas");
+    }
+
+    let docs: File[] = [];
+    if (interventionExist.zones) {
+      docs = [...JSON.parse(interventionExist.zones), ...files.sucess];
+    } else {
+      docs = [...files.sucess];
+    }
+
+    await prismaFmdc.intervention.update({
+      where: {
+        id: Number(idIntervention),
+      },
+      data: {
+        zones: JSON.stringify(docs),
+      },
+    });
+  } catch (error) {
+    return res
+      .status(400)
+      .json(
+        "Une erreur est survenue dans la modification de votre Intervention"
+      );
+  }
+  return DossierController.getDossierById(req, res);
+};
+
+export default {
+  createIntervention,
+  updateInterventionById,
+  postFileOnIntervention,
+};
