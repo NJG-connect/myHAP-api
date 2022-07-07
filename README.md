@@ -22,14 +22,14 @@ selon votre environnement
 
 à la racine créer et ajouter les clés suivantes :
 
-|            Key             |                          Description                           |
-| :------------------------: | :------------------------------------------------------------: |
-|         JWT_SECRET         |                           clé secret                           |
-|            PORT            |              le port ou sera disponible votre API              |
-|    DATABASE_URL_ADN_RG     |                        info BDD ADN_RG                         |
-|   DATABASE_URL_ADN_DIAG    |                       info BDD ADN_DIAG                        |
-|   DATABASE_URL_ADN_FMDC    |         info BDD ADN_FMDC ( doit-être créer en amont)          |
-| DATABASE_URL_ADN_DIAG_TEST | info BDD ADN_DIAG ( devra être supprimer dans un second temps) |
+|          Key          |                                                     Description                                                     |
+| :-------------------: | :-----------------------------------------------------------------------------------------------------------------: |
+|      JWT_SECRET       |                                                     clé secret                                                      |
+|         PORT          |                                        le port ou sera disponible votre API                                         |
+|  DATABASE_URL_ADN_RG  |                                                   info BDD ADN_RG                                                   |
+| DATABASE_URL_ADN_DIAG |                                                  info BDD ADN_DIAG                                                  |
+| DATABASE_URL_ADN_FMDC |                                    info BDD ADN_FMDC ( doit-être créer en amont)                                    |
+|      OUTPUT_PATH      | Si vous souhaitez set un path pour stocker vos fichiers à un endroit précis ( par défaut c'est récupéré de la BDD ) |
 
 ### Commande à savoir
 

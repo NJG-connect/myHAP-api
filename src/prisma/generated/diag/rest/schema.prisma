@@ -5,7 +5,7 @@ generator client {
 
 datasource db {
   provider = "sqlserver"
-  url      = env("DATABASE_URL_ADN_DIAG_TEST")
+  url      = env("DATABASE_URL_ADN_DIAG")
 }
 
 model Dossier {

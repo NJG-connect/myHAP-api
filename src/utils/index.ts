@@ -4,7 +4,9 @@ import { FileResponseUpload } from "../types/file";
 
 export const upload = async (
   files: fileUpload.FileArray,
-  types: { [key in string]: { emplacement: string; type: string } }
+  types: {
+    [key in string]: { emplacement: string; link: string; type: string };
+  }
 ): Promise<FileResponseUpload> => {
   // convert files to flat array
   const formatFiles = Object.values(files).flat(Infinity) as UploadedFile[];
@@ -23,6 +25,7 @@ export const upload = async (
       namesOfFiles.sucess.push({
         name: el.name,
         emplacement: `${types[el.name].emplacement}/${el.name}`,
+        link: types[el.name].link,
         type: types[el.name].type,
         date: new Date(),
       });

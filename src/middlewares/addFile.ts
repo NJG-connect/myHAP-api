@@ -31,13 +31,15 @@ export const addFileMiddleware = async (
     if (
       !typeOfImg ||
       Object.keys(typeOfImg).length !== formatFiles.length ||
-      !Object.keys(typeOfImg).every((nameFromType) =>
-        formatFiles.map((el) => el.name).includes(nameFromType)
+      !Object.keys(typeOfImg).every(
+        (nameFromType) =>
+          formatFiles.map((el) => el.name).includes(nameFromType) &&
+          Object.keys(FileEmplacement).includes(typeOfImg[nameFromType])
       )
     ) {
       return res
         .status(400)
-        .send({ message: "Renseigne un type au fichier upload" });
+        .send({ message: "Renseigne un type valide au fichier upload" });
     }
 
     const societyInfo = await prismaRg.societe.findUnique({
@@ -51,12 +53,15 @@ export const addFileMiddleware = async (
 
     const linkForStockFile = process.env.OUTPUT_PATH || societyInfo?.outputPath;
 
-    let type: { [key in string]: { emplacement: string; type: string } } = {};
+    let type: {
+      [key in string]: { emplacement: string; link: string; type: string };
+    } = {};
     for (const [key, value] of Object.entries(typeOfImg)) {
       type[key] = {
         emplacement: `${linkForStockFile}/${idDossier}${
-          FileEmplacement[value as FileType] || ""
+          FileEmplacement[value as FileType]
         }`,
+        link: `file/${idDossier}/${value}/${key}`,
         type: value as string,
       };
     }

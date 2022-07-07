@@ -1,56 +1,94 @@
 import { Request, Response } from "express";
 import { upload as uploadUtil } from "../utils";
 import fs from "fs";
+import { prismaFmdc, prismaRg } from "../prisma/clients";
+import { FileEmplacement, FileType } from "../types/file";
 
-const baseUrl = `http://localhost:${process.env.PORT}/file/`;
+export const baseUrl = `http://localhost:${process.env.PORT}/file/`;
 
-const directoryPath = __dirname + "/../../resources/uploads/";
+// const getListFiles = (req: Request, res: Response) => {
+//   fs.readdir(directoryPath, function (err, files) {
+//     if (err) {
+//       res.status(500).send({
+//         message: "Unable to scan files!",
+//         error: err,
+//       });
+//     }
+//     let fileInfos: { name: string; url: string }[] = [];
+//     files.forEach((file) => {
+//       fileInfos.push({
+//         name: file,
+//         url: baseUrl + file,
+//       });
+//     });
+//     res.status(200).send(fileInfos);
+//   });
+// };
 
-const upload = async (req: Request, res: Response) => {
-  try {
-    if (!req.files || Object.keys(req.files).length === 0) {
-      return res.status(400).send({ message: "Please upload a file!" });
-    }
+// its for download or see image with link
+const download = async (req: Request, res: Response) => {
+  const {
+    idDossier,
+    typeFile,
+    nameFile,
+  }: { idDossier?: string; typeFile?: string; nameFile?: FileType } =
+    req.params;
 
-    const namesOfFiles = await uploadUtil(req.files, directoryPath);
+  const wantDownload = req.query.download;
 
-    res.status(200).send({
-      message: `Uploaded the file successfully: ${namesOfFiles.sucess.join()}${
-        namesOfFiles.errors.length
-          ? " and file error : " + namesOfFiles.errors.join(" ")
-          : ""
-      }`,
-      data: namesOfFiles.sucess,
-      error: namesOfFiles.errors.length ? namesOfFiles.errors : undefined,
-    });
-  } catch (err: any) {
-    res.status(500).send({
-      message: `Could not upload the file: . ${err}`,
-    });
+  if (!idDossier || !typeFile || !nameFile) {
+    return res
+      .status(400)
+      .json(
+        `Veuillez renseigner ${!idDossier && "  un id dossier"} ${
+          !typeFile && " un répétoire"
+        } ${!nameFile && "le nom du fichier"} pour trouver votre ressource`
+      );
   }
-};
 
-const getListFiles = (req: Request, res: Response) => {
-  fs.readdir(directoryPath, function (err, files) {
-    if (err) {
-      res.status(500).send({
-        message: "Unable to scan files!",
-        error: err,
-      });
-    }
-    let fileInfos: { name: string; url: string }[] = [];
-    files.forEach((file) => {
-      fileInfos.push({
-        name: file,
-        url: baseUrl + file,
-      });
-    });
-    res.status(200).send(fileInfos);
+  if (!Number(idDossier)) {
+    return res
+      .status(400)
+      .json("Veuillez renseigner un id valable pour trouver votre dossier");
+  }
+
+  const dossier = await prismaFmdc.dossier.findUnique({
+    where: {
+      id: Number(idDossier),
+    },
+    select: {
+      docs: true,
+      id: true,
+    },
   });
-};
-const download = (req: Request, res: Response) => {
-  const fileName = req.params.name;
-  res.download(directoryPath + fileName, fileName, (err) => {
+  if (!dossier) {
+    return res
+      .status(400)
+      .json(
+        "Pas de Dossier avec cette Id, commencez par le retrouver avant d'ajouter des fichiers"
+      );
+  }
+
+  if (!Object.keys(FileEmplacement).includes(typeFile)) {
+    return res.status(400).json("Pas de repertoire avec le type de fichier");
+  }
+
+  const societyInfo = await prismaRg.societe.findUnique({
+    where: {
+      idSociete: "SIEGE",
+    },
+    select: {
+      outputPath: true,
+    },
+  });
+
+  const linkForStockFile = process.env.OUTPUT_PATH || societyInfo?.outputPath;
+
+  const linkOfImage = `${linkForStockFile}/${idDossier}${
+    FileEmplacement[typeFile as FileType]
+  }/${nameFile}`;
+
+  return res[wantDownload ? "download" : "sendFile"](linkOfImage, (err) => {
     if (err) {
       res.status(500).send({
         message: "Could not download the file. " + err,
@@ -59,7 +97,6 @@ const download = (req: Request, res: Response) => {
   });
 };
 export default {
-  upload,
-  getListFiles,
+  // getListFiles,
   download,
 };

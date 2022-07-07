@@ -5,6 +5,7 @@ export enum FileType {
   "PLAN" = "PLAN",
   "DICT" = "DICT",
   "INTERVENTION" = "INTERVENTION",
+  "DOSSIER" = "DOSSIER",
 }
 
 export const FileTypeName: { [key in FileType]: string } = {
@@ -14,11 +15,13 @@ export const FileTypeName: { [key in FileType]: string } = {
   [FileType.PLAN]: "Plan",
   [FileType.DICT]: "Dict",
   [FileType.INTERVENTION]: "Intervention",
+  [FileType.DOSSIER]: "Docs",
 };
 
-export const FileEmplacement = {
+export const FileEmplacement: { [key in FileType]: string } = {
   [FileType.ANNEXE]: "",
   [FileType.PRE_RAPPORT]: "",
+  [FileType.DOSSIER]: "",
   [FileType.RAPPORT]: "",
   [FileType.PLAN]: "/PLAN",
   [FileType.DICT]: "/DICT-ARRETE",
@@ -34,5 +37,6 @@ export interface File {
   name: string;
   type: string;
   emplacement: string;
+  link: string;
   date: Date;
 }
