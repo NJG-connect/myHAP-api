@@ -169,13 +169,21 @@ const config = {
     "config": {
       "engineType": "library"
     },
-    "binaryTargets": [],
+    "binaryTargets": [
+      {
+        "fromEnvVar": null,
+        "value": "darwin"
+      },
+      {
+        "fromEnvVar": null,
+        "value": "windows"
+      }
+    ],
     "previewFeatures": [],
     "isCustomOutput": true
   },
   "relativeEnvPaths": {
-    "rootEnvPath": "../../../../../.env",
-    "schemaEnvPath": "../../../../../.env"
+    "rootEnvPath": null
   },
   "relativePath": "../../../schema",
   "clientVersion": "4.0.0",
@@ -204,5 +212,8 @@ Object.assign(exports, Prisma)
 
 path.join(__dirname, "libquery_engine-darwin.dylib.node");
 path.join(process.cwd(), "src/prisma/generated/fmdc/rest/libquery_engine-darwin.dylib.node")
+
+path.join(__dirname, "query_engine-windows.dll.node");
+path.join(process.cwd(), "src/prisma/generated/fmdc/rest/query_engine-windows.dll.node")
 path.join(__dirname, "schema.prisma");
 path.join(process.cwd(), "src/prisma/generated/fmdc/rest/schema.prisma")
