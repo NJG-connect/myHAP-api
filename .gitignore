@@ -124,3 +124,7 @@ node_modules/
 build/
 tmp/
 temp/
+.*.env
+index-win.exe
+index-macos
+index-linux

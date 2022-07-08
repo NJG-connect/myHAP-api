@@ -12,5 +12,8 @@
   },
   "ts-node": {
     "transpileOnly": true
-  }
+  },
+  "include": [ "src/**/*" ],
+  "exclude": [ ],
+  "hooks": [ "copy-files" ]
 }

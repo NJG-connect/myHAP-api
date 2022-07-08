@@ -11,11 +11,19 @@ if (isDev === "development" || isDev === "local") {
   });
 }
 
+// cause in PKG we generate outside the .env
+if (isDev === undefined) {
+  require("dotenv").config({
+    path: process.cwd() + `/.prod.env`,
+  });
+}
+
 //Connects to the Database -> then starts the express
 const port = process.env.PORT || 3000;
 
 (async () => {
   const app = express();
+  console.log(process.cwd());
 
   try {
     app.use(cors());
