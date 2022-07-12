@@ -32,10 +32,10 @@ export const login = async (req: Express.Request, res: Express.Response) => {
       },
     });
     if (!employe) {
-      return res.json("utilisateur pas rataché à un employé");
+      return res.status(401).json("Utilisateur pas rataché à un employé");
     }
   } catch (error) {
-    return res.json("utilisateur pas rataché à un employé");
+    return res.status(401).json("Utilisateur pas rataché à un employé");
   }
   const info = {
     idUtilisateur: utilisateur?.idUtilisateur,
