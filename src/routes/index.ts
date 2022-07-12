@@ -6,7 +6,7 @@ import dossier from "../routes/dossier";
 
 import swaggerJsDoc from "swagger-jsdoc";
 import swaggerUI from "swagger-ui-express";
-const swaggerDocument = require("../../swagger.json");
+const swaggerDocument = require("../docs/swagger.json");
 
 const routes = Router();
 
