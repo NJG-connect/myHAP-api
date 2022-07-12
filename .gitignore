@@ -128,3 +128,5 @@ temp/
 index-win.exe
 index-macos
 index-linux
+apps/
+.DS_Store

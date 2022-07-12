@@ -15,6 +15,6 @@
     "transpileOnly": true
   },
   "include": [ "./src/**/*" ],
-  "exclude": ["node_modules" ],
-  "hooks": [ "copy-files" ]
+  "exclude": [ ],
+  "hooks": [ "copy-files" ],
 }
