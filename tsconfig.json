@@ -5,6 +5,7 @@
     "target": "es2018",
     "sourceMap": true,
     "outDir": "dist",
+    "rootDir": ".",
     "strict": true,
     "lib": ["esnext","es2018", "esnext.asynciterable",  "es2019", "es5", "es6", "dom", "dom.iterable"],
     "esModuleInterop": true,
@@ -13,7 +14,7 @@
   "ts-node": {
     "transpileOnly": true
   },
-  "include": [ "src/**/*" ],
-  "exclude": [ ],
+  "include": [ "./src/**/*" ],
+  "exclude": ["node_modules" ],
   "hooks": [ "copy-files" ]
 }
