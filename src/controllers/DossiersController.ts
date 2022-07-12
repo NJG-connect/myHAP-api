@@ -44,10 +44,8 @@ const getFirstInfoDossiers = async (req: Request, res: Response) => {
     return res.status(200).json(newDossiers);
   } catch (error) {
     console.log("error", error);
-    return res.json(error);
+    return res.status(400).json(error);
   }
-
-  return res.json("something wrong");
 };
 
 //  (toute les interventions au dessus de 10 *100 en excluant le 24)    /

@@ -162,8 +162,19 @@ const updateDossierById = async (req: Request, res: Response) => {
   if (diag) {
     const diagArrFormated = Object.entries(diag).filter(
       (el) =>
-        ["dateCommande", "commentaire", "idStatut"].includes(el[0]) &&
-        ![null, undefined, NaN].includes(el[1])
+        [
+          "reference",
+          "adresse",
+          "cptAdresse",
+          "ville",
+          "pays",
+          "departement",
+          "longitude",
+          "latitude",
+          "commentaire",
+          "dateCommande",
+          "idStatut",
+        ].includes(el[0]) && ![null, undefined, NaN].includes(el[1])
     );
     if (diagArrFormated.length) {
       const diagFormated = Object.fromEntries(diagArrFormated);

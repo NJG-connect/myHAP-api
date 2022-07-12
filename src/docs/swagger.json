@@ -1,0 +1,1010 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Documentation pour MyHAP API",
+    "termsOfService": "http://swagger.io/terms/",
+    "contact": {
+      "email": "njgconnect@gmail.com"
+    },
+    "license": {
+      "name": "Apache 2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+    },
+    "version": "1.0.0"
+  },
+  "tags": [
+    {
+      "name": "User",
+      "description": "Operations sur l'utilisateur"
+    },
+    {
+      "name": "Dossiers",
+      "description": "Informations sur plusieurs Dossiers MyHAP & Analysimmo"
+    },
+    {
+      "name": "Dossier",
+      "description": "Operations sur un Dossier MyHAP & Analysimmo spécifique"
+    },
+    {
+      "name": "Intervention",
+      "description": "Operations des Intervention"
+    },
+    {
+      "name": "Prelevement",
+      "description": "Operations des Prélevements"
+    }
+  ],
+  "paths": {
+    "/auth/login": {
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Connexion d'un Utilisateur",
+        "description": "Se Connecter et avoir le JWT pour avoir accès au prochaine routes disponible.",
+        "operationId": "loginUser",
+        "requestBody": {
+          "description": "Information nécéssaire de connexion",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/requestBodies/InfoForConnectUser"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Connexion Réussi",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Une erreur est survenue",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "enum": [
+                    "login incorrect",
+                    "Mot de passe Incorrect",
+                    "Utilisateur pas rataché à un employé"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/dossiers/dossiersForToday": {
+      "get": {
+        "tags": [
+          "Dossiers"
+        ],
+        "summary": "Informations des Dossiers du Jour",
+        "description": "Statistiques sur les interventions du Jours.",
+        "operationId": "dossiersForToday",
+        "responses": {
+          "200": {
+            "description": "Opération Réussi",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "totalIntervention": {
+                      "type": "number",
+                      "example": 6
+                    },
+                    "completeIntervention": {
+                      "type": "number",
+                      "example": 5
+                    },
+                    "pourcentFinished": {
+                      "type": "number",
+                      "example": 83.33333333333333
+                    },
+                    "date": {
+                      "type": "string",
+                      "example": "11/7/2022"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Erreur : (nom de l'erreur)"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/dossiers/{referenceOrNumero}": {
+      "get": {
+        "tags": [
+          "Dossiers"
+        ],
+        "summary": "Informations des Dossiers en fonction du Numéro | Référence",
+        "description": "Renvoies un Array d'Object avec le 'name' & 'id' des dossiers correspondant à la valeur.",
+        "operationId": "searchDossiersByReferenceOrNumero",
+        "parameters": [
+          {
+            "name": "referenceOrNumero",
+            "in": "path",
+            "description": "Reférence | Numéro du (des) dossier(s) recherché(s)",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Opération Réussi",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "number",
+                        "example": 6
+                      },
+                      "name": {
+                        "type": "string",
+                        "example": "30333 - IDELYA ATHIS MONS 30333 12.11.13"
+                      }
+                    }
+                  },
+                  "example": [
+                    {
+                      "id": 1,
+                      "name": " 1 - infoProjet plop"
+                    },
+                    {
+                      "id": 2,
+                      "name": " 2 - infoProjet plup"
+                    },
+                    {
+                      "id": 3,
+                      "name": " 3 - infoProjet test"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Erreur : (nom de l'erreur)"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/file/{idDossier}/{typeFile}/{nameFile}": {
+      "get": {
+        "tags": [
+          "Dossier"
+        ],
+        "summary": "Affiche | Télécharge un Fichier",
+        "description": "Permet de Visualiser ou Télécharger un Fichier préalablement enregistrer dans un Dossier",
+        "operationId": "downloadFileFromDossier",
+        "produces": [
+          "image/png",
+          "image/gif",
+          "image/jpeg"
+        ],
+        "parameters": [
+          {
+            "name": "idDossier",
+            "in": "path",
+            "description": "Reférence | Numéro du (des) dossier(s) recherché(s)",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "typeFile",
+            "in": "path",
+            "description": "Reférence | Numéro du (des) dossier(s) recherché(s)",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "$ref": "#/components/schemas/FileType"
+            }
+          },
+          {
+            "name": "nameFile",
+            "in": "path",
+            "description": "Reférence | Numéro du (des) dossier(s) recherché(s)",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string",
+              "example": "plan1-mure.png"
+            }
+          },
+          {
+            "name": "download",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "boolean",
+              "example": "false"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Opération Réussi, renvoi un fichier",
+            "content": {
+              "image/jpeg": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              },
+              "image/png": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Could not download the file."
+          },
+          "400": {
+            "description": "Une erreur est survenue",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "enum": [
+                    "Veuillez renseigner un id Dossier | un repertoire | nom de fichier pour trouver votre ressource ",
+                    "Pas de repertoire avec le type de fichier",
+                    "Pas de Dossier avec cette Id, commencez par le retrouver avant d'ajouter des fichiers",
+                    "Veuillez renseigner un id valable pour trouver votre dossier"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/dossier/{idDossier}": {
+      "get": {
+        "tags": [
+          "Dossier"
+        ],
+        "summary": "Informations d'un Dossier en fonction de son id",
+        "description": "Renvoi un Object contenant les infos MyHAP & Analysimmo & (en option les Techniciens)",
+        "operationId": "getDossierById",
+        "parameters": [
+          {
+            "name": "idDossier",
+            "in": "path",
+            "description": "ID du dossier recherché",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "employesParam",
+            "in": "query",
+            "description": "Affiche tout les Techniciens en réponse ( avec le name & id )",
+            "required": false,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Opération Réussi",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Dossier"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Une erreur est survenue",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "enum": [
+                    "Veuillez renseigner un id pour trouver votre dossier",
+                    "Aucun dossier n'a été renseigné avec cette id",
+                    "Erreur, (nom de l'erreur)"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      },
+      "patch": {
+        "tags": [
+          "Dossier"
+        ],
+        "summary": "Modifie les Informations d'un Dossier en fonction de son id",
+        "description": "Permet la modification d'un dossier  MyHAP & Analysimmo.",
+        "operationId": "updateDossierById",
+        "parameters": [
+          {
+            "name": "idDossier",
+            "in": "path",
+            "description": "ID du dossier recherché",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Information nécéssaire de connexion",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/requestBodies/DossierUpdateField"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Opération Réussi",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Dossier"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Une erreur est survenue",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "enum": [
+                    "Veuillez renseigner un id pour trouver votre dossier",
+                    "Veuillez renseigner un id valable pour trouver votre dossier",
+                    "Aucun dossier n'a été renseigné avec cette id",
+                    "Erreur, (nom de l'erreur)"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/dossier/{idDossier}/file": {
+      "post": {
+        "tags": [
+          "Dossier"
+        ],
+        "summary": "Enregistre un Fichier en fonction de l'id de son Dossier",
+        "description": "Permet d'enregistrer un Fichier ( Image, PDF,  Word ) et de le stocker sur le serveur.",
+        "operationId": "postFileOnDossierById",
+        "parameters": [
+          {
+            "name": "idDossier",
+            "in": "path",
+            "description": "ID du dossier recherché",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "File & Informations nécéssaire pour l'upload",
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "files": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "format": "binary"
+                    }
+                  },
+                  "type": {
+                    "consumes": "application/json",
+                    "type": "object",
+                    "description": "les clés correpondent aux noms des fichiers uploads & les valeurs correspondent à l'enum *FileType*",
+                    "properties": {
+                      "nom-du-fichier.png": {
+                        "$ref": "#/components/schemas/FileType"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Opération Réussi",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Dossier"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Une erreur est survenue",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "enum": [
+                    "Veuillez renseigner un id pour trouver votre dossier",
+                    "Renseigne un type valide au fichier upload",
+                    "Please upload a file!",
+                    "Une Erreur est survenue",
+                    "Pas de Dossier avec cette Id, commencez par le retrouver avant d'ajouter des fichiers",
+                    "Erreur, (nom de l'erreur)"
+                  ]
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Could not upload the file: . err"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/dossier/{idDossier}/intervention/{idIntervention}/file": {
+      "post": {
+        "tags": [
+          "Intervention"
+        ],
+        "summary": "Enregistre un Fichier en fonction de l'id de l'intervention",
+        "description": "Permet d'enregistrer un Fichier ( Image, PDF,  Word ) et de le stocker sur le serveur.",
+        "operationId": "postFileOnInterventionById",
+        "parameters": [
+          {
+            "name": "idDossier",
+            "in": "path",
+            "description": "ID du dossier recherché",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "idIntervention",
+            "in": "path",
+            "description": "ID de l'intervention recherché",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "File & Informations nécéssaire pour l'upload",
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "files": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "format": "binary"
+                    }
+                  },
+                  "type": {
+                    "consumes": "application/json",
+                    "type": "object",
+                    "description": "les clés correpondent aux noms des fichiers uploads & les valeurs correspondent à l'enum *FileType*",
+                    "properties": {
+                      "nom-du-fichier.png": {
+                        "$ref": "#/components/schemas/FileType"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Opération Réussi",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Dossier"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Une erreur est survenue",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "enum": [
+                    "Veuillez renseigner un id pour trouver votre dossier",
+                    "Renseigne un type valide au fichier upload",
+                    "Please upload a file!",
+                    "Votre Intervention n'existe pas",
+                    "Une erreur est survenue dans la modification de votre Intervention",
+                    "Une Erreur est survenue",
+                    "Pas de Dossier avec cette Id, commencez par le retrouver avant d'ajouter des fichiers",
+                    "Erreur, (nom de l'erreur)"
+                  ]
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Could not upload the file: . err"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "User": {
+        "type": "object",
+        "properties": {
+          "idUtilisateur": {
+            "type": "number"
+          },
+          "login": {
+            "type": "string"
+          },
+          "mail": {
+            "type": "string"
+          },
+          "prenom": {
+            "type": "string"
+          },
+          "nom": {
+            "type": "string"
+          },
+          "idGroupeUtilisateur": {
+            "type": "string",
+            "enum": [
+              "GU_1",
+              "GU_2",
+              "GU_3",
+              "GU_5",
+              "GU_6",
+              "GU_7",
+              "USERS"
+            ],
+            "example": "USERS"
+          },
+          "token": {
+            "type": "string",
+            "format": "JWT Token"
+          },
+          "exp": {
+            "type": "string",
+            "format": "date-time",
+            "example": 1657713328
+          }
+        }
+      },
+      "FileType": {
+        "type": "string",
+        "enum": [
+          "ANNEXE",
+          "PRE_RAPPORT",
+          "RAPPORT",
+          "PLAN",
+          "DICT",
+          "INTERVENTION",
+          "DOSSIER"
+        ]
+      },
+      "Dossier": {
+        "type": "object",
+        "properties": {
+          "diag": {
+            "type": "object",
+            "properties": {
+              "numero": {
+                "type": "number"
+              },
+              "idDossier": {
+                "type": "number"
+              },
+              "reference": {
+                "type": "string"
+              },
+              "adresse": {
+                "type": "string"
+              },
+              "cptAdresse": {
+                "type": "string"
+              },
+              "ville": {
+                "type": "string"
+              },
+              "pays": {
+                "type": "string"
+              },
+              "departement": {
+                "type": "string"
+              },
+              "longitude": {
+                "type": "string"
+              },
+              "latitude": {
+                "type": "string"
+              },
+              "commentaire": {
+                "type": "string"
+              },
+              "dateCommande": {
+                "type": "string",
+                "format": "date-time",
+                "example": "2018-10-19T09:52:58.336Z"
+              },
+              "StatutDossier": {
+                "type": "object",
+                "properties": {
+                  "intitule": {
+                    "type": "string",
+                    "example": "Terminé",
+                    "enum": [
+                      "A contacter",
+                      "A planifier",
+                      "En attente d'expertise",
+                      "En attente de résultats",
+                      "A facturer",
+                      "En attente BC / BT / OS",
+                      "Demande incomplète",
+                      "Rapport à envoyer",
+                      "En attente rédaction rapport",
+                      "En attente de règlement",
+                      "En attente Visa 1",
+                      "Bannette PROBLEME",
+                      "En attente résultats HAP",
+                      "En attente de ré-intervention",
+                      "Annulé",
+                      "Terminé",
+                      "En attente de Rapport Final",
+                      "Données non exportées",
+                      "En attente facturation",
+                      "En attente Visa 2",
+                      "Sous-traités",
+                      "En attente ré-intervention BCL",
+                      "Litige",
+                      "En attente dépôt prélèvements",
+                      "StandBy Bailleurs CC",
+                      "Stand-By 1001VH",
+                      "En attente infos/documents - DPE",
+                      "DRIVE"
+                    ]
+                  }
+                }
+              },
+              "idStatut": {
+                "type": "number"
+              }
+            }
+          },
+          "myHAP": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "number"
+              },
+              "isParkMarker": {
+                "type": "boolean"
+              },
+              "typologie": {
+                "type": "string"
+              },
+              "docs": {
+                "type": "string"
+              },
+              "interventions": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/Intervention"
+                }
+              }
+            }
+          }
+        }
+      },
+      "Intervention": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number"
+          },
+          "dateDebutMission": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "dateFinMission": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "idEmployeIntervention": {
+            "type": "number"
+          },
+          "zones": {
+            "type": "string"
+          },
+          "isFirstIntervention": {
+            "type": "boolean"
+          },
+          "idDossier": {
+            "type": "number"
+          },
+          "prelevements": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Prelevement"
+            }
+          }
+        }
+      },
+      "Prelevement": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number"
+          },
+          "date": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "emplacement": {
+            "type": "string"
+          },
+          "latitude": {
+            "type": "string"
+          },
+          "longitude": {
+            "type": "string"
+          },
+          "altitude": {
+            "type": "string"
+          },
+          "adresse": {
+            "type": "string"
+          },
+          "materiaux": {
+            "type": "string"
+          },
+          "taille": {
+            "type": "number"
+          },
+          "couleur": {
+            "type": "string"
+          },
+          "images": {
+            "type": "string"
+          },
+          "laboratoire": {
+            "type": "string"
+          },
+          "zone": {
+            "type": "string"
+          },
+          "resultat": {
+            "type": "string"
+          },
+          "PrelevementPossible": {
+            "type": "boolean"
+          },
+          "choixPrelevementImPossible": {
+            "type": "string"
+          },
+          "idIntervention": {
+            "type": "number"
+          },
+          "couches": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Couche"
+            }
+          }
+        }
+      },
+      "Couche": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number"
+          },
+          "taille": {
+            "type": "string"
+          },
+          "couleur": {
+            "type": "string"
+          },
+          "amiante": {
+            "type": "boolean"
+          },
+          "materiaux": {
+            "type": "string"
+          },
+          "HAP": {
+            "type": "string"
+          },
+          "idPrelevement": {
+            "type": "number"
+          }
+        }
+      }
+    },
+    "requestBodies": {
+      "InfoForConnectUser": {
+        "type": "object",
+        "properties": {
+          "login": {
+            "type": "string",
+            "example": "userLogin"
+          },
+          "mdp": {
+            "type": "string",
+            "example": "password"
+          }
+        }
+      },
+      "DossierUpdateField": {
+        "type": "object",
+        "properties": {
+          "diag": {
+            "type": "object",
+            "properties": {
+              "reference": {
+                "type": "string"
+              },
+              "adresse": {
+                "type": "string"
+              },
+              "cptAdresse": {
+                "type": "string"
+              },
+              "ville": {
+                "type": "string"
+              },
+              "pays": {
+                "type": "string"
+              },
+              "departement": {
+                "type": "string"
+              },
+              "longitude": {
+                "type": "string"
+              },
+              "latitude": {
+                "type": "string"
+              },
+              "commentaire": {
+                "type": "string"
+              },
+              "dateCommande": {
+                "type": "string",
+                "format": "date-time",
+                "example": "2018-10-19T09:52:58.336Z"
+              },
+              "idStatut": {
+                "type": "number"
+              }
+            }
+          },
+          "myHAP": {
+            "type": "object",
+            "properties": {
+              "isParkMarker": {
+                "type": "boolean"
+              },
+              "typologie": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "description": "JWT Authorization header using the Bearer scheme.",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  }
+}
