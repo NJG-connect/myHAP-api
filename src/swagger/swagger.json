@@ -393,7 +393,7 @@
           }
         ],
         "requestBody": {
-          "description": "Information nécéssaire de connexion",
+          "description": "Information nécéssaire",
           "content": {
             "application/json": {
               "schema": {
@@ -529,6 +529,153 @@
         ]
       }
     },
+    "/dossier/{idDossier}/intervention": {
+      "post": {
+        "tags": [
+          "Intervention"
+        ],
+        "summary": "Ajout d'une Intervention en fonction d'un Dossier spécifique",
+        "description": "Permet l'ajout d'une Intervention en fonction de l'id d'un Dossier",
+        "operationId": "postInterventionById",
+        "parameters": [
+          {
+            "name": "idDossier",
+            "in": "path",
+            "description": "ID du dossier recherché",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Information nécéssaire",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/requestBodies/InterventionField"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Opération Réussi",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Dossier"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Une erreur est survenue",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "enum": [
+                    "Veuillez renseigner un id pour créer votre intervention",
+                    "Veuillez renseigner un id valable pour trouver votre dossier",
+                    "Veuillez renseigner tout les champs pour créer votre Intervention",
+                    "Votre Dossier n'existe pas pour lui créer une intervention",
+                    "Une erreur est survenue dans la création de votre Intervention"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/dossier/{idDossier}/intervention/{idIntervention}": {
+      "patch": {
+        "tags": [
+          "Intervention"
+        ],
+        "summary": "Modifie les informations d'une Intervention",
+        "description": "Permet de Modifier une Intervention.",
+        "operationId": "updateInterventionById",
+        "parameters": [
+          {
+            "name": "idDossier",
+            "in": "path",
+            "description": "ID du dossier lié à l'intervention",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "idIntervention",
+            "in": "path",
+            "description": "ID de l'intervention recherché",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Information nécéssaire",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/requestBodies/InterventionField"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Opération Réussi",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Dossier"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Une erreur est survenue",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "enum": [
+                    "Veuillez renseigner un id Dossier | Intervention pour trouver votre intervention",
+                    "Veuillez renseigner un id Dossier | Intervention valable pour trouver votre intervention",
+                    "Veuillez renseigner tout les champs pour créer votre Intervention",
+                    "Votre Intervention n'existe pas",
+                    "Une erreur est survenue dans la modification de votre Intervention"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
     "/dossier/{idDossier}/intervention/{idIntervention}/file": {
       "post": {
         "tags": [
@@ -624,6 +771,254 @@
           },
           "500": {
             "description": "Could not upload the file: . err"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/dossier/{idDossier}/intervention/{idIntervention}/prelevement": {
+      "post": {
+        "tags": [
+          "Prelevement"
+        ],
+        "summary": "Création de Prélevement & de ses couches lié a une Intervention",
+        "description": "Permet la création d'un Prélevement accompagné de la création des couches",
+        "operationId": "postPrelevementById",
+        "parameters": [
+          {
+            "name": "idDossier",
+            "in": "path",
+            "description": "ID du dossier lié au prélevement",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "idIntervention",
+            "in": "path",
+            "description": "ID de l'intervention raccroché au prélevement",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Information nécéssaire",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/requestBodies/PrelevementField"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Opération Réussi",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Dossier"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Une erreur est survenue",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "enum": [
+                    "Veuillez renseigner un id Dossier | Intervention pour trouver votre intervention",
+                    "Veuillez renseigner un id Dossier | Intervention valable pour trouver votre intervention",
+                    "Veuillez renseigner tout les champs pour créer votre Prélèvement",
+                    "Votre Intervention n'existe pas",
+                    "Une erreur est survenue dans la création de votre Prélèvement"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/dossier/{idDossier}/intervention/{idIntervention}/prelevement/{idPrelevement}": {
+      "patch": {
+        "tags": [
+          "Prelevement"
+        ],
+        "summary": "Modifie le Prélevement & couche lié ",
+        "description": "Permet la modification d'un Prélevement accompagné de la Modification | Suppréssion | Création de couche",
+        "operationId": "updatePrelevementById",
+        "parameters": [
+          {
+            "name": "idDossier",
+            "in": "path",
+            "description": "ID du dossier lié au prélevement",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "idIntervention",
+            "in": "path",
+            "description": "ID de l'intervention raccroché au prélevement",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "idPrelevement",
+            "in": "path",
+            "description": "ID du prélevement",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Pour le champ **'couches'** Si l'object **ne contient que l'id** alors la couche sera **Delete** | Si il y a des données mais **pas d'id** alors la couche sera **créer** | si il y a **l'id et les infos** alors c'est une **modification**",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/requestBodies/PrelevementField"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Opération Réussi",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Dossier"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Une erreur est survenue",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "enum": [
+                    "Veuillez renseigner un id Dossier | Intervention | prelevement pour trouver votre intervention",
+                    "Veuillez renseigner un id Dossier | Intervention | prelevement valable pour trouver votre intervention",
+                    "Veuillez renseigner tout les champs pour modifier votre Prélèvement",
+                    "Votre Intervention n'existe pas",
+                    "Votre Prelevement n'existe pas",
+                    "Une erreur est survenue lors de l'édition de votre Prélèvement"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "Prelevement"
+        ],
+        "summary": "Supprime le Prélevement & les couches liées ",
+        "description": "Permet la Suppréssion d'un Prélevement accompagné de ses couches",
+        "operationId": "deletePrelevementById",
+        "parameters": [
+          {
+            "name": "idDossier",
+            "in": "path",
+            "description": "ID du dossier lié au prélevement",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "idIntervention",
+            "in": "path",
+            "description": "ID de l'intervention raccroché au prélevement",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "idPrelevement",
+            "in": "path",
+            "description": "ID du prélevement",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Opération Réussi",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Dossier"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Une erreur est survenue",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "enum": [
+                    "Veuillez renseigner un id Dossier | Intervention | prelevement pour trouver votre intervention",
+                    "Veuillez renseigner un id Dossier | Intervention | prelevement valable pour trouver votre intervention",
+                    "Veuillez renseigner tout les champs pour modifier votre Prélèvement",
+                    "Votre Prelevement n'existe pas",
+                    "Problème dans la suppression des couches lié à votre prélèvement",
+                    "Problème dans la suppression du Prelevement."
+                  ]
+                }
+              }
+            }
           }
         },
         "security": [
@@ -992,6 +1387,105 @@
               },
               "typologie": {
                 "type": "string"
+              }
+            }
+          }
+        }
+      },
+      "InterventionField": {
+        "type": "object",
+        "properties": {
+          "dateDebutMission": {
+            "type": "string",
+            "format": "date-time",
+            "required": true
+          },
+          "dateFinMission": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "idEmployeIntervention": {
+            "type": "number",
+            "required": true
+          },
+          "zones": {
+            "type": "string"
+          },
+          "idDossier": {
+            "type": "number",
+            "required": true
+          }
+        }
+      },
+      "PrelevementField": {
+        "type": "object",
+        "properties": {
+          "date": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "emplacement": {
+            "type": "string"
+          },
+          "latitude": {
+            "type": "string"
+          },
+          "longitude": {
+            "type": "string"
+          },
+          "altitude": {
+            "type": "string"
+          },
+          "adresse": {
+            "type": "string"
+          },
+          "materiaux": {
+            "type": "string"
+          },
+          "taille": {
+            "type": "number"
+          },
+          "couleur": {
+            "type": "string"
+          },
+          "images": {
+            "type": "string"
+          },
+          "laboratoire": {
+            "type": "string"
+          },
+          "zone": {
+            "type": "string"
+          },
+          "resultat": {
+            "type": "string"
+          },
+          "PrelevementPossible": {
+            "type": "boolean"
+          },
+          "choixPrelevementImPossible": {
+            "type": "string"
+          },
+          "couches": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "taille": {
+                  "type": "string"
+                },
+                "couleur": {
+                  "type": "string"
+                },
+                "amiante": {
+                  "type": "boolean"
+                },
+                "materiaux": {
+                  "type": "string"
+                },
+                "HAP": {
+                  "type": "string"
+                }
               }
             }
           }

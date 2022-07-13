@@ -20,9 +20,7 @@ const createIntervention = async (req: Request, res: Response) => {
   const interventionField: any = req.body;
 
   const interventionArrFormated = Object.entries(interventionField).filter(
-    (el) =>
-      ["dateDebutMission", "idEmployeIntervention"].includes(el[0]) &&
-      ![null, undefined, NaN].includes(el[1] as any)
+    (el) => ![null, undefined, NaN].includes(el[1] as any)
   );
 
   if (!interventionArrFormated.length) {

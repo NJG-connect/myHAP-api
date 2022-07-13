@@ -4,7 +4,6 @@ import DossierController from "./DossierController";
 
 const createPrelevement = async (req: Request, res: Response) => {
   const { idDossier, idIntervention } = req.params;
-
   if (!idDossier || !idIntervention) {
     return res
       .status(400)
@@ -85,8 +84,8 @@ const createPrelevement = async (req: Request, res: Response) => {
   try {
     await prismaFmdc.prelevement.create({
       data: {
-        idIntervention: Number(idIntervention),
         ...prelevementFormated,
+        idIntervention: Number(idIntervention),
         couches: {
           createMany: {
             data: createCouche.data,
