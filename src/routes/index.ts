@@ -3,6 +3,7 @@ import auth from "../routes/auth";
 import file from "../routes/file";
 import dossiers from "../routes/dossiers";
 import dossier from "../routes/dossier";
+import labo from "../routes/labo";
 
 import path from "path";
 
@@ -34,6 +35,7 @@ routes.use("/auth", auth);
 routes.use("/dossier", dossier);
 routes.use("/dossiers", dossiers);
 routes.use("/file", file);
+routes.use("/labo", labo);
 
 routes.get("*", (req, res) => {
   res.json("Bienvenue sur notre api ");
