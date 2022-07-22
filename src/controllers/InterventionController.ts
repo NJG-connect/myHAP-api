@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { prismaFmdc } from "../prisma/clients";
-import { File, FileResponseUpload } from "../types/file";
+import { FileType, FileResponseUpload } from "../types/file";
 import DossierController from "./DossierController";
 
 const createIntervention = async (req: Request, res: Response) => {
@@ -173,7 +173,7 @@ const postFileOnIntervention = async (req: Request, res: Response) => {
       return res.status(400).json("Votre Intervention n'existe pas");
     }
 
-    let docs: File[] = [];
+    let docs: FileType[] = [];
     if (interventionExist.zones) {
       docs = [...JSON.parse(interventionExist.zones), ...files.sucess];
     } else {

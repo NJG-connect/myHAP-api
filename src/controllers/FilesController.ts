@@ -1,8 +1,7 @@
 import { Request, Response } from "express";
-import { upload as uploadUtil } from "../utils";
-import fs from "fs";
-import { prismaFmdc, prismaRg } from "../prisma/clients";
-import { FileEmplacement, FileType } from "../types/file";
+import { pathForFile } from "../utils";
+import { prismaFmdc } from "../prisma/clients";
+import { FileEmplacement, FileType, FileTypeEnum } from "../types/file";
 
 export const baseUrl = `http://localhost:${process.env.PORT}/file/`;
 
@@ -31,7 +30,7 @@ const download = async (req: Request, res: Response) => {
     idDossier,
     typeFile,
     nameFile,
-  }: { idDossier?: string; typeFile?: string; nameFile?: FileType } =
+  }: { idDossier?: string; typeFile?: FileTypeEnum; nameFile?: string } =
     req.params;
 
   const wantDownload = req.query.download;
@@ -73,19 +72,10 @@ const download = async (req: Request, res: Response) => {
     return res.status(400).json("Pas de repertoire avec le type de fichier");
   }
 
-  const societyInfo = await prismaRg.societe.findUnique({
-    where: {
-      idSociete: "SIEGE",
-    },
-    select: {
-      outputPath: true,
-    },
-  });
-
-  const linkForStockFile = process.env.OUTPUT_PATH || societyInfo?.outputPath;
+  const linkForStockFile = await pathForFile();
 
   const linkOfImage = `${linkForStockFile}/${idDossier}${
-    FileEmplacement[typeFile as FileType]
+    FileEmplacement[typeFile as FileTypeEnum]
   }/${nameFile}`;
 
   return res[wantDownload ? "download" : "sendFile"](linkOfImage, (err) => {

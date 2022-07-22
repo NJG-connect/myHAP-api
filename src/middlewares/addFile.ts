@@ -1,8 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import { UploadedFile } from "express-fileupload";
-import { prismaRg } from "../prisma/clients";
-import { FileEmplacement, FileType } from "../types/file";
-import { upload as uploadUtil } from "../utils";
+import { FileEmplacement, FileTypeEnum } from "../types/file";
+import { pathForFile, upload as uploadUtil } from "../utils";
 
 export const addFileMiddleware = async (
   req: Request,
@@ -42,24 +41,14 @@ export const addFileMiddleware = async (
         .send({ message: "Renseigne un type valide au fichier upload" });
     }
 
-    const societyInfo = await prismaRg.societe.findUnique({
-      where: {
-        idSociete: "SIEGE",
-      },
-      select: {
-        outputPath: true,
-      },
-    });
-
-    const linkForStockFile = process.env.OUTPUT_PATH || societyInfo?.outputPath;
-
+    const linkForStockFile = await pathForFile();
     let type: {
       [key in string]: { emplacement: string; link: string; type: string };
     } = {};
     for (const [key, value] of Object.entries(typeOfImg)) {
       type[key] = {
         emplacement: `${linkForStockFile}/${idDossier}${
-          FileEmplacement[value as FileType]
+          FileEmplacement[value as FileTypeEnum]
         }`,
         link: `file/${idDossier}/${value}/${key}`,
         type: value as string,
@@ -76,18 +65,5 @@ export const addFileMiddleware = async (
     });
   }
 
-  //Call the next middleware or controller
   next();
 };
-
-// res.status(200).send({
-//   message: `Uploaded the file successfully: ${namesOfFiles.sucess
-//     .map((el) => el.name)
-//     .join()}${
-//     namesOfFiles.errors.length
-//       ? " and file error : " + namesOfFiles.errors.join(" ")
-//       : ""
-//   }`,
-//   data: namesOfFiles.sucess,
-//   error: namesOfFiles.errors.length ? namesOfFiles.errors : undefined,
-// });

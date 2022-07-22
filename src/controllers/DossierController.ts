@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { prismaDiag, prismaFmdc, prismaRg } from "../prisma/clients";
-import { File, FileResponseUpload } from "../types/file";
+import { FileTypeEnum, FileResponseUpload, FileType } from "../types/file";
+import { takeFilesOnServer } from "../utils";
 
 const getDossierById = async (req: Request, res: Response) => {
   const idDossier = req.params.idDossier;
@@ -22,6 +23,7 @@ const getDossierById = async (req: Request, res: Response) => {
         reference: true,
         adresse: true,
         cptAdresse: true,
+        codePostal: true,
         ville: true,
         pays: true,
         departement: true,
@@ -94,16 +96,17 @@ const getDossierById = async (req: Request, res: Response) => {
     }
 
     // delete usless keys
-    const {
-      dateDebutMission,
-      dateFinMission,
-      idEmployeIntervention,
-      ...dossierDiagUtils
-    } = dossierDiag;
+    let { dateDebutMission, dateFinMission, ...dossierDiagUtils } = dossierDiag;
+
+    // retrieve files on server
+    const docs = await takeFilesOnServer(idDossier, [
+      FileTypeEnum.PLAN,
+      FileTypeEnum.DICT,
+    ]);
 
     // create dossier with diag and MyHAP
     const dossier: any = {
-      diag: dossierDiagUtils,
+      diag: { ...dossierDiagUtils, docs },
       myHAP: dossierMyHAP,
     };
 
@@ -139,6 +142,7 @@ interface DiagBody {
   dateCommande: Date;
   commentaire: string;
   idStatut: number;
+  idEmployeIntervention: number;
 }
 
 const updateDossierById = async (req: Request, res: Response) => {
@@ -348,24 +352,33 @@ const postFileOnDossier = async (req: Request, res: Response) => {
         );
     }
 
-    let docs: File[] = [];
-    if (dossier.docs) {
-      docs = [...JSON.parse(dossier.docs), ...files.sucess];
-    } else {
-      docs = [...files.sucess];
+    let docs: FileType[] = [];
+
+    // take all files execpt PLAN | DICT-ARRETE
+    const filesFilteredForDocsMyHAP = files.sucess.filter(
+      (el) => ![FileTypeEnum.DICT, FileTypeEnum.PLAN].includes(el.type)
+    );
+
+    if (filesFilteredForDocsMyHAP.length) {
+      if (dossier.docs) {
+        docs = [...JSON.parse(dossier.docs), ...filesFilteredForDocsMyHAP];
+      } else {
+        docs = [...filesFilteredForDocsMyHAP];
+      }
+
+      await prismaFmdc.dossier.update({
+        where: {
+          id: Number(idDossier),
+        },
+        data: {
+          docs: JSON.stringify(docs),
+        },
+      });
     }
-
-    await prismaFmdc.dossier.update({
-      where: {
-        id: Number(idDossier),
-      },
-      data: {
-        docs: JSON.stringify(docs),
-      },
-    });
-
     return getDossierById(req, res);
   } catch (error) {
+    console.log(error);
+
     return res.status(400).json(error);
   }
 };

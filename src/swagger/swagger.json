@@ -234,7 +234,7 @@
             "style": "simple",
             "explode": false,
             "schema": {
-              "$ref": "#/components/schemas/FileType"
+              "$ref": "#/components/schemas/FileTypeEnum"
             }
           },
           {
@@ -476,10 +476,10 @@
                   "type": {
                     "consumes": "application/json",
                     "type": "object",
-                    "description": "les clés correpondent aux noms des fichiers uploads & les valeurs correspondent à l'enum *FileType*",
+                    "description": "les clés correpondent aux noms des fichiers uploads & les valeurs correspondent à l'enum *FileTypeEnum*",
                     "properties": {
                       "nom-du-fichier.png": {
-                        "$ref": "#/components/schemas/FileType"
+                        "$ref": "#/components/schemas/FileTypeEnum"
                       }
                     }
                   }
@@ -725,10 +725,10 @@
                   "type": {
                     "consumes": "application/json",
                     "type": "object",
-                    "description": "les clés correpondent aux noms des fichiers uploads & les valeurs correspondent à l'enum *FileType*",
+                    "description": "les clés correpondent aux noms des fichiers uploads & les valeurs correspondent à l'enum *FileTypeEnum*",
                     "properties": {
                       "nom-du-fichier.png": {
-                        "$ref": "#/components/schemas/FileType"
+                        "$ref": "#/components/schemas/FileTypeEnum"
                       }
                     }
                   }
@@ -1073,7 +1073,7 @@
           }
         }
       },
-      "FileType": {
+      "FileTypeEnum": {
         "type": "string",
         "enum": [
           "ANNEXE",
@@ -1170,6 +1170,29 @@
               },
               "idStatut": {
                 "type": "number"
+              },
+              "idEmployeIntervention": {
+                "type": "number"
+              },
+              "codePostal": {
+                "type": "string"
+              },
+              "docs": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "link": {
+                      "type": "string"
+                    },
+                    "name": {
+                      "type": "string"
+                    },
+                    "type": {
+                      "$ref": "#/components/schemas/FileTypeEnum"
+                    }
+                  }
+                }
               }
             }
           },
