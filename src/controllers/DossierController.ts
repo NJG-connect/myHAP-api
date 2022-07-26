@@ -315,7 +315,7 @@ const updateDossierById = async (req: Request, res: Response) => {
     };
   }
 
-  res.status(200).json(resDossier);
+  return getDossierById(req, res);
 };
 
 const postFileOnDossier = async (req: Request, res: Response) => {
