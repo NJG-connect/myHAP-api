@@ -110,7 +110,7 @@ const getDossierById = async (req: Request, res: Response) => {
       myHAP: dossierMyHAP,
     };
 
-    if (employesParam) {
+    if (true) {
       //where 4 equals Technicien
       const employes = await prismaRg.employe.findMany({
         where: {
@@ -173,6 +173,7 @@ const updateDossierById = async (req: Request, res: Response) => {
           "ville",
           "pays",
           "departement",
+          "idEmployeIntervention",
           "longitude",
           "latitude",
           "commentaire",
@@ -182,7 +183,6 @@ const updateDossierById = async (req: Request, res: Response) => {
     );
     if (diagArrFormated.length) {
       const diagFormated = Object.fromEntries(diagArrFormated);
-
       try {
         const dossierDiag = await prismaDiag.dossier.update({
           where: {
