@@ -7,7 +7,7 @@ CREATE TABLE [dbo].[Dossier] (
     [id] INT NOT NULL,
     [isParkMarker] BIT,
     [typologie] NVARCHAR(1000),
-    [docs] NVARCHAR(1000),
+    [docs] VARCHAR(max),
     CONSTRAINT [Dossier_pkey] PRIMARY KEY CLUSTERED ([id]),
     CONSTRAINT [Dossier_id_key] UNIQUE NONCLUSTERED ([id])
 );
@@ -18,7 +18,7 @@ CREATE TABLE [dbo].[Intervention] (
     [dateDebutMission] DATETIME,
     [dateFinMission] DATETIME,
     [idEmployeIntervention] INT,
-    [zones] NVARCHAR(1000),
+    [zones] VARCHAR(max),
     [isFirstIntervention] BIT CONSTRAINT [Intervention_isFirstIntervention_df] DEFAULT 0,
     [idDossier] INT NOT NULL,
     CONSTRAINT [Intervention_pkey] PRIMARY KEY CLUSTERED ([id]),
@@ -39,7 +39,7 @@ CREATE TABLE [dbo].[Prelevement] (
     [couleur] NVARCHAR(1000),
     [images] NVARCHAR(1000),
     [laboratoire] NVARCHAR(1000),
-    [zone] NVARCHAR(1000),
+    [zone] VARCHAR(max),
     [resultat] NVARCHAR(1000),
     [PrelevementPossible] BIT,
     [choixPrelevementImPossible] NVARCHAR(1000),

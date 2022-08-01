@@ -1209,7 +1209,24 @@
                 "type": "string"
               },
               "docs": {
-                "type": "string"
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "link": {
+                      "type": "string"
+                    },
+                    "name": {
+                      "type": "string"
+                    },
+                    "date": {
+                      "type": "date-time"
+                    },
+                    "type": {
+                      "$ref": "#/components/schemas/FileTypeEnum"
+                    }
+                  }
+                }
               },
               "interventions": {
                 "type": "array",

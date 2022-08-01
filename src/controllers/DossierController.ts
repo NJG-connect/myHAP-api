@@ -5,6 +5,7 @@ import { takeFilesOnServer } from "../utils";
 
 const getDossierById = async (req: Request, res: Response) => {
   const idDossier = req.params.idDossier;
+  const callFromMyAPI = req.query.callFromMyAPI;
   const employesParam = req.query.employes;
   if (!idDossier) {
     return res
@@ -104,10 +105,17 @@ const getDossierById = async (req: Request, res: Response) => {
       FileTypeEnum.DICT,
     ]);
 
+    let docsForMyHAP = [];
+    if (dossierMyHAP.docs) {
+      try {
+        docsForMyHAP = JSON.parse(dossierMyHAP.docs);
+      } catch (error) {}
+    }
+
     // create dossier with diag and MyHAP
     const dossier: any = {
       diag: { ...dossierDiagUtils, docs },
-      myHAP: dossierMyHAP,
+      myHAP: { ...dossierMyHAP, docs: docsForMyHAP },
     };
 
     if (true) {
@@ -130,7 +138,9 @@ const getDossierById = async (req: Request, res: Response) => {
 
       dossier.employes = employesFormated;
     }
-
+    if (callFromMyAPI) {
+      return dossier;
+    }
     return res.status(200).json(dossier);
   } catch (error) {
     console.error("error", error);
@@ -158,7 +168,9 @@ const updateDossierById = async (req: Request, res: Response) => {
       .status(400)
       .json("Veuillez renseigner un id valable pour trouver votre dossier");
   }
-
+  req.query.callFromMyAPI = "true";
+  const oldDossier: any = await getDossierById(req, res);
+  req.query.callFromMyAPI = undefined;
   const { diag, myHAP }: { diag: DiagBody; myHAP: any } = req.body;
   let resDossier: any = {};
 
@@ -261,7 +273,35 @@ const updateDossierById = async (req: Request, res: Response) => {
         ![null, undefined, NaN].includes(el[1] as any)
     );
     if (myHAPArrFormated.length) {
-      const myHAPFormated = Object.fromEntries(myHAPArrFormated);
+      let myHAPFormated = Object.fromEntries(myHAPArrFormated);
+      let docsForHyHAP: any[] = [];
+
+      if (myHAPFormated.hasOwnProperty("docs")) {
+        if (oldDossier.myHAP.docs.length) {
+          docsForHyHAP = [...oldDossier.myHAP.docs];
+
+          [...(myHAPFormated.docs as any)].forEach((oneSuccesFile) => {
+            const indexOfExistingDoc = docsForHyHAP.findIndex(
+              (elInDocs) => elInDocs.name === oneSuccesFile.name
+            );
+
+            if (indexOfExistingDoc === -1) {
+              docsForHyHAP.push(oneSuccesFile);
+            } else {
+              docsForHyHAP[indexOfExistingDoc] = {
+                ...docsForHyHAP[indexOfExistingDoc],
+                ...oneSuccesFile,
+              };
+            }
+          });
+        } else {
+          docsForHyHAP = [...(myHAPFormated.docs as any)];
+        }
+        myHAPFormated = {
+          ...myHAPFormated,
+          docs: JSON.stringify(docsForHyHAP),
+        };
+      }
 
       try {
         const dossierMyHAP = await prismaFmdc.dossier.update({
@@ -291,30 +331,6 @@ const updateDossierById = async (req: Request, res: Response) => {
     }
   }
 
-  // take myHAPDossier if myHAP is empty
-  if (!resDossier.myHAP) {
-    const dossierMyHAP = await prismaFmdc.dossier.findFirst({
-      where: {
-        id: Number(idDossier),
-      },
-      include: {
-        interventions: {
-          include: {
-            prelevements: {
-              include: {
-                couches: true,
-              },
-            },
-          },
-        },
-      },
-    });
-    resDossier = {
-      ...resDossier,
-      myHAP: dossierMyHAP,
-    };
-  }
-
   return getDossierById(req, res);
 };
 
@@ -339,10 +355,7 @@ const postFileOnDossier = async (req: Request, res: Response) => {
       where: {
         id: Number(idDossier),
       },
-      select: {
-        docs: true,
-        id: true,
-      },
+      select: { id: true },
     });
     if (!dossier) {
       return res
@@ -352,6 +365,10 @@ const postFileOnDossier = async (req: Request, res: Response) => {
         );
     }
 
+    req.query.callFromMyAPI = "true";
+    const oldDossier: any = await getDossierById(req, res);
+    req.query.callFromMyAPI = undefined;
+
     let docs: FileType[] = [];
 
     // take all files execpt PLAN | DICT-ARRETE
@@ -360,8 +377,21 @@ const postFileOnDossier = async (req: Request, res: Response) => {
     );
 
     if (filesFilteredForDocsMyHAP.length) {
-      if (dossier.docs) {
-        docs = [...JSON.parse(dossier.docs), ...filesFilteredForDocsMyHAP];
+      if (oldDossier.myHAP.docs.length) {
+        docs = [...oldDossier.myHAP.docs];
+        filesFilteredForDocsMyHAP.forEach((oneSuccesFile) => {
+          const indexOfExistingDoc = docs.findIndex(
+            (elInDocs) => elInDocs.name === oneSuccesFile.name
+          );
+          if (indexOfExistingDoc === -1) {
+            docs.push(oneSuccesFile);
+          } else {
+            docs[indexOfExistingDoc] = {
+              ...docs[indexOfExistingDoc],
+              ...oneSuccesFile,
+            };
+          }
+        });
       } else {
         docs = [...filesFilteredForDocsMyHAP];
       }
