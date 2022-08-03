@@ -13,7 +13,7 @@ model Dossier {
   id            Int            @id @unique
   isParkMarker  Boolean?
   typologie     String?
-  docs          String?        @db.VarChar(max)
+  docs          String?        @db.NVarChar(max)
   interventions Intervention[]
 }
 
@@ -22,7 +22,7 @@ model Intervention {
   dateDebutMission      DateTime?     @db.DateTime
   dateFinMission        DateTime?     @db.DateTime
   idEmployeIntervention Int?
-  zones                 String?       @db.VarChar(max)
+  zones                 String?       @db.NVarChar(max)
   isFirstIntervention   Boolean?      @default(false)
   idDossier             Int
   dossier               Dossier       @relation(fields: [idDossier], references: [id])
@@ -42,7 +42,7 @@ model Prelevement {
   couleur                    String?
   images                     String?
   laboratoire                String?
-  zone                       String?       @db.VarChar(max)
+  zone                       String?       @db.NVarChar(max)
   resultat                   String?
   PrelevementPossible        Boolean?
   choixPrelevementImPossible String?

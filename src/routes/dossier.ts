@@ -15,7 +15,9 @@ router.patch("/:idDossier", [checkJwt], DossierController.updateDossierById);
 router.post(
   "/:idDossier/file",
   [checkJwt],
-  fileUpload(),
+  fileUpload({
+    defParamCharset: "utf8",
+  }),
   [addFileMiddleware],
   DossierController.postFileOnDossier
 );

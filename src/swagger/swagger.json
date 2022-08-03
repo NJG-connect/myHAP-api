@@ -473,10 +473,10 @@
                       "format": "binary"
                     }
                   },
-                  "type": {
+                  "infoFiles": {
                     "consumes": "application/json",
                     "type": "object",
-                    "description": "les clés correpondent aux noms des fichiers uploads & les valeurs correspondent à l'enum *FileTypeEnum*",
+                    "description": "les clés correpondent aux noms des fichiers uploads & les valeurs correspondent à un Object : avec type = l'enum *FileTypeEnum*  (ou autre information)",
                     "properties": {
                       "nom-du-fichier.png": {
                         "$ref": "#/components/schemas/FileTypeEnum"

@@ -224,6 +224,9 @@ const updateDossierById = async (req: Request, res: Response) => {
         });
         resDossier = { ...resDossier, diag: dossierDiag };
       } catch (error) {
+        console.log(error);
+        return res.status(400).json("Erreur Diag");
+        return error;
         resDossier = {
           ...resDossier,
           error: resDossier.error ? [...resDossier.error, "diag"] : ["diag"],
@@ -302,6 +305,7 @@ const updateDossierById = async (req: Request, res: Response) => {
           docs: JSON.stringify(docsForHyHAP),
         };
       }
+      console.log("adeada");
 
       try {
         const dossierMyHAP = await prismaFmdc.dossier.update({
@@ -396,7 +400,7 @@ const postFileOnDossier = async (req: Request, res: Response) => {
         docs = [...filesFilteredForDocsMyHAP];
       }
 
-      await prismaFmdc.dossier.update({
+      const aaa = await prismaFmdc.dossier.update({
         where: {
           id: Number(idDossier),
         },
@@ -405,6 +409,7 @@ const postFileOnDossier = async (req: Request, res: Response) => {
         },
       });
     }
+
     return getDossierById(req, res);
   } catch (error) {
     console.log(error);

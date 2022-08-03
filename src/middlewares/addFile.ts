@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import { UploadedFile } from "express-fileupload";
-import { FileEmplacement, FileTypeEnum } from "../types/file";
+import { FileEmplacement, FileType, FileTypeEnum } from "../types/file";
 import { pathForFile, upload as uploadUtil } from "../utils";
 
 export const addFileMiddleware = async (
@@ -22,18 +22,20 @@ export const addFileMiddleware = async (
 
     let formatFiles = Object.values(req.files).flat(Infinity) as UploadedFile[];
 
-    const typeOfImg =
-      req.body.type && typeof req.body.type === "string"
-        ? JSON.parse(req.body["type"])
-        : req.body.type || undefined;
+    const infoFiles: {
+      [key in string]: { type: FileTypeEnum; [key: string]: string };
+    } =
+      req.body.infoFiles && typeof req.body.infoFiles === "string"
+        ? JSON.parse(req.body["infoFiles"])
+        : req.body.infoFiles || undefined;
 
     if (
-      !typeOfImg ||
-      Object.keys(typeOfImg).length !== formatFiles.length ||
-      !Object.keys(typeOfImg).every(
+      !infoFiles ||
+      Object.keys(infoFiles).length !== formatFiles.length ||
+      !Object.keys(infoFiles).every(
         (nameFromType) =>
           formatFiles.map((el) => el.name).includes(nameFromType) &&
-          Object.keys(FileEmplacement).includes(typeOfImg[nameFromType])
+          Object.keys(FileEmplacement).includes(infoFiles[nameFromType]["type"])
       )
     ) {
       return res
@@ -43,15 +45,16 @@ export const addFileMiddleware = async (
 
     const linkForStockFile = await pathForFile();
     let type: {
-      [key in string]: { emplacement: string; link: string; type: string };
+      [key in string]: any;
     } = {};
-    for (const [key, value] of Object.entries(typeOfImg)) {
+    for (const [key, value] of Object.entries(infoFiles)) {
       type[key] = {
+        ...value,
         emplacement: `${linkForStockFile}/${idDossier}${
-          FileEmplacement[value as FileTypeEnum]
+          FileEmplacement[value.type]
         }`,
-        link: `file/${idDossier}/${value}/${key}`,
-        type: value as string,
+        name: key,
+        link: `file/${idDossier}/${value.type}/${key}`,
       };
     }
     const namesOfFiles = await uploadUtil(req.files, type);
@@ -60,6 +63,7 @@ export const addFileMiddleware = async (
       files: namesOfFiles as any,
     };
   } catch (err: any) {
+    console.log(err);
     return res.status(500).send({
       message: `Could not upload the file: . ${err}`,
     });

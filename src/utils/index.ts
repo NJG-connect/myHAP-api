@@ -4,6 +4,7 @@ import {
   allFormatFile,
   FileEmplacement,
   FileResponseUpload,
+  FileType,
   FileTypeEnum,
 } from "../types/file";
 import { prismaRg } from "../prisma/clients";
@@ -11,7 +12,7 @@ import { prismaRg } from "../prisma/clients";
 export const upload = async (
   files: fileUpload.FileArray,
   types: {
-    [key in string]: { emplacement: string; link: string; type: string };
+    [key in string]: FileType;
   }
 ): Promise<FileResponseUpload> => {
   // convert files to flat array
@@ -21,18 +22,24 @@ export const upload = async (
     sucess: [],
     errors: [],
   };
-
   for await (const el of formatFiles) {
     // create directory
-    fs.mkdirSync(types[el.name].emplacement, { recursive: true });
+    fs.mkdirSync(types[el.name].emplacement!, {
+      recursive: true,
+    });
 
     try {
-      fs.writeFileSync(`${types[el.name].emplacement}/${el.name}`, el.data);
+      fs.writeFileSync(
+        `${types[el.name].emplacement}/${decodeURI(el.name)}`,
+        el.data
+      );
+
       namesOfFiles.sucess.push({
+        ...types[el.name],
         name: el.name,
-        emplacement: `${types[el.name].emplacement}/${el.name}`,
-        link: types[el.name].link,
-        type: types[el.name].type as FileTypeEnum,
+        emplacement: `${types[el.name].emplacement}/${decodeURIComponent(
+          el.name
+        )}`,
         date: new Date(),
       });
     } catch (err) {
