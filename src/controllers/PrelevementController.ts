@@ -35,20 +35,33 @@ const createPrelevement = async (req: Request, res: Response) => {
       .status(400)
       .json("Veuillez renseigner des champs pour ajouter le prelevement.");
   }
-
+  let numeroPrelevement = 0;
   try {
     const interventionExist = await prismaFmdc.intervention.findUnique({
       where: {
         id: Number(idIntervention),
       },
+      select: {
+        id: true,
+        prelevements: true,
+      },
     });
     if (!interventionExist) {
       return res.status(400).json("Votre Intervention n'existe pas");
     }
+    numeroPrelevement = !!interventionExist.prelevements.length
+      ? (interventionExist.prelevements.sort((a, b) => b.numero! - a.numero!)[0]
+          .numero || 0) + 1
+      : 1;
   } catch (error) {
     return res.status(400).json("Votre Intervention n'existe pas");
   }
-  const prelevementFormated: any = Object.fromEntries(prelevementArrFormated);
+
+  // re-create prelevement Object and add order from other
+  const prelevementFormated: any = {
+    numero: numeroPrelevement + 1,
+    ...Object.fromEntries(prelevementArrFormated),
+  };
 
   let createCouche: any = {
     canCreate: false,
@@ -66,13 +79,14 @@ const createPrelevement = async (req: Request, res: Response) => {
               ![null, undefined, NaN].includes(oneCoucheFormatedInArr[1] as any)
           ).length
       )
-      .map((el: any) =>
-        Object.fromEntries(
+      .map((el: any, indexCouche: number) => ({
+        numero: indexCouche + 1,
+        ...Object.fromEntries(
           Object.entries(el).filter(
             (oneCouche) => ![null, undefined, NaN].includes(oneCouche[1] as any)
           )
-        )
-      );
+        ),
+      }));
 
     if (couchesFormated.length) {
       createCouche.canCreate = true;
@@ -211,6 +225,38 @@ const updatePrelevementById = async (req: Request, res: Response) => {
       });
     }
     delete prelevementFormated.couches;
+
+    if (!!modifyCouche.dataForCreate.length) {
+      try {
+        const couches = await prismaFmdc.couche.findMany({
+          where: {
+            idPrelevement: Number(idPrelevement),
+          },
+          select: {
+            id: true,
+            numero: true,
+          },
+        });
+
+        const numeroLastCoucheAddOne = !!couches.length
+          ? (couches
+              .filter(
+                (oneCouche) =>
+                  !modifyCouche.dataForDelete.includes(oneCouche.id)
+              )
+              .sort((a, b) => b.numero! - a.numero!)[0].numero || 0) + 1
+          : 1;
+
+        modifyCouche.dataForCreate = [...modifyCouche.dataForCreate].map(
+          (oneCouche: any, indexCouche: number) => ({
+            ...oneCouche,
+            numero: numeroLastCoucheAddOne + indexCouche,
+          })
+        );
+      } catch (error) {
+        return res.status(400).json("Un problème au niveau des couches");
+      }
+    }
   }
 
   // Rajouter un deleteMany  => on pourrait les distingué si dans l'object des couches il y a uniquement l'id

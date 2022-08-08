@@ -78,7 +78,7 @@ const sendInfoToLabo = async (req: Request, res: Response) => {
       },
     });
     if (contrat.laboratoire === laboratoireType.ITGA) {
-      // sendCouchesToITGA(Number(idDossier), CouchesByPrelevement, contrat);
+      sendCouchesToITGA(Number(idDossier), CouchesByPrelevement, contrat);
     }
 
     // do something with referenceCommande
