@@ -59,6 +59,7 @@ export type Prelevement = {
   PrelevementPossible: boolean | null
   choixPrelevementImPossible: string | null
   idIntervention: number | null
+  numero: number | null
 }
 
 /**
@@ -73,6 +74,9 @@ export type Couche = {
   materiaux: string | null
   HAP: string | null
   idPrelevement: number | null
+  numero: number | null
+  laboratoire: string | null
+  bonCommandeLabo: string | null
 }
 
 
@@ -2992,12 +2996,14 @@ export namespace Prisma {
     id: number | null
     taille: number | null
     idIntervention: number | null
+    numero: number | null
   }
 
   export type PrelevementSumAggregateOutputType = {
     id: number | null
     taille: number | null
     idIntervention: number | null
+    numero: number | null
   }
 
   export type PrelevementMinAggregateOutputType = {
@@ -3018,6 +3024,7 @@ export namespace Prisma {
     PrelevementPossible: boolean | null
     choixPrelevementImPossible: string | null
     idIntervention: number | null
+    numero: number | null
   }
 
   export type PrelevementMaxAggregateOutputType = {
@@ -3038,6 +3045,7 @@ export namespace Prisma {
     PrelevementPossible: boolean | null
     choixPrelevementImPossible: string | null
     idIntervention: number | null
+    numero: number | null
   }
 
   export type PrelevementCountAggregateOutputType = {
@@ -3058,6 +3066,7 @@ export namespace Prisma {
     PrelevementPossible: number
     choixPrelevementImPossible: number
     idIntervention: number
+    numero: number
     _all: number
   }
 
@@ -3066,12 +3075,14 @@ export namespace Prisma {
     id?: true
     taille?: true
     idIntervention?: true
+    numero?: true
   }
 
   export type PrelevementSumAggregateInputType = {
     id?: true
     taille?: true
     idIntervention?: true
+    numero?: true
   }
 
   export type PrelevementMinAggregateInputType = {
@@ -3092,6 +3103,7 @@ export namespace Prisma {
     PrelevementPossible?: true
     choixPrelevementImPossible?: true
     idIntervention?: true
+    numero?: true
   }
 
   export type PrelevementMaxAggregateInputType = {
@@ -3112,6 +3124,7 @@ export namespace Prisma {
     PrelevementPossible?: true
     choixPrelevementImPossible?: true
     idIntervention?: true
+    numero?: true
   }
 
   export type PrelevementCountAggregateInputType = {
@@ -3132,6 +3145,7 @@ export namespace Prisma {
     PrelevementPossible?: true
     choixPrelevementImPossible?: true
     idIntervention?: true
+    numero?: true
     _all?: true
   }
 
@@ -3245,6 +3259,7 @@ export namespace Prisma {
     PrelevementPossible: boolean | null
     choixPrelevementImPossible: string | null
     idIntervention: number | null
+    numero: number | null
     _count: PrelevementCountAggregateOutputType | null
     _avg: PrelevementAvgAggregateOutputType | null
     _sum: PrelevementSumAggregateOutputType | null
@@ -3284,6 +3299,7 @@ export namespace Prisma {
     PrelevementPossible?: boolean
     choixPrelevementImPossible?: boolean
     idIntervention?: boolean
+    numero?: boolean
     Intervention?: boolean | InterventionArgs
     couches?: boolean | CoucheFindManyArgs
     _count?: boolean | PrelevementCountOutputTypeArgs
@@ -4060,11 +4076,13 @@ export namespace Prisma {
   export type CoucheAvgAggregateOutputType = {
     id: number | null
     idPrelevement: number | null
+    numero: number | null
   }
 
   export type CoucheSumAggregateOutputType = {
     id: number | null
     idPrelevement: number | null
+    numero: number | null
   }
 
   export type CoucheMinAggregateOutputType = {
@@ -4075,6 +4093,9 @@ export namespace Prisma {
     materiaux: string | null
     HAP: string | null
     idPrelevement: number | null
+    numero: number | null
+    laboratoire: string | null
+    bonCommandeLabo: string | null
   }
 
   export type CoucheMaxAggregateOutputType = {
@@ -4085,6 +4106,9 @@ export namespace Prisma {
     materiaux: string | null
     HAP: string | null
     idPrelevement: number | null
+    numero: number | null
+    laboratoire: string | null
+    bonCommandeLabo: string | null
   }
 
   export type CoucheCountAggregateOutputType = {
@@ -4095,6 +4119,9 @@ export namespace Prisma {
     materiaux: number
     HAP: number
     idPrelevement: number
+    numero: number
+    laboratoire: number
+    bonCommandeLabo: number
     _all: number
   }
 
@@ -4102,11 +4129,13 @@ export namespace Prisma {
   export type CoucheAvgAggregateInputType = {
     id?: true
     idPrelevement?: true
+    numero?: true
   }
 
   export type CoucheSumAggregateInputType = {
     id?: true
     idPrelevement?: true
+    numero?: true
   }
 
   export type CoucheMinAggregateInputType = {
@@ -4117,6 +4146,9 @@ export namespace Prisma {
     materiaux?: true
     HAP?: true
     idPrelevement?: true
+    numero?: true
+    laboratoire?: true
+    bonCommandeLabo?: true
   }
 
   export type CoucheMaxAggregateInputType = {
@@ -4127,6 +4159,9 @@ export namespace Prisma {
     materiaux?: true
     HAP?: true
     idPrelevement?: true
+    numero?: true
+    laboratoire?: true
+    bonCommandeLabo?: true
   }
 
   export type CoucheCountAggregateInputType = {
@@ -4137,6 +4172,9 @@ export namespace Prisma {
     materiaux?: true
     HAP?: true
     idPrelevement?: true
+    numero?: true
+    laboratoire?: true
+    bonCommandeLabo?: true
     _all?: true
   }
 
@@ -4240,6 +4278,9 @@ export namespace Prisma {
     materiaux: string | null
     HAP: string | null
     idPrelevement: number | null
+    numero: number | null
+    laboratoire: string | null
+    bonCommandeLabo: string | null
     _count: CoucheCountAggregateOutputType | null
     _avg: CoucheAvgAggregateOutputType | null
     _sum: CoucheSumAggregateOutputType | null
@@ -4269,6 +4310,9 @@ export namespace Prisma {
     materiaux?: boolean
     HAP?: boolean
     idPrelevement?: boolean
+    numero?: boolean
+    laboratoire?: boolean
+    bonCommandeLabo?: boolean
     Prelevement?: boolean | PrelevementArgs
   }
 
@@ -5066,7 +5110,8 @@ export namespace Prisma {
     resultat: 'resultat',
     PrelevementPossible: 'PrelevementPossible',
     choixPrelevementImPossible: 'choixPrelevementImPossible',
-    idIntervention: 'idIntervention'
+    idIntervention: 'idIntervention',
+    numero: 'numero'
   };
 
   export type PrelevementScalarFieldEnum = (typeof PrelevementScalarFieldEnum)[keyof typeof PrelevementScalarFieldEnum]
@@ -5079,7 +5124,10 @@ export namespace Prisma {
     amiante: 'amiante',
     materiaux: 'materiaux',
     HAP: 'HAP',
-    idPrelevement: 'idPrelevement'
+    idPrelevement: 'idPrelevement',
+    numero: 'numero',
+    laboratoire: 'laboratoire',
+    bonCommandeLabo: 'bonCommandeLabo'
   };
 
   export type CoucheScalarFieldEnum = (typeof CoucheScalarFieldEnum)[keyof typeof CoucheScalarFieldEnum]
@@ -5223,6 +5271,7 @@ export namespace Prisma {
     PrelevementPossible?: BoolNullableFilter | boolean | null
     choixPrelevementImPossible?: StringNullableFilter | string | null
     idIntervention?: IntNullableFilter | number | null
+    numero?: IntNullableFilter | number | null
     Intervention?: XOR<InterventionRelationFilter, InterventionWhereInput> | null
     couches?: CoucheListRelationFilter
   }
@@ -5245,6 +5294,7 @@ export namespace Prisma {
     PrelevementPossible?: SortOrder
     choixPrelevementImPossible?: SortOrder
     idIntervention?: SortOrder
+    numero?: SortOrder
     Intervention?: InterventionOrderByWithRelationInput
     couches?: CoucheOrderByRelationAggregateInput
   }
@@ -5271,6 +5321,7 @@ export namespace Prisma {
     PrelevementPossible?: SortOrder
     choixPrelevementImPossible?: SortOrder
     idIntervention?: SortOrder
+    numero?: SortOrder
     _count?: PrelevementCountOrderByAggregateInput
     _avg?: PrelevementAvgOrderByAggregateInput
     _max?: PrelevementMaxOrderByAggregateInput
@@ -5299,6 +5350,7 @@ export namespace Prisma {
     PrelevementPossible?: BoolNullableWithAggregatesFilter | boolean | null
     choixPrelevementImPossible?: StringNullableWithAggregatesFilter | string | null
     idIntervention?: IntNullableWithAggregatesFilter | number | null
+    numero?: IntNullableWithAggregatesFilter | number | null
   }
 
   export type CoucheWhereInput = {
@@ -5312,6 +5364,9 @@ export namespace Prisma {
     materiaux?: StringNullableFilter | string | null
     HAP?: StringNullableFilter | string | null
     idPrelevement?: IntNullableFilter | number | null
+    numero?: IntNullableFilter | number | null
+    laboratoire?: StringNullableFilter | string | null
+    bonCommandeLabo?: StringNullableFilter | string | null
     Prelevement?: XOR<PrelevementRelationFilter, PrelevementWhereInput> | null
   }
 
@@ -5323,6 +5378,9 @@ export namespace Prisma {
     materiaux?: SortOrder
     HAP?: SortOrder
     idPrelevement?: SortOrder
+    numero?: SortOrder
+    laboratoire?: SortOrder
+    bonCommandeLabo?: SortOrder
     Prelevement?: PrelevementOrderByWithRelationInput
   }
 
@@ -5338,6 +5396,9 @@ export namespace Prisma {
     materiaux?: SortOrder
     HAP?: SortOrder
     idPrelevement?: SortOrder
+    numero?: SortOrder
+    laboratoire?: SortOrder
+    bonCommandeLabo?: SortOrder
     _count?: CoucheCountOrderByAggregateInput
     _avg?: CoucheAvgOrderByAggregateInput
     _max?: CoucheMaxOrderByAggregateInput
@@ -5356,6 +5417,9 @@ export namespace Prisma {
     materiaux?: StringNullableWithAggregatesFilter | string | null
     HAP?: StringNullableWithAggregatesFilter | string | null
     idPrelevement?: IntNullableWithAggregatesFilter | number | null
+    numero?: IntNullableWithAggregatesFilter | number | null
+    laboratoire?: StringNullableWithAggregatesFilter | string | null
+    bonCommandeLabo?: StringNullableWithAggregatesFilter | string | null
   }
 
   export type DossierCreateInput = {
@@ -5496,6 +5560,7 @@ export namespace Prisma {
     resultat?: string | null
     PrelevementPossible?: boolean | null
     choixPrelevementImPossible?: string | null
+    numero?: number | null
     Intervention?: InterventionCreateNestedOneWithoutPrelevementsInput
     couches?: CoucheCreateNestedManyWithoutPrelevementInput
   }
@@ -5518,6 +5583,7 @@ export namespace Prisma {
     PrelevementPossible?: boolean | null
     choixPrelevementImPossible?: string | null
     idIntervention?: number | null
+    numero?: number | null
     couches?: CoucheUncheckedCreateNestedManyWithoutPrelevementInput
   }
 
@@ -5537,6 +5603,7 @@ export namespace Prisma {
     resultat?: NullableStringFieldUpdateOperationsInput | string | null
     PrelevementPossible?: NullableBoolFieldUpdateOperationsInput | boolean | null
     choixPrelevementImPossible?: NullableStringFieldUpdateOperationsInput | string | null
+    numero?: NullableIntFieldUpdateOperationsInput | number | null
     Intervention?: InterventionUpdateOneWithoutPrelevementsNestedInput
     couches?: CoucheUpdateManyWithoutPrelevementNestedInput
   }
@@ -5559,6 +5626,7 @@ export namespace Prisma {
     PrelevementPossible?: NullableBoolFieldUpdateOperationsInput | boolean | null
     choixPrelevementImPossible?: NullableStringFieldUpdateOperationsInput | string | null
     idIntervention?: NullableIntFieldUpdateOperationsInput | number | null
+    numero?: NullableIntFieldUpdateOperationsInput | number | null
     couches?: CoucheUncheckedUpdateManyWithoutPrelevementNestedInput
   }
 
@@ -5579,6 +5647,7 @@ export namespace Prisma {
     PrelevementPossible?: boolean | null
     choixPrelevementImPossible?: string | null
     idIntervention?: number | null
+    numero?: number | null
   }
 
   export type PrelevementUpdateManyMutationInput = {
@@ -5597,6 +5666,7 @@ export namespace Prisma {
     resultat?: NullableStringFieldUpdateOperationsInput | string | null
     PrelevementPossible?: NullableBoolFieldUpdateOperationsInput | boolean | null
     choixPrelevementImPossible?: NullableStringFieldUpdateOperationsInput | string | null
+    numero?: NullableIntFieldUpdateOperationsInput | number | null
   }
 
   export type PrelevementUncheckedUpdateManyInput = {
@@ -5617,6 +5687,7 @@ export namespace Prisma {
     PrelevementPossible?: NullableBoolFieldUpdateOperationsInput | boolean | null
     choixPrelevementImPossible?: NullableStringFieldUpdateOperationsInput | string | null
     idIntervention?: NullableIntFieldUpdateOperationsInput | number | null
+    numero?: NullableIntFieldUpdateOperationsInput | number | null
   }
 
   export type CoucheCreateInput = {
@@ -5625,6 +5696,9 @@ export namespace Prisma {
     amiante?: boolean | null
     materiaux?: string | null
     HAP?: string | null
+    numero?: number | null
+    laboratoire?: string | null
+    bonCommandeLabo?: string | null
     Prelevement?: PrelevementCreateNestedOneWithoutCouchesInput
   }
 
@@ -5636,6 +5710,9 @@ export namespace Prisma {
     materiaux?: string | null
     HAP?: string | null
     idPrelevement?: number | null
+    numero?: number | null
+    laboratoire?: string | null
+    bonCommandeLabo?: string | null
   }
 
   export type CoucheUpdateInput = {
@@ -5644,6 +5721,9 @@ export namespace Prisma {
     amiante?: NullableBoolFieldUpdateOperationsInput | boolean | null
     materiaux?: NullableStringFieldUpdateOperationsInput | string | null
     HAP?: NullableStringFieldUpdateOperationsInput | string | null
+    numero?: NullableIntFieldUpdateOperationsInput | number | null
+    laboratoire?: NullableStringFieldUpdateOperationsInput | string | null
+    bonCommandeLabo?: NullableStringFieldUpdateOperationsInput | string | null
     Prelevement?: PrelevementUpdateOneWithoutCouchesNestedInput
   }
 
@@ -5655,6 +5735,9 @@ export namespace Prisma {
     materiaux?: NullableStringFieldUpdateOperationsInput | string | null
     HAP?: NullableStringFieldUpdateOperationsInput | string | null
     idPrelevement?: NullableIntFieldUpdateOperationsInput | number | null
+    numero?: NullableIntFieldUpdateOperationsInput | number | null
+    laboratoire?: NullableStringFieldUpdateOperationsInput | string | null
+    bonCommandeLabo?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type CoucheCreateManyInput = {
@@ -5664,6 +5747,9 @@ export namespace Prisma {
     materiaux?: string | null
     HAP?: string | null
     idPrelevement?: number | null
+    numero?: number | null
+    laboratoire?: string | null
+    bonCommandeLabo?: string | null
   }
 
   export type CoucheUpdateManyMutationInput = {
@@ -5672,6 +5758,9 @@ export namespace Prisma {
     amiante?: NullableBoolFieldUpdateOperationsInput | boolean | null
     materiaux?: NullableStringFieldUpdateOperationsInput | string | null
     HAP?: NullableStringFieldUpdateOperationsInput | string | null
+    numero?: NullableIntFieldUpdateOperationsInput | number | null
+    laboratoire?: NullableStringFieldUpdateOperationsInput | string | null
+    bonCommandeLabo?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type CoucheUncheckedUpdateManyInput = {
@@ -5682,6 +5771,9 @@ export namespace Prisma {
     materiaux?: NullableStringFieldUpdateOperationsInput | string | null
     HAP?: NullableStringFieldUpdateOperationsInput | string | null
     idPrelevement?: NullableIntFieldUpdateOperationsInput | number | null
+    numero?: NullableIntFieldUpdateOperationsInput | number | null
+    laboratoire?: NullableStringFieldUpdateOperationsInput | string | null
+    bonCommandeLabo?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type IntFilter = {
@@ -5936,12 +6028,14 @@ export namespace Prisma {
     PrelevementPossible?: SortOrder
     choixPrelevementImPossible?: SortOrder
     idIntervention?: SortOrder
+    numero?: SortOrder
   }
 
   export type PrelevementAvgOrderByAggregateInput = {
     id?: SortOrder
     taille?: SortOrder
     idIntervention?: SortOrder
+    numero?: SortOrder
   }
 
   export type PrelevementMaxOrderByAggregateInput = {
@@ -5962,6 +6056,7 @@ export namespace Prisma {
     PrelevementPossible?: SortOrder
     choixPrelevementImPossible?: SortOrder
     idIntervention?: SortOrder
+    numero?: SortOrder
   }
 
   export type PrelevementMinOrderByAggregateInput = {
@@ -5982,12 +6077,14 @@ export namespace Prisma {
     PrelevementPossible?: SortOrder
     choixPrelevementImPossible?: SortOrder
     idIntervention?: SortOrder
+    numero?: SortOrder
   }
 
   export type PrelevementSumOrderByAggregateInput = {
     id?: SortOrder
     taille?: SortOrder
     idIntervention?: SortOrder
+    numero?: SortOrder
   }
 
   export type PrelevementRelationFilter = {
@@ -6003,11 +6100,15 @@ export namespace Prisma {
     materiaux?: SortOrder
     HAP?: SortOrder
     idPrelevement?: SortOrder
+    numero?: SortOrder
+    laboratoire?: SortOrder
+    bonCommandeLabo?: SortOrder
   }
 
   export type CoucheAvgOrderByAggregateInput = {
     id?: SortOrder
     idPrelevement?: SortOrder
+    numero?: SortOrder
   }
 
   export type CoucheMaxOrderByAggregateInput = {
@@ -6018,6 +6119,9 @@ export namespace Prisma {
     materiaux?: SortOrder
     HAP?: SortOrder
     idPrelevement?: SortOrder
+    numero?: SortOrder
+    laboratoire?: SortOrder
+    bonCommandeLabo?: SortOrder
   }
 
   export type CoucheMinOrderByAggregateInput = {
@@ -6028,11 +6132,15 @@ export namespace Prisma {
     materiaux?: SortOrder
     HAP?: SortOrder
     idPrelevement?: SortOrder
+    numero?: SortOrder
+    laboratoire?: SortOrder
+    bonCommandeLabo?: SortOrder
   }
 
   export type CoucheSumOrderByAggregateInput = {
     id?: SortOrder
     idPrelevement?: SortOrder
+    numero?: SortOrder
   }
 
   export type InterventionCreateNestedManyWithoutDossierInput = {
@@ -6472,6 +6580,7 @@ export namespace Prisma {
     resultat?: string | null
     PrelevementPossible?: boolean | null
     choixPrelevementImPossible?: string | null
+    numero?: number | null
     couches?: CoucheCreateNestedManyWithoutPrelevementInput
   }
 
@@ -6492,6 +6601,7 @@ export namespace Prisma {
     resultat?: string | null
     PrelevementPossible?: boolean | null
     choixPrelevementImPossible?: string | null
+    numero?: number | null
     couches?: CoucheUncheckedCreateNestedManyWithoutPrelevementInput
   }
 
@@ -6560,6 +6670,7 @@ export namespace Prisma {
     PrelevementPossible?: BoolNullableFilter | boolean | null
     choixPrelevementImPossible?: StringNullableFilter | string | null
     idIntervention?: IntNullableFilter | number | null
+    numero?: IntNullableFilter | number | null
   }
 
   export type InterventionCreateWithoutPrelevementsInput = {
@@ -6592,6 +6703,9 @@ export namespace Prisma {
     amiante?: boolean | null
     materiaux?: string | null
     HAP?: string | null
+    numero?: number | null
+    laboratoire?: string | null
+    bonCommandeLabo?: string | null
   }
 
   export type CoucheUncheckedCreateWithoutPrelevementInput = {
@@ -6601,6 +6715,9 @@ export namespace Prisma {
     amiante?: boolean | null
     materiaux?: string | null
     HAP?: string | null
+    numero?: number | null
+    laboratoire?: string | null
+    bonCommandeLabo?: string | null
   }
 
   export type CoucheCreateOrConnectWithoutPrelevementInput = {
@@ -6663,6 +6780,9 @@ export namespace Prisma {
     materiaux?: StringNullableFilter | string | null
     HAP?: StringNullableFilter | string | null
     idPrelevement?: IntNullableFilter | number | null
+    numero?: IntNullableFilter | number | null
+    laboratoire?: StringNullableFilter | string | null
+    bonCommandeLabo?: StringNullableFilter | string | null
   }
 
   export type PrelevementCreateWithoutCouchesInput = {
@@ -6681,6 +6801,7 @@ export namespace Prisma {
     resultat?: string | null
     PrelevementPossible?: boolean | null
     choixPrelevementImPossible?: string | null
+    numero?: number | null
     Intervention?: InterventionCreateNestedOneWithoutPrelevementsInput
   }
 
@@ -6702,6 +6823,7 @@ export namespace Prisma {
     PrelevementPossible?: boolean | null
     choixPrelevementImPossible?: string | null
     idIntervention?: number | null
+    numero?: number | null
   }
 
   export type PrelevementCreateOrConnectWithoutCouchesInput = {
@@ -6730,6 +6852,7 @@ export namespace Prisma {
     resultat?: NullableStringFieldUpdateOperationsInput | string | null
     PrelevementPossible?: NullableBoolFieldUpdateOperationsInput | boolean | null
     choixPrelevementImPossible?: NullableStringFieldUpdateOperationsInput | string | null
+    numero?: NullableIntFieldUpdateOperationsInput | number | null
     Intervention?: InterventionUpdateOneWithoutPrelevementsNestedInput
   }
 
@@ -6751,6 +6874,7 @@ export namespace Prisma {
     PrelevementPossible?: NullableBoolFieldUpdateOperationsInput | boolean | null
     choixPrelevementImPossible?: NullableStringFieldUpdateOperationsInput | string | null
     idIntervention?: NullableIntFieldUpdateOperationsInput | number | null
+    numero?: NullableIntFieldUpdateOperationsInput | number | null
   }
 
   export type InterventionCreateManyDossierInput = {
@@ -6805,6 +6929,7 @@ export namespace Prisma {
     resultat?: string | null
     PrelevementPossible?: boolean | null
     choixPrelevementImPossible?: string | null
+    numero?: number | null
   }
 
   export type PrelevementUpdateWithoutInterventionInput = {
@@ -6823,6 +6948,7 @@ export namespace Prisma {
     resultat?: NullableStringFieldUpdateOperationsInput | string | null
     PrelevementPossible?: NullableBoolFieldUpdateOperationsInput | boolean | null
     choixPrelevementImPossible?: NullableStringFieldUpdateOperationsInput | string | null
+    numero?: NullableIntFieldUpdateOperationsInput | number | null
     couches?: CoucheUpdateManyWithoutPrelevementNestedInput
   }
 
@@ -6843,6 +6969,7 @@ export namespace Prisma {
     resultat?: NullableStringFieldUpdateOperationsInput | string | null
     PrelevementPossible?: NullableBoolFieldUpdateOperationsInput | boolean | null
     choixPrelevementImPossible?: NullableStringFieldUpdateOperationsInput | string | null
+    numero?: NullableIntFieldUpdateOperationsInput | number | null
     couches?: CoucheUncheckedUpdateManyWithoutPrelevementNestedInput
   }
 
@@ -6863,6 +6990,7 @@ export namespace Prisma {
     resultat?: NullableStringFieldUpdateOperationsInput | string | null
     PrelevementPossible?: NullableBoolFieldUpdateOperationsInput | boolean | null
     choixPrelevementImPossible?: NullableStringFieldUpdateOperationsInput | string | null
+    numero?: NullableIntFieldUpdateOperationsInput | number | null
   }
 
   export type CoucheCreateManyPrelevementInput = {
@@ -6871,6 +6999,9 @@ export namespace Prisma {
     amiante?: boolean | null
     materiaux?: string | null
     HAP?: string | null
+    numero?: number | null
+    laboratoire?: string | null
+    bonCommandeLabo?: string | null
   }
 
   export type CoucheUpdateWithoutPrelevementInput = {
@@ -6879,6 +7010,9 @@ export namespace Prisma {
     amiante?: NullableBoolFieldUpdateOperationsInput | boolean | null
     materiaux?: NullableStringFieldUpdateOperationsInput | string | null
     HAP?: NullableStringFieldUpdateOperationsInput | string | null
+    numero?: NullableIntFieldUpdateOperationsInput | number | null
+    laboratoire?: NullableStringFieldUpdateOperationsInput | string | null
+    bonCommandeLabo?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type CoucheUncheckedUpdateWithoutPrelevementInput = {
@@ -6888,6 +7022,9 @@ export namespace Prisma {
     amiante?: NullableBoolFieldUpdateOperationsInput | boolean | null
     materiaux?: NullableStringFieldUpdateOperationsInput | string | null
     HAP?: NullableStringFieldUpdateOperationsInput | string | null
+    numero?: NullableIntFieldUpdateOperationsInput | number | null
+    laboratoire?: NullableStringFieldUpdateOperationsInput | string | null
+    bonCommandeLabo?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type CoucheUncheckedUpdateManyWithoutCouchesInput = {
@@ -6897,6 +7034,9 @@ export namespace Prisma {
     amiante?: NullableBoolFieldUpdateOperationsInput | boolean | null
     materiaux?: NullableStringFieldUpdateOperationsInput | string | null
     HAP?: NullableStringFieldUpdateOperationsInput | string | null
+    numero?: NullableIntFieldUpdateOperationsInput | number | null
+    laboratoire?: NullableStringFieldUpdateOperationsInput | string | null
+    bonCommandeLabo?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
 

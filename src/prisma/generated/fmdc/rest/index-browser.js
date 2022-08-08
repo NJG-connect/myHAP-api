@@ -117,7 +117,8 @@ exports.Prisma.PrelevementScalarFieldEnum = makeEnum({
   resultat: 'resultat',
   PrelevementPossible: 'PrelevementPossible',
   choixPrelevementImPossible: 'choixPrelevementImPossible',
-  idIntervention: 'idIntervention'
+  idIntervention: 'idIntervention',
+  numero: 'numero'
 });
 
 exports.Prisma.CoucheScalarFieldEnum = makeEnum({
@@ -127,7 +128,10 @@ exports.Prisma.CoucheScalarFieldEnum = makeEnum({
   amiante: 'amiante',
   materiaux: 'materiaux',
   HAP: 'HAP',
-  idPrelevement: 'idPrelevement'
+  idPrelevement: 'idPrelevement',
+  numero: 'numero',
+  laboratoire: 'laboratoire',
+  bonCommandeLabo: 'bonCommandeLabo'
 });
 
 exports.Prisma.SortOrder = makeEnum({

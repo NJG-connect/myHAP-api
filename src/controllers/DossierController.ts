@@ -305,7 +305,6 @@ const updateDossierById = async (req: Request, res: Response) => {
           docs: JSON.stringify(docsForHyHAP),
         };
       }
-      console.log("adeada");
 
       try {
         const dossierMyHAP = await prismaFmdc.dossier.update({
