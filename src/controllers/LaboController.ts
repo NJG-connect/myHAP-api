@@ -4,6 +4,7 @@ import { Couche, Prelevement } from "../prisma/generated/fmdc/rest";
 import { laboratoireType } from "../types/laboratoire";
 import createId from "../utils/createId";
 import DossierController from "./DossierController";
+import fetch from "node-fetch";
 
 const notificationMadra = async (req: Request, res: Response) => {
   try {
@@ -77,8 +78,25 @@ const sendInfoToLabo = async (req: Request, res: Response) => {
         },
       },
     });
+
+    const diagDossier = await prismaDiag.dossier.findUnique({
+      where: {
+        idDossier: Number(idDossier),
+      },
+      select: {
+        reference: true,
+        idDossier: true,
+      },
+    });
     if (contrat.laboratoire === laboratoireType.ITGA) {
-      sendCouchesToITGA(Number(idDossier), CouchesByPrelevement, contrat);
+      sendCouchesToITGA(
+        {
+          idDossier: Number(idDossier),
+          referenceDossier: diagDossier?.reference,
+        },
+        CouchesByPrelevement,
+        contrat
+      );
     }
 
     // do something with referenceCommande
@@ -89,7 +107,10 @@ const sendInfoToLabo = async (req: Request, res: Response) => {
 };
 
 const sendCouchesToITGA = async (
-  idDossier: number,
+  {
+    idDossier,
+    referenceDossier,
+  }: { idDossier: number; referenceDossier: string | null | undefined },
   CouchesByPrelevement: (Prelevement & {
     couches: Couche[];
   })[],
@@ -99,15 +120,15 @@ const sendCouchesToITGA = async (
     Production: "https://webservices.itga.fr/madra.WebAPI/",
     Validation: "https://webservices.itga.fr/madra.WebAPI.valid/",
   };
-
+  const idCommande = createId();
   const body = {
-    CompteUtilisateur: {
+    compteUtilisateur: {
       Identifiant: "7759WCOM01",
       MotDePasse: "b87c6b97cc720739d39c1a2d74198e1f",
     },
-    Commande: {
-      Dossier: idDossier,
-      IdSIClient: createId(),
+    commande: {
+      Reference: idCommande,
+      IdSIClient: referenceDossier,
       Client: {
         Code: "7759W",
       },
@@ -121,34 +142,66 @@ const sendCouchesToITGA = async (
       ListeEchantillonsMateriaux: CouchesByPrelevement.map(
         (onePrelevement) => ({
           Description: onePrelevement.materiaux,
-          Dossier: idDossier,
-          ChoixAnalyseCouche: "UneAnalyseGlobale",
-          IdSIClient: onePrelevement.id,
-          Reference: onePrelevement.id,
+          Dossier: idDossier.toString(),
+          ChoixAnalyseCouche: "UneAnalysePourChaqueCouche",
+          IdSIClient: onePrelevement.id.toString(),
+          Reference: onePrelevement.id.toString(),
+          DatePrelevement: "2018-03-19",
+          ListeMPSCA: "C",
           ListeReperages: onePrelevement.couches.map((oneCouche) => ({
             Ordre: oneCouche.numero,
             Description: oneCouche.materiaux,
             Analyse: 1,
+            Liste: "C",
+            Chapitre: "",
+            Composants: "",
+            PartiesComposants: "",
           })),
         })
       ),
       Origine: "Autre",
     },
   };
+  console.log(idCommande);
+
+  // console.log(body);
+  // console.log(body.commande.ListeEchantillonsMateriaux[0]);
+  // console.log(body.commande.ListeEchantillonsMateriaux[1]);
 
   const postData = await fetch(`${BASE_URL_ITGA.Validation}CommandesClient`, {
     method: "POST",
     headers: {
+      "Content-type": "application/json",
       version: "2",
       login: "7759WCOM01",
       password: "b87c6b97cc720739d39c1a2d74198e1f",
     },
     body: JSON.stringify(body),
   });
-  console.log(postData);
+  try {
+    const responseJson = await postData.json();
+    console.log(responseJson);
+  } catch (error) {
+    console.log("fail");
+
+    console.log(postData);
+  }
 };
 
 export default {
   notificationMadra,
   sendInfoToLabo,
 };
+
+//  vrai référence qcsqykenl59l6nfto2p
+
+// C001-3, C002-3, C002-4
+// DateReceptionDesDonnees: '2022-08-09T15:06:43',
+// IdSIClient: '4isb5lkhwsel6m75cja',
+// Reference: 'LOGIREP - GROUPE POLYLOGIS 59942 24.07.18',
+
+// Récupérer les résultats à partir de sa référence :
+// https://webservices.itga.fr/madra.WebAPI.valid/CommandesClient/LOGIREP - GROUPE POLYLOGIS 59942 24.07.18/EchantillonsMateriaux?identifiant=7759WCOM01&motDePasse=b87c6b97cc720739d39c1a2d74198e1f
+
+//  Récupérer un rappport
+// https://webservices.itga.fr/madra.WebAPI.valid/CommandesClient/LOGIREP - GROUPE POLYLOGIS 59942 24.07.18/EchantillonsMateriaux/Rapports?identifiant=7759WCOM01&motDePasse=b87c6b97cc720739d39c1a2d74198e1f
