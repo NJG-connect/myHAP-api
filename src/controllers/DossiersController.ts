@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
-import { prismaDiag } from "../prisma/clients";
+import { prismaDiag, prismaFmdc } from "../prisma/clients";
+import { formatDate, getInfoForThreeNextDay } from "../utils/date";
 
 const getFirstInfoDossiers = async (req: Request, res: Response) => {
   const referenceOrNumero = req.params.referenceOrNumero;
@@ -117,8 +118,95 @@ const getDossiersForToday = async (req: Request, res: Response) => {
       },
     });
 
+    const dossierForNextThreeDays: any = {};
+    const dossierForNextThreeDaysWithoutInfoDiag: any = {};
+    for await (const {
+      startDate: startDateForAll,
+      endDate: endDateForAll,
+    } of getInfoForThreeNextDay(d)) {
+      const interventionFmdc = await prismaFmdc.intervention.findMany({
+        where: {
+          AND: [
+            {
+              OR: [
+                {
+                  dateDebutMission: {
+                    gte: startDateForAll.toISOString(),
+                    lte: endDateForAll.toISOString(),
+                  },
+                },
+                {
+                  AND: [
+                    {
+                      dateDebutMission: {
+                        lte: endDateForAll.toISOString(),
+                      },
+                    },
+
+                    {
+                      dateFinMission: {
+                        gte: endDateForAll.toISOString(),
+                      },
+                    },
+                  ],
+                },
+              ],
+            },
+          ],
+        },
+        select: {
+          id: true,
+          idDossier: true,
+          dateDebutMission: true,
+          dateFinMission: true,
+        },
+      });
+      dossierForNextThreeDaysWithoutInfoDiag[formatDate(startDateForAll)] =
+        interventionFmdc;
+    }
+    const onlyIdDossierWithoutSameValue: number[] = [
+      ...new Set(
+        Object.values(dossierForNextThreeDaysWithoutInfoDiag)
+          .flat(2)
+          .map((el: any) => el.idDossier)
+      ),
+    ];
+
+    const infoDossierOfIntervention = await prismaDiag.dossier.findMany({
+      where: {
+        idDossier: {
+          in: onlyIdDossierWithoutSameValue,
+        },
+      },
+      select: {
+        idDossier: true,
+        numero: true,
+        ville: true,
+        StatutDossier: {
+          select: {
+            idStatut: true,
+            intitule: true,
+            ordre: true,
+          },
+        },
+      },
+    });
+
+    for (const [keyDate, arrOfIntervention] of Object.entries(
+      dossierForNextThreeDaysWithoutInfoDiag
+    )) {
+      const newArr = (arrOfIntervention as any).map((intervention: any) => ({
+        ...intervention,
+        ...infoDossierOfIntervention.find(
+          (el) => el.idDossier === intervention.idDossier
+        ),
+      }));
+      dossierForNextThreeDays[keyDate] = newArr;
+    }
+
     const result = {
       totalIntervention: interventions.length,
+      dossierForNextThreeDays,
       completeIntervention: interventions.filter(
         (el) => el && el.StatutDossier && el.StatutDossier?.ordre >= 10
       ).length,

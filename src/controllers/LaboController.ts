@@ -147,7 +147,9 @@ const sendCouchesToITGA = async (
           IdSIClient: onePrelevement.id.toString(),
           Reference: onePrelevement.id.toString(),
           DatePrelevement: "2018-03-19",
+          Commentaires: "Analyse granulat + liant + HAP",
           ListeMPSCA: "C",
+          AnalyseHAP: "Oui",
           ListeReperages: onePrelevement.couches.map((oneCouche) => ({
             Ordre: oneCouche.numero,
             Description: oneCouche.materiaux,
@@ -164,9 +166,9 @@ const sendCouchesToITGA = async (
   };
   console.log(idCommande);
 
-  // console.log(body);
-  // console.log(body.commande.ListeEchantillonsMateriaux[0]);
-  // console.log(body.commande.ListeEchantillonsMateriaux[1]);
+  console.log(body);
+  console.log(body.commande.ListeEchantillonsMateriaux[0]);
+  console.log(body.commande.ListeEchantillonsMateriaux[1]);
 
   const postData = await fetch(`${BASE_URL_ITGA.Validation}CommandesClient`, {
     method: "POST",
