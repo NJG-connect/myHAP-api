@@ -1288,14 +1288,26 @@
           "emplacement": {
             "type": "string"
           },
-          "latitude": {
+          "codePostal": {
+            "type": "number"
+          },
+          "ville": {
             "type": "string"
+          },
+          "departement": {
+            "type": "string"
+          },
+          "latitude": {
+            "type": "number",
+            "format": "float"
           },
           "longitude": {
-            "type": "string"
+            "type": "number",
+            "format": "float"
           },
           "altitude": {
-            "type": "string"
+            "type": "number",
+            "format": "float"
           },
           "adresse": {
             "type": "string"
@@ -1348,7 +1360,7 @@
             "type": "number"
           },
           "taille": {
-            "type": "string"
+            "type": "number"
           },
           "couleur": {
             "type": "string"
@@ -1361,6 +1373,12 @@
           },
           "HAP": {
             "type": "string"
+          },
+          "liant": {
+            "type": "boolean"
+          },
+          "granulat": {
+            "type": "boolean"
           },
           "idPrelevement": {
             "type": "number"

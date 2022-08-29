@@ -97,7 +97,8 @@ exports.Prisma.InterventionScalarFieldEnum = makeEnum({
   idEmployeIntervention: 'idEmployeIntervention',
   zones: 'zones',
   isFirstIntervention: 'isFirstIntervention',
-  idDossier: 'idDossier'
+  idDossier: 'idDossier',
+  updatedAt: 'updatedAt'
 });
 
 exports.Prisma.PrelevementScalarFieldEnum = makeEnum({
@@ -108,6 +109,9 @@ exports.Prisma.PrelevementScalarFieldEnum = makeEnum({
   longitude: 'longitude',
   altitude: 'altitude',
   adresse: 'adresse',
+  codePostal: 'codePostal',
+  ville: 'ville',
+  departement: 'departement',
   materiaux: 'materiaux',
   taille: 'taille',
   couleur: 'couleur',
@@ -118,7 +122,8 @@ exports.Prisma.PrelevementScalarFieldEnum = makeEnum({
   PrelevementPossible: 'PrelevementPossible',
   choixPrelevementImPossible: 'choixPrelevementImPossible',
   idIntervention: 'idIntervention',
-  numero: 'numero'
+  numero: 'numero',
+  updatedAt: 'updatedAt'
 });
 
 exports.Prisma.CoucheScalarFieldEnum = makeEnum({
@@ -128,10 +133,13 @@ exports.Prisma.CoucheScalarFieldEnum = makeEnum({
   amiante: 'amiante',
   materiaux: 'materiaux',
   HAP: 'HAP',
+  liant: 'liant',
+  granulat: 'granulat',
   idPrelevement: 'idPrelevement',
   numero: 'numero',
   laboratoire: 'laboratoire',
-  bonCommandeLabo: 'bonCommandeLabo'
+  bonCommandeLabo: 'bonCommandeLabo',
+  updatedAt: 'updatedAt'
 });
 
 exports.Prisma.SortOrder = makeEnum({

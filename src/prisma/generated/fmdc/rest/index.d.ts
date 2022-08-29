@@ -35,6 +35,7 @@ export type Intervention = {
   zones: string | null
   isFirstIntervention: boolean | null
   idDossier: number
+  updatedAt: Date
 }
 
 /**
@@ -45,10 +46,13 @@ export type Prelevement = {
   id: number
   date: Date | null
   emplacement: string | null
-  latitude: string | null
-  longitude: string | null
-  altitude: string | null
+  latitude: number | null
+  longitude: number | null
+  altitude: number | null
   adresse: string | null
+  codePostal: number | null
+  ville: string | null
+  departement: string | null
   materiaux: string | null
   taille: number | null
   couleur: string | null
@@ -60,6 +64,7 @@ export type Prelevement = {
   choixPrelevementImPossible: string | null
   idIntervention: number | null
   numero: number | null
+  updatedAt: Date
 }
 
 /**
@@ -68,15 +73,18 @@ export type Prelevement = {
  */
 export type Couche = {
   id: number
-  taille: string | null
+  taille: number | null
   couleur: string | null
   amiante: boolean | null
   materiaux: string | null
   HAP: string | null
+  liant: boolean | null
+  granulat: boolean | null
   idPrelevement: number | null
   numero: number | null
   laboratoire: string | null
   bonCommandeLabo: string | null
+  updatedAt: Date
 }
 
 
@@ -2023,6 +2031,7 @@ export namespace Prisma {
     zones: string | null
     isFirstIntervention: boolean | null
     idDossier: number | null
+    updatedAt: Date | null
   }
 
   export type InterventionMaxAggregateOutputType = {
@@ -2033,6 +2042,7 @@ export namespace Prisma {
     zones: string | null
     isFirstIntervention: boolean | null
     idDossier: number | null
+    updatedAt: Date | null
   }
 
   export type InterventionCountAggregateOutputType = {
@@ -2043,6 +2053,7 @@ export namespace Prisma {
     zones: number
     isFirstIntervention: number
     idDossier: number
+    updatedAt: number
     _all: number
   }
 
@@ -2067,6 +2078,7 @@ export namespace Prisma {
     zones?: true
     isFirstIntervention?: true
     idDossier?: true
+    updatedAt?: true
   }
 
   export type InterventionMaxAggregateInputType = {
@@ -2077,6 +2089,7 @@ export namespace Prisma {
     zones?: true
     isFirstIntervention?: true
     idDossier?: true
+    updatedAt?: true
   }
 
   export type InterventionCountAggregateInputType = {
@@ -2087,6 +2100,7 @@ export namespace Prisma {
     zones?: true
     isFirstIntervention?: true
     idDossier?: true
+    updatedAt?: true
     _all?: true
   }
 
@@ -2190,6 +2204,7 @@ export namespace Prisma {
     zones: string | null
     isFirstIntervention: boolean | null
     idDossier: number
+    updatedAt: Date
     _count: InterventionCountAggregateOutputType | null
     _avg: InterventionAvgAggregateOutputType | null
     _sum: InterventionSumAggregateOutputType | null
@@ -2220,6 +2235,7 @@ export namespace Prisma {
     isFirstIntervention?: boolean
     idDossier?: boolean
     dossier?: boolean | DossierArgs
+    updatedAt?: boolean
     prelevements?: boolean | PrelevementFindManyArgs
     _count?: boolean | InterventionCountOutputTypeArgs
   }
@@ -2994,6 +3010,10 @@ export namespace Prisma {
 
   export type PrelevementAvgAggregateOutputType = {
     id: number | null
+    latitude: number | null
+    longitude: number | null
+    altitude: number | null
+    codePostal: number | null
     taille: number | null
     idIntervention: number | null
     numero: number | null
@@ -3001,6 +3021,10 @@ export namespace Prisma {
 
   export type PrelevementSumAggregateOutputType = {
     id: number | null
+    latitude: number | null
+    longitude: number | null
+    altitude: number | null
+    codePostal: number | null
     taille: number | null
     idIntervention: number | null
     numero: number | null
@@ -3010,10 +3034,13 @@ export namespace Prisma {
     id: number | null
     date: Date | null
     emplacement: string | null
-    latitude: string | null
-    longitude: string | null
-    altitude: string | null
+    latitude: number | null
+    longitude: number | null
+    altitude: number | null
     adresse: string | null
+    codePostal: number | null
+    ville: string | null
+    departement: string | null
     materiaux: string | null
     taille: number | null
     couleur: string | null
@@ -3025,16 +3052,20 @@ export namespace Prisma {
     choixPrelevementImPossible: string | null
     idIntervention: number | null
     numero: number | null
+    updatedAt: Date | null
   }
 
   export type PrelevementMaxAggregateOutputType = {
     id: number | null
     date: Date | null
     emplacement: string | null
-    latitude: string | null
-    longitude: string | null
-    altitude: string | null
+    latitude: number | null
+    longitude: number | null
+    altitude: number | null
     adresse: string | null
+    codePostal: number | null
+    ville: string | null
+    departement: string | null
     materiaux: string | null
     taille: number | null
     couleur: string | null
@@ -3046,6 +3077,7 @@ export namespace Prisma {
     choixPrelevementImPossible: string | null
     idIntervention: number | null
     numero: number | null
+    updatedAt: Date | null
   }
 
   export type PrelevementCountAggregateOutputType = {
@@ -3056,6 +3088,9 @@ export namespace Prisma {
     longitude: number
     altitude: number
     adresse: number
+    codePostal: number
+    ville: number
+    departement: number
     materiaux: number
     taille: number
     couleur: number
@@ -3067,12 +3102,17 @@ export namespace Prisma {
     choixPrelevementImPossible: number
     idIntervention: number
     numero: number
+    updatedAt: number
     _all: number
   }
 
 
   export type PrelevementAvgAggregateInputType = {
     id?: true
+    latitude?: true
+    longitude?: true
+    altitude?: true
+    codePostal?: true
     taille?: true
     idIntervention?: true
     numero?: true
@@ -3080,6 +3120,10 @@ export namespace Prisma {
 
   export type PrelevementSumAggregateInputType = {
     id?: true
+    latitude?: true
+    longitude?: true
+    altitude?: true
+    codePostal?: true
     taille?: true
     idIntervention?: true
     numero?: true
@@ -3093,6 +3137,9 @@ export namespace Prisma {
     longitude?: true
     altitude?: true
     adresse?: true
+    codePostal?: true
+    ville?: true
+    departement?: true
     materiaux?: true
     taille?: true
     couleur?: true
@@ -3104,6 +3151,7 @@ export namespace Prisma {
     choixPrelevementImPossible?: true
     idIntervention?: true
     numero?: true
+    updatedAt?: true
   }
 
   export type PrelevementMaxAggregateInputType = {
@@ -3114,6 +3162,9 @@ export namespace Prisma {
     longitude?: true
     altitude?: true
     adresse?: true
+    codePostal?: true
+    ville?: true
+    departement?: true
     materiaux?: true
     taille?: true
     couleur?: true
@@ -3125,6 +3176,7 @@ export namespace Prisma {
     choixPrelevementImPossible?: true
     idIntervention?: true
     numero?: true
+    updatedAt?: true
   }
 
   export type PrelevementCountAggregateInputType = {
@@ -3135,6 +3187,9 @@ export namespace Prisma {
     longitude?: true
     altitude?: true
     adresse?: true
+    codePostal?: true
+    ville?: true
+    departement?: true
     materiaux?: true
     taille?: true
     couleur?: true
@@ -3146,6 +3201,7 @@ export namespace Prisma {
     choixPrelevementImPossible?: true
     idIntervention?: true
     numero?: true
+    updatedAt?: true
     _all?: true
   }
 
@@ -3245,10 +3301,13 @@ export namespace Prisma {
     id: number
     date: Date | null
     emplacement: string | null
-    latitude: string | null
-    longitude: string | null
-    altitude: string | null
+    latitude: number | null
+    longitude: number | null
+    altitude: number | null
     adresse: string | null
+    codePostal: number | null
+    ville: string | null
+    departement: string | null
     materiaux: string | null
     taille: number | null
     couleur: string | null
@@ -3260,6 +3319,7 @@ export namespace Prisma {
     choixPrelevementImPossible: string | null
     idIntervention: number | null
     numero: number | null
+    updatedAt: Date
     _count: PrelevementCountAggregateOutputType | null
     _avg: PrelevementAvgAggregateOutputType | null
     _sum: PrelevementSumAggregateOutputType | null
@@ -3289,6 +3349,9 @@ export namespace Prisma {
     longitude?: boolean
     altitude?: boolean
     adresse?: boolean
+    codePostal?: boolean
+    ville?: boolean
+    departement?: boolean
     materiaux?: boolean
     taille?: boolean
     couleur?: boolean
@@ -3300,6 +3363,7 @@ export namespace Prisma {
     choixPrelevementImPossible?: boolean
     idIntervention?: boolean
     numero?: boolean
+    updatedAt?: boolean
     Intervention?: boolean | InterventionArgs
     couches?: boolean | CoucheFindManyArgs
     _count?: boolean | PrelevementCountOutputTypeArgs
@@ -4075,40 +4139,48 @@ export namespace Prisma {
 
   export type CoucheAvgAggregateOutputType = {
     id: number | null
+    taille: number | null
     idPrelevement: number | null
     numero: number | null
   }
 
   export type CoucheSumAggregateOutputType = {
     id: number | null
+    taille: number | null
     idPrelevement: number | null
     numero: number | null
   }
 
   export type CoucheMinAggregateOutputType = {
     id: number | null
-    taille: string | null
+    taille: number | null
     couleur: string | null
     amiante: boolean | null
     materiaux: string | null
     HAP: string | null
+    liant: boolean | null
+    granulat: boolean | null
     idPrelevement: number | null
     numero: number | null
     laboratoire: string | null
     bonCommandeLabo: string | null
+    updatedAt: Date | null
   }
 
   export type CoucheMaxAggregateOutputType = {
     id: number | null
-    taille: string | null
+    taille: number | null
     couleur: string | null
     amiante: boolean | null
     materiaux: string | null
     HAP: string | null
+    liant: boolean | null
+    granulat: boolean | null
     idPrelevement: number | null
     numero: number | null
     laboratoire: string | null
     bonCommandeLabo: string | null
+    updatedAt: Date | null
   }
 
   export type CoucheCountAggregateOutputType = {
@@ -4118,22 +4190,27 @@ export namespace Prisma {
     amiante: number
     materiaux: number
     HAP: number
+    liant: number
+    granulat: number
     idPrelevement: number
     numero: number
     laboratoire: number
     bonCommandeLabo: number
+    updatedAt: number
     _all: number
   }
 
 
   export type CoucheAvgAggregateInputType = {
     id?: true
+    taille?: true
     idPrelevement?: true
     numero?: true
   }
 
   export type CoucheSumAggregateInputType = {
     id?: true
+    taille?: true
     idPrelevement?: true
     numero?: true
   }
@@ -4145,10 +4222,13 @@ export namespace Prisma {
     amiante?: true
     materiaux?: true
     HAP?: true
+    liant?: true
+    granulat?: true
     idPrelevement?: true
     numero?: true
     laboratoire?: true
     bonCommandeLabo?: true
+    updatedAt?: true
   }
 
   export type CoucheMaxAggregateInputType = {
@@ -4158,10 +4238,13 @@ export namespace Prisma {
     amiante?: true
     materiaux?: true
     HAP?: true
+    liant?: true
+    granulat?: true
     idPrelevement?: true
     numero?: true
     laboratoire?: true
     bonCommandeLabo?: true
+    updatedAt?: true
   }
 
   export type CoucheCountAggregateInputType = {
@@ -4171,10 +4254,13 @@ export namespace Prisma {
     amiante?: true
     materiaux?: true
     HAP?: true
+    liant?: true
+    granulat?: true
     idPrelevement?: true
     numero?: true
     laboratoire?: true
     bonCommandeLabo?: true
+    updatedAt?: true
     _all?: true
   }
 
@@ -4272,15 +4358,18 @@ export namespace Prisma {
 
   export type CoucheGroupByOutputType = {
     id: number
-    taille: string | null
+    taille: number | null
     couleur: string | null
     amiante: boolean | null
     materiaux: string | null
     HAP: string | null
+    liant: boolean | null
+    granulat: boolean | null
     idPrelevement: number | null
     numero: number | null
     laboratoire: string | null
     bonCommandeLabo: string | null
+    updatedAt: Date
     _count: CoucheCountAggregateOutputType | null
     _avg: CoucheAvgAggregateOutputType | null
     _sum: CoucheSumAggregateOutputType | null
@@ -4309,10 +4398,13 @@ export namespace Prisma {
     amiante?: boolean
     materiaux?: boolean
     HAP?: boolean
+    liant?: boolean
+    granulat?: boolean
     idPrelevement?: boolean
     numero?: boolean
     laboratoire?: boolean
     bonCommandeLabo?: boolean
+    updatedAt?: boolean
     Prelevement?: boolean | PrelevementArgs
   }
 
@@ -5087,7 +5179,8 @@ export namespace Prisma {
     idEmployeIntervention: 'idEmployeIntervention',
     zones: 'zones',
     isFirstIntervention: 'isFirstIntervention',
-    idDossier: 'idDossier'
+    idDossier: 'idDossier',
+    updatedAt: 'updatedAt'
   };
 
   export type InterventionScalarFieldEnum = (typeof InterventionScalarFieldEnum)[keyof typeof InterventionScalarFieldEnum]
@@ -5101,6 +5194,9 @@ export namespace Prisma {
     longitude: 'longitude',
     altitude: 'altitude',
     adresse: 'adresse',
+    codePostal: 'codePostal',
+    ville: 'ville',
+    departement: 'departement',
     materiaux: 'materiaux',
     taille: 'taille',
     couleur: 'couleur',
@@ -5111,7 +5207,8 @@ export namespace Prisma {
     PrelevementPossible: 'PrelevementPossible',
     choixPrelevementImPossible: 'choixPrelevementImPossible',
     idIntervention: 'idIntervention',
-    numero: 'numero'
+    numero: 'numero',
+    updatedAt: 'updatedAt'
   };
 
   export type PrelevementScalarFieldEnum = (typeof PrelevementScalarFieldEnum)[keyof typeof PrelevementScalarFieldEnum]
@@ -5124,10 +5221,13 @@ export namespace Prisma {
     amiante: 'amiante',
     materiaux: 'materiaux',
     HAP: 'HAP',
+    liant: 'liant',
+    granulat: 'granulat',
     idPrelevement: 'idPrelevement',
     numero: 'numero',
     laboratoire: 'laboratoire',
-    bonCommandeLabo: 'bonCommandeLabo'
+    bonCommandeLabo: 'bonCommandeLabo',
+    updatedAt: 'updatedAt'
   };
 
   export type CoucheScalarFieldEnum = (typeof CoucheScalarFieldEnum)[keyof typeof CoucheScalarFieldEnum]
@@ -5203,6 +5303,7 @@ export namespace Prisma {
     isFirstIntervention?: BoolNullableFilter | boolean | null
     idDossier?: IntFilter | number
     dossier?: XOR<DossierRelationFilter, DossierWhereInput>
+    updatedAt?: DateTimeFilter | Date | string
     prelevements?: PrelevementListRelationFilter
   }
 
@@ -5215,6 +5316,7 @@ export namespace Prisma {
     isFirstIntervention?: SortOrder
     idDossier?: SortOrder
     dossier?: DossierOrderByWithRelationInput
+    updatedAt?: SortOrder
     prelevements?: PrelevementOrderByRelationAggregateInput
   }
 
@@ -5230,6 +5332,7 @@ export namespace Prisma {
     zones?: SortOrder
     isFirstIntervention?: SortOrder
     idDossier?: SortOrder
+    updatedAt?: SortOrder
     _count?: InterventionCountOrderByAggregateInput
     _avg?: InterventionAvgOrderByAggregateInput
     _max?: InterventionMaxOrderByAggregateInput
@@ -5248,6 +5351,7 @@ export namespace Prisma {
     zones?: StringNullableWithAggregatesFilter | string | null
     isFirstIntervention?: BoolNullableWithAggregatesFilter | boolean | null
     idDossier?: IntWithAggregatesFilter | number
+    updatedAt?: DateTimeWithAggregatesFilter | Date | string
   }
 
   export type PrelevementWhereInput = {
@@ -5257,10 +5361,13 @@ export namespace Prisma {
     id?: IntFilter | number
     date?: DateTimeNullableFilter | Date | string | null
     emplacement?: StringNullableFilter | string | null
-    latitude?: StringNullableFilter | string | null
-    longitude?: StringNullableFilter | string | null
-    altitude?: StringNullableFilter | string | null
+    latitude?: FloatNullableFilter | number | null
+    longitude?: FloatNullableFilter | number | null
+    altitude?: FloatNullableFilter | number | null
     adresse?: StringNullableFilter | string | null
+    codePostal?: IntNullableFilter | number | null
+    ville?: StringNullableFilter | string | null
+    departement?: StringNullableFilter | string | null
     materiaux?: StringNullableFilter | string | null
     taille?: IntNullableFilter | number | null
     couleur?: StringNullableFilter | string | null
@@ -5272,6 +5379,7 @@ export namespace Prisma {
     choixPrelevementImPossible?: StringNullableFilter | string | null
     idIntervention?: IntNullableFilter | number | null
     numero?: IntNullableFilter | number | null
+    updatedAt?: DateTimeFilter | Date | string
     Intervention?: XOR<InterventionRelationFilter, InterventionWhereInput> | null
     couches?: CoucheListRelationFilter
   }
@@ -5284,6 +5392,9 @@ export namespace Prisma {
     longitude?: SortOrder
     altitude?: SortOrder
     adresse?: SortOrder
+    codePostal?: SortOrder
+    ville?: SortOrder
+    departement?: SortOrder
     materiaux?: SortOrder
     taille?: SortOrder
     couleur?: SortOrder
@@ -5295,6 +5406,7 @@ export namespace Prisma {
     choixPrelevementImPossible?: SortOrder
     idIntervention?: SortOrder
     numero?: SortOrder
+    updatedAt?: SortOrder
     Intervention?: InterventionOrderByWithRelationInput
     couches?: CoucheOrderByRelationAggregateInput
   }
@@ -5311,6 +5423,9 @@ export namespace Prisma {
     longitude?: SortOrder
     altitude?: SortOrder
     adresse?: SortOrder
+    codePostal?: SortOrder
+    ville?: SortOrder
+    departement?: SortOrder
     materiaux?: SortOrder
     taille?: SortOrder
     couleur?: SortOrder
@@ -5322,6 +5437,7 @@ export namespace Prisma {
     choixPrelevementImPossible?: SortOrder
     idIntervention?: SortOrder
     numero?: SortOrder
+    updatedAt?: SortOrder
     _count?: PrelevementCountOrderByAggregateInput
     _avg?: PrelevementAvgOrderByAggregateInput
     _max?: PrelevementMaxOrderByAggregateInput
@@ -5336,10 +5452,13 @@ export namespace Prisma {
     id?: IntWithAggregatesFilter | number
     date?: DateTimeNullableWithAggregatesFilter | Date | string | null
     emplacement?: StringNullableWithAggregatesFilter | string | null
-    latitude?: StringNullableWithAggregatesFilter | string | null
-    longitude?: StringNullableWithAggregatesFilter | string | null
-    altitude?: StringNullableWithAggregatesFilter | string | null
+    latitude?: FloatNullableWithAggregatesFilter | number | null
+    longitude?: FloatNullableWithAggregatesFilter | number | null
+    altitude?: FloatNullableWithAggregatesFilter | number | null
     adresse?: StringNullableWithAggregatesFilter | string | null
+    codePostal?: IntNullableWithAggregatesFilter | number | null
+    ville?: StringNullableWithAggregatesFilter | string | null
+    departement?: StringNullableWithAggregatesFilter | string | null
     materiaux?: StringNullableWithAggregatesFilter | string | null
     taille?: IntNullableWithAggregatesFilter | number | null
     couleur?: StringNullableWithAggregatesFilter | string | null
@@ -5351,6 +5470,7 @@ export namespace Prisma {
     choixPrelevementImPossible?: StringNullableWithAggregatesFilter | string | null
     idIntervention?: IntNullableWithAggregatesFilter | number | null
     numero?: IntNullableWithAggregatesFilter | number | null
+    updatedAt?: DateTimeWithAggregatesFilter | Date | string
   }
 
   export type CoucheWhereInput = {
@@ -5358,15 +5478,18 @@ export namespace Prisma {
     OR?: Enumerable<CoucheWhereInput>
     NOT?: Enumerable<CoucheWhereInput>
     id?: IntFilter | number
-    taille?: StringNullableFilter | string | null
+    taille?: IntNullableFilter | number | null
     couleur?: StringNullableFilter | string | null
     amiante?: BoolNullableFilter | boolean | null
     materiaux?: StringNullableFilter | string | null
     HAP?: StringNullableFilter | string | null
+    liant?: BoolNullableFilter | boolean | null
+    granulat?: BoolNullableFilter | boolean | null
     idPrelevement?: IntNullableFilter | number | null
     numero?: IntNullableFilter | number | null
     laboratoire?: StringNullableFilter | string | null
     bonCommandeLabo?: StringNullableFilter | string | null
+    updatedAt?: DateTimeFilter | Date | string
     Prelevement?: XOR<PrelevementRelationFilter, PrelevementWhereInput> | null
   }
 
@@ -5377,10 +5500,13 @@ export namespace Prisma {
     amiante?: SortOrder
     materiaux?: SortOrder
     HAP?: SortOrder
+    liant?: SortOrder
+    granulat?: SortOrder
     idPrelevement?: SortOrder
     numero?: SortOrder
     laboratoire?: SortOrder
     bonCommandeLabo?: SortOrder
+    updatedAt?: SortOrder
     Prelevement?: PrelevementOrderByWithRelationInput
   }
 
@@ -5395,10 +5521,13 @@ export namespace Prisma {
     amiante?: SortOrder
     materiaux?: SortOrder
     HAP?: SortOrder
+    liant?: SortOrder
+    granulat?: SortOrder
     idPrelevement?: SortOrder
     numero?: SortOrder
     laboratoire?: SortOrder
     bonCommandeLabo?: SortOrder
+    updatedAt?: SortOrder
     _count?: CoucheCountOrderByAggregateInput
     _avg?: CoucheAvgOrderByAggregateInput
     _max?: CoucheMaxOrderByAggregateInput
@@ -5411,15 +5540,18 @@ export namespace Prisma {
     OR?: Enumerable<CoucheScalarWhereWithAggregatesInput>
     NOT?: Enumerable<CoucheScalarWhereWithAggregatesInput>
     id?: IntWithAggregatesFilter | number
-    taille?: StringNullableWithAggregatesFilter | string | null
+    taille?: IntNullableWithAggregatesFilter | number | null
     couleur?: StringNullableWithAggregatesFilter | string | null
     amiante?: BoolNullableWithAggregatesFilter | boolean | null
     materiaux?: StringNullableWithAggregatesFilter | string | null
     HAP?: StringNullableWithAggregatesFilter | string | null
+    liant?: BoolNullableWithAggregatesFilter | boolean | null
+    granulat?: BoolNullableWithAggregatesFilter | boolean | null
     idPrelevement?: IntNullableWithAggregatesFilter | number | null
     numero?: IntNullableWithAggregatesFilter | number | null
     laboratoire?: StringNullableWithAggregatesFilter | string | null
     bonCommandeLabo?: StringNullableWithAggregatesFilter | string | null
+    updatedAt?: DateTimeWithAggregatesFilter | Date | string
   }
 
   export type DossierCreateInput = {
@@ -5482,6 +5614,7 @@ export namespace Prisma {
     zones?: string | null
     isFirstIntervention?: boolean | null
     dossier: DossierCreateNestedOneWithoutInterventionsInput
+    updatedAt?: Date | string
     prelevements?: PrelevementCreateNestedManyWithoutInterventionInput
   }
 
@@ -5493,6 +5626,7 @@ export namespace Prisma {
     zones?: string | null
     isFirstIntervention?: boolean | null
     idDossier: number
+    updatedAt?: Date | string
     prelevements?: PrelevementUncheckedCreateNestedManyWithoutInterventionInput
   }
 
@@ -5503,6 +5637,7 @@ export namespace Prisma {
     zones?: NullableStringFieldUpdateOperationsInput | string | null
     isFirstIntervention?: NullableBoolFieldUpdateOperationsInput | boolean | null
     dossier?: DossierUpdateOneRequiredWithoutInterventionsNestedInput
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     prelevements?: PrelevementUpdateManyWithoutInterventionNestedInput
   }
 
@@ -5514,6 +5649,7 @@ export namespace Prisma {
     zones?: NullableStringFieldUpdateOperationsInput | string | null
     isFirstIntervention?: NullableBoolFieldUpdateOperationsInput | boolean | null
     idDossier?: IntFieldUpdateOperationsInput | number
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     prelevements?: PrelevementUncheckedUpdateManyWithoutInterventionNestedInput
   }
 
@@ -5524,6 +5660,7 @@ export namespace Prisma {
     zones?: string | null
     isFirstIntervention?: boolean | null
     idDossier: number
+    updatedAt?: Date | string
   }
 
   export type InterventionUpdateManyMutationInput = {
@@ -5532,6 +5669,7 @@ export namespace Prisma {
     idEmployeIntervention?: NullableIntFieldUpdateOperationsInput | number | null
     zones?: NullableStringFieldUpdateOperationsInput | string | null
     isFirstIntervention?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type InterventionUncheckedUpdateManyInput = {
@@ -5542,15 +5680,19 @@ export namespace Prisma {
     zones?: NullableStringFieldUpdateOperationsInput | string | null
     isFirstIntervention?: NullableBoolFieldUpdateOperationsInput | boolean | null
     idDossier?: IntFieldUpdateOperationsInput | number
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type PrelevementCreateInput = {
     date?: Date | string | null
     emplacement?: string | null
-    latitude?: string | null
-    longitude?: string | null
-    altitude?: string | null
+    latitude?: number | null
+    longitude?: number | null
+    altitude?: number | null
     adresse?: string | null
+    codePostal?: number | null
+    ville?: string | null
+    departement?: string | null
     materiaux?: string | null
     taille?: number | null
     couleur?: string | null
@@ -5561,6 +5703,7 @@ export namespace Prisma {
     PrelevementPossible?: boolean | null
     choixPrelevementImPossible?: string | null
     numero?: number | null
+    updatedAt?: Date | string
     Intervention?: InterventionCreateNestedOneWithoutPrelevementsInput
     couches?: CoucheCreateNestedManyWithoutPrelevementInput
   }
@@ -5569,10 +5712,13 @@ export namespace Prisma {
     id?: number
     date?: Date | string | null
     emplacement?: string | null
-    latitude?: string | null
-    longitude?: string | null
-    altitude?: string | null
+    latitude?: number | null
+    longitude?: number | null
+    altitude?: number | null
     adresse?: string | null
+    codePostal?: number | null
+    ville?: string | null
+    departement?: string | null
     materiaux?: string | null
     taille?: number | null
     couleur?: string | null
@@ -5584,16 +5730,20 @@ export namespace Prisma {
     choixPrelevementImPossible?: string | null
     idIntervention?: number | null
     numero?: number | null
+    updatedAt?: Date | string
     couches?: CoucheUncheckedCreateNestedManyWithoutPrelevementInput
   }
 
   export type PrelevementUpdateInput = {
     date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     emplacement?: NullableStringFieldUpdateOperationsInput | string | null
-    latitude?: NullableStringFieldUpdateOperationsInput | string | null
-    longitude?: NullableStringFieldUpdateOperationsInput | string | null
-    altitude?: NullableStringFieldUpdateOperationsInput | string | null
+    latitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    longitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    altitude?: NullableFloatFieldUpdateOperationsInput | number | null
     adresse?: NullableStringFieldUpdateOperationsInput | string | null
+    codePostal?: NullableIntFieldUpdateOperationsInput | number | null
+    ville?: NullableStringFieldUpdateOperationsInput | string | null
+    departement?: NullableStringFieldUpdateOperationsInput | string | null
     materiaux?: NullableStringFieldUpdateOperationsInput | string | null
     taille?: NullableIntFieldUpdateOperationsInput | number | null
     couleur?: NullableStringFieldUpdateOperationsInput | string | null
@@ -5604,6 +5754,7 @@ export namespace Prisma {
     PrelevementPossible?: NullableBoolFieldUpdateOperationsInput | boolean | null
     choixPrelevementImPossible?: NullableStringFieldUpdateOperationsInput | string | null
     numero?: NullableIntFieldUpdateOperationsInput | number | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     Intervention?: InterventionUpdateOneWithoutPrelevementsNestedInput
     couches?: CoucheUpdateManyWithoutPrelevementNestedInput
   }
@@ -5612,10 +5763,13 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     emplacement?: NullableStringFieldUpdateOperationsInput | string | null
-    latitude?: NullableStringFieldUpdateOperationsInput | string | null
-    longitude?: NullableStringFieldUpdateOperationsInput | string | null
-    altitude?: NullableStringFieldUpdateOperationsInput | string | null
+    latitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    longitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    altitude?: NullableFloatFieldUpdateOperationsInput | number | null
     adresse?: NullableStringFieldUpdateOperationsInput | string | null
+    codePostal?: NullableIntFieldUpdateOperationsInput | number | null
+    ville?: NullableStringFieldUpdateOperationsInput | string | null
+    departement?: NullableStringFieldUpdateOperationsInput | string | null
     materiaux?: NullableStringFieldUpdateOperationsInput | string | null
     taille?: NullableIntFieldUpdateOperationsInput | number | null
     couleur?: NullableStringFieldUpdateOperationsInput | string | null
@@ -5627,16 +5781,20 @@ export namespace Prisma {
     choixPrelevementImPossible?: NullableStringFieldUpdateOperationsInput | string | null
     idIntervention?: NullableIntFieldUpdateOperationsInput | number | null
     numero?: NullableIntFieldUpdateOperationsInput | number | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     couches?: CoucheUncheckedUpdateManyWithoutPrelevementNestedInput
   }
 
   export type PrelevementCreateManyInput = {
     date?: Date | string | null
     emplacement?: string | null
-    latitude?: string | null
-    longitude?: string | null
-    altitude?: string | null
+    latitude?: number | null
+    longitude?: number | null
+    altitude?: number | null
     adresse?: string | null
+    codePostal?: number | null
+    ville?: string | null
+    departement?: string | null
     materiaux?: string | null
     taille?: number | null
     couleur?: string | null
@@ -5648,15 +5806,19 @@ export namespace Prisma {
     choixPrelevementImPossible?: string | null
     idIntervention?: number | null
     numero?: number | null
+    updatedAt?: Date | string
   }
 
   export type PrelevementUpdateManyMutationInput = {
     date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     emplacement?: NullableStringFieldUpdateOperationsInput | string | null
-    latitude?: NullableStringFieldUpdateOperationsInput | string | null
-    longitude?: NullableStringFieldUpdateOperationsInput | string | null
-    altitude?: NullableStringFieldUpdateOperationsInput | string | null
+    latitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    longitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    altitude?: NullableFloatFieldUpdateOperationsInput | number | null
     adresse?: NullableStringFieldUpdateOperationsInput | string | null
+    codePostal?: NullableIntFieldUpdateOperationsInput | number | null
+    ville?: NullableStringFieldUpdateOperationsInput | string | null
+    departement?: NullableStringFieldUpdateOperationsInput | string | null
     materiaux?: NullableStringFieldUpdateOperationsInput | string | null
     taille?: NullableIntFieldUpdateOperationsInput | number | null
     couleur?: NullableStringFieldUpdateOperationsInput | string | null
@@ -5667,16 +5829,20 @@ export namespace Prisma {
     PrelevementPossible?: NullableBoolFieldUpdateOperationsInput | boolean | null
     choixPrelevementImPossible?: NullableStringFieldUpdateOperationsInput | string | null
     numero?: NullableIntFieldUpdateOperationsInput | number | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type PrelevementUncheckedUpdateManyInput = {
     id?: IntFieldUpdateOperationsInput | number
     date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     emplacement?: NullableStringFieldUpdateOperationsInput | string | null
-    latitude?: NullableStringFieldUpdateOperationsInput | string | null
-    longitude?: NullableStringFieldUpdateOperationsInput | string | null
-    altitude?: NullableStringFieldUpdateOperationsInput | string | null
+    latitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    longitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    altitude?: NullableFloatFieldUpdateOperationsInput | number | null
     adresse?: NullableStringFieldUpdateOperationsInput | string | null
+    codePostal?: NullableIntFieldUpdateOperationsInput | number | null
+    ville?: NullableStringFieldUpdateOperationsInput | string | null
+    departement?: NullableStringFieldUpdateOperationsInput | string | null
     materiaux?: NullableStringFieldUpdateOperationsInput | string | null
     taille?: NullableIntFieldUpdateOperationsInput | number | null
     couleur?: NullableStringFieldUpdateOperationsInput | string | null
@@ -5688,92 +5854,114 @@ export namespace Prisma {
     choixPrelevementImPossible?: NullableStringFieldUpdateOperationsInput | string | null
     idIntervention?: NullableIntFieldUpdateOperationsInput | number | null
     numero?: NullableIntFieldUpdateOperationsInput | number | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type CoucheCreateInput = {
-    taille?: string | null
+    taille?: number | null
     couleur?: string | null
     amiante?: boolean | null
     materiaux?: string | null
     HAP?: string | null
+    liant?: boolean | null
+    granulat?: boolean | null
     numero?: number | null
     laboratoire?: string | null
     bonCommandeLabo?: string | null
+    updatedAt?: Date | string
     Prelevement?: PrelevementCreateNestedOneWithoutCouchesInput
   }
 
   export type CoucheUncheckedCreateInput = {
     id?: number
-    taille?: string | null
+    taille?: number | null
     couleur?: string | null
     amiante?: boolean | null
     materiaux?: string | null
     HAP?: string | null
+    liant?: boolean | null
+    granulat?: boolean | null
     idPrelevement?: number | null
     numero?: number | null
     laboratoire?: string | null
     bonCommandeLabo?: string | null
+    updatedAt?: Date | string
   }
 
   export type CoucheUpdateInput = {
-    taille?: NullableStringFieldUpdateOperationsInput | string | null
+    taille?: NullableIntFieldUpdateOperationsInput | number | null
     couleur?: NullableStringFieldUpdateOperationsInput | string | null
     amiante?: NullableBoolFieldUpdateOperationsInput | boolean | null
     materiaux?: NullableStringFieldUpdateOperationsInput | string | null
     HAP?: NullableStringFieldUpdateOperationsInput | string | null
+    liant?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    granulat?: NullableBoolFieldUpdateOperationsInput | boolean | null
     numero?: NullableIntFieldUpdateOperationsInput | number | null
     laboratoire?: NullableStringFieldUpdateOperationsInput | string | null
     bonCommandeLabo?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     Prelevement?: PrelevementUpdateOneWithoutCouchesNestedInput
   }
 
   export type CoucheUncheckedUpdateInput = {
     id?: IntFieldUpdateOperationsInput | number
-    taille?: NullableStringFieldUpdateOperationsInput | string | null
+    taille?: NullableIntFieldUpdateOperationsInput | number | null
     couleur?: NullableStringFieldUpdateOperationsInput | string | null
     amiante?: NullableBoolFieldUpdateOperationsInput | boolean | null
     materiaux?: NullableStringFieldUpdateOperationsInput | string | null
     HAP?: NullableStringFieldUpdateOperationsInput | string | null
+    liant?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    granulat?: NullableBoolFieldUpdateOperationsInput | boolean | null
     idPrelevement?: NullableIntFieldUpdateOperationsInput | number | null
     numero?: NullableIntFieldUpdateOperationsInput | number | null
     laboratoire?: NullableStringFieldUpdateOperationsInput | string | null
     bonCommandeLabo?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type CoucheCreateManyInput = {
-    taille?: string | null
+    taille?: number | null
     couleur?: string | null
     amiante?: boolean | null
     materiaux?: string | null
     HAP?: string | null
+    liant?: boolean | null
+    granulat?: boolean | null
     idPrelevement?: number | null
     numero?: number | null
     laboratoire?: string | null
     bonCommandeLabo?: string | null
+    updatedAt?: Date | string
   }
 
   export type CoucheUpdateManyMutationInput = {
-    taille?: NullableStringFieldUpdateOperationsInput | string | null
+    taille?: NullableIntFieldUpdateOperationsInput | number | null
     couleur?: NullableStringFieldUpdateOperationsInput | string | null
     amiante?: NullableBoolFieldUpdateOperationsInput | boolean | null
     materiaux?: NullableStringFieldUpdateOperationsInput | string | null
     HAP?: NullableStringFieldUpdateOperationsInput | string | null
+    liant?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    granulat?: NullableBoolFieldUpdateOperationsInput | boolean | null
     numero?: NullableIntFieldUpdateOperationsInput | number | null
     laboratoire?: NullableStringFieldUpdateOperationsInput | string | null
     bonCommandeLabo?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type CoucheUncheckedUpdateManyInput = {
     id?: IntFieldUpdateOperationsInput | number
-    taille?: NullableStringFieldUpdateOperationsInput | string | null
+    taille?: NullableIntFieldUpdateOperationsInput | number | null
     couleur?: NullableStringFieldUpdateOperationsInput | string | null
     amiante?: NullableBoolFieldUpdateOperationsInput | boolean | null
     materiaux?: NullableStringFieldUpdateOperationsInput | string | null
     HAP?: NullableStringFieldUpdateOperationsInput | string | null
+    liant?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    granulat?: NullableBoolFieldUpdateOperationsInput | boolean | null
     idPrelevement?: NullableIntFieldUpdateOperationsInput | number | null
     numero?: NullableIntFieldUpdateOperationsInput | number | null
     laboratoire?: NullableStringFieldUpdateOperationsInput | string | null
     bonCommandeLabo?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type IntFilter = {
@@ -5913,6 +6101,17 @@ export namespace Prisma {
     isNot?: DossierWhereInput
   }
 
+  export type DateTimeFilter = {
+    equals?: Date | string
+    in?: Enumerable<Date> | Enumerable<string>
+    notIn?: Enumerable<Date> | Enumerable<string>
+    lt?: Date | string
+    lte?: Date | string
+    gt?: Date | string
+    gte?: Date | string
+    not?: NestedDateTimeFilter | Date | string
+  }
+
   export type PrelevementListRelationFilter = {
     every?: PrelevementWhereInput
     some?: PrelevementWhereInput
@@ -5931,6 +6130,7 @@ export namespace Prisma {
     zones?: SortOrder
     isFirstIntervention?: SortOrder
     idDossier?: SortOrder
+    updatedAt?: SortOrder
   }
 
   export type InterventionAvgOrderByAggregateInput = {
@@ -5947,6 +6147,7 @@ export namespace Prisma {
     zones?: SortOrder
     isFirstIntervention?: SortOrder
     idDossier?: SortOrder
+    updatedAt?: SortOrder
   }
 
   export type InterventionMinOrderByAggregateInput = {
@@ -5957,6 +6158,7 @@ export namespace Prisma {
     zones?: SortOrder
     isFirstIntervention?: SortOrder
     idDossier?: SortOrder
+    updatedAt?: SortOrder
   }
 
   export type InterventionSumOrderByAggregateInput = {
@@ -5995,6 +6197,31 @@ export namespace Prisma {
     _max?: NestedIntNullableFilter
   }
 
+  export type DateTimeWithAggregatesFilter = {
+    equals?: Date | string
+    in?: Enumerable<Date> | Enumerable<string>
+    notIn?: Enumerable<Date> | Enumerable<string>
+    lt?: Date | string
+    lte?: Date | string
+    gt?: Date | string
+    gte?: Date | string
+    not?: NestedDateTimeWithAggregatesFilter | Date | string
+    _count?: NestedIntFilter
+    _min?: NestedDateTimeFilter
+    _max?: NestedDateTimeFilter
+  }
+
+  export type FloatNullableFilter = {
+    equals?: number | null
+    in?: Enumerable<number> | null
+    notIn?: Enumerable<number> | null
+    lt?: number
+    lte?: number
+    gt?: number
+    gte?: number
+    not?: NestedFloatNullableFilter | number | null
+  }
+
   export type InterventionRelationFilter = {
     is?: InterventionWhereInput | null
     isNot?: InterventionWhereInput | null
@@ -6018,6 +6245,9 @@ export namespace Prisma {
     longitude?: SortOrder
     altitude?: SortOrder
     adresse?: SortOrder
+    codePostal?: SortOrder
+    ville?: SortOrder
+    departement?: SortOrder
     materiaux?: SortOrder
     taille?: SortOrder
     couleur?: SortOrder
@@ -6029,10 +6259,15 @@ export namespace Prisma {
     choixPrelevementImPossible?: SortOrder
     idIntervention?: SortOrder
     numero?: SortOrder
+    updatedAt?: SortOrder
   }
 
   export type PrelevementAvgOrderByAggregateInput = {
     id?: SortOrder
+    latitude?: SortOrder
+    longitude?: SortOrder
+    altitude?: SortOrder
+    codePostal?: SortOrder
     taille?: SortOrder
     idIntervention?: SortOrder
     numero?: SortOrder
@@ -6046,6 +6281,9 @@ export namespace Prisma {
     longitude?: SortOrder
     altitude?: SortOrder
     adresse?: SortOrder
+    codePostal?: SortOrder
+    ville?: SortOrder
+    departement?: SortOrder
     materiaux?: SortOrder
     taille?: SortOrder
     couleur?: SortOrder
@@ -6057,6 +6295,7 @@ export namespace Prisma {
     choixPrelevementImPossible?: SortOrder
     idIntervention?: SortOrder
     numero?: SortOrder
+    updatedAt?: SortOrder
   }
 
   export type PrelevementMinOrderByAggregateInput = {
@@ -6067,6 +6306,9 @@ export namespace Prisma {
     longitude?: SortOrder
     altitude?: SortOrder
     adresse?: SortOrder
+    codePostal?: SortOrder
+    ville?: SortOrder
+    departement?: SortOrder
     materiaux?: SortOrder
     taille?: SortOrder
     couleur?: SortOrder
@@ -6078,13 +6320,34 @@ export namespace Prisma {
     choixPrelevementImPossible?: SortOrder
     idIntervention?: SortOrder
     numero?: SortOrder
+    updatedAt?: SortOrder
   }
 
   export type PrelevementSumOrderByAggregateInput = {
     id?: SortOrder
+    latitude?: SortOrder
+    longitude?: SortOrder
+    altitude?: SortOrder
+    codePostal?: SortOrder
     taille?: SortOrder
     idIntervention?: SortOrder
     numero?: SortOrder
+  }
+
+  export type FloatNullableWithAggregatesFilter = {
+    equals?: number | null
+    in?: Enumerable<number> | null
+    notIn?: Enumerable<number> | null
+    lt?: number
+    lte?: number
+    gt?: number
+    gte?: number
+    not?: NestedFloatNullableWithAggregatesFilter | number | null
+    _count?: NestedIntNullableFilter
+    _avg?: NestedFloatNullableFilter
+    _sum?: NestedFloatNullableFilter
+    _min?: NestedFloatNullableFilter
+    _max?: NestedFloatNullableFilter
   }
 
   export type PrelevementRelationFilter = {
@@ -6099,14 +6362,18 @@ export namespace Prisma {
     amiante?: SortOrder
     materiaux?: SortOrder
     HAP?: SortOrder
+    liant?: SortOrder
+    granulat?: SortOrder
     idPrelevement?: SortOrder
     numero?: SortOrder
     laboratoire?: SortOrder
     bonCommandeLabo?: SortOrder
+    updatedAt?: SortOrder
   }
 
   export type CoucheAvgOrderByAggregateInput = {
     id?: SortOrder
+    taille?: SortOrder
     idPrelevement?: SortOrder
     numero?: SortOrder
   }
@@ -6118,10 +6385,13 @@ export namespace Prisma {
     amiante?: SortOrder
     materiaux?: SortOrder
     HAP?: SortOrder
+    liant?: SortOrder
+    granulat?: SortOrder
     idPrelevement?: SortOrder
     numero?: SortOrder
     laboratoire?: SortOrder
     bonCommandeLabo?: SortOrder
+    updatedAt?: SortOrder
   }
 
   export type CoucheMinOrderByAggregateInput = {
@@ -6131,14 +6401,18 @@ export namespace Prisma {
     amiante?: SortOrder
     materiaux?: SortOrder
     HAP?: SortOrder
+    liant?: SortOrder
+    granulat?: SortOrder
     idPrelevement?: SortOrder
     numero?: SortOrder
     laboratoire?: SortOrder
     bonCommandeLabo?: SortOrder
+    updatedAt?: SortOrder
   }
 
   export type CoucheSumOrderByAggregateInput = {
     id?: SortOrder
+    taille?: SortOrder
     idPrelevement?: SortOrder
     numero?: SortOrder
   }
@@ -6241,6 +6515,10 @@ export namespace Prisma {
     update?: XOR<DossierUpdateWithoutInterventionsInput, DossierUncheckedUpdateWithoutInterventionsInput>
   }
 
+  export type DateTimeFieldUpdateOperationsInput = {
+    set?: Date | string
+  }
+
   export type PrelevementUpdateManyWithoutInterventionNestedInput = {
     create?: XOR<Enumerable<PrelevementCreateWithoutInterventionInput>, Enumerable<PrelevementUncheckedCreateWithoutInterventionInput>>
     connectOrCreate?: Enumerable<PrelevementCreateOrConnectWithoutInterventionInput>
@@ -6287,6 +6565,14 @@ export namespace Prisma {
     connectOrCreate?: Enumerable<CoucheCreateOrConnectWithoutPrelevementInput>
     createMany?: CoucheCreateManyPrelevementInputEnvelope
     connect?: Enumerable<CoucheWhereUniqueInput>
+  }
+
+  export type NullableFloatFieldUpdateOperationsInput = {
+    set?: number | null
+    increment?: number
+    decrement?: number
+    multiply?: number
+    divide?: number
   }
 
   export type InterventionUpdateOneWithoutPrelevementsNestedInput = {
@@ -6447,6 +6733,17 @@ export namespace Prisma {
     not?: NestedDateTimeNullableFilter | Date | string | null
   }
 
+  export type NestedDateTimeFilter = {
+    equals?: Date | string
+    in?: Enumerable<Date> | Enumerable<string>
+    notIn?: Enumerable<Date> | Enumerable<string>
+    lt?: Date | string
+    lte?: Date | string
+    gt?: Date | string
+    gte?: Date | string
+    not?: NestedDateTimeFilter | Date | string
+  }
+
   export type NestedDateTimeNullableWithAggregatesFilter = {
     equals?: Date | string | null
     in?: Enumerable<Date> | Enumerable<string> | null
@@ -6488,12 +6785,43 @@ export namespace Prisma {
     not?: NestedFloatNullableFilter | number | null
   }
 
+  export type NestedDateTimeWithAggregatesFilter = {
+    equals?: Date | string
+    in?: Enumerable<Date> | Enumerable<string>
+    notIn?: Enumerable<Date> | Enumerable<string>
+    lt?: Date | string
+    lte?: Date | string
+    gt?: Date | string
+    gte?: Date | string
+    not?: NestedDateTimeWithAggregatesFilter | Date | string
+    _count?: NestedIntFilter
+    _min?: NestedDateTimeFilter
+    _max?: NestedDateTimeFilter
+  }
+
+  export type NestedFloatNullableWithAggregatesFilter = {
+    equals?: number | null
+    in?: Enumerable<number> | null
+    notIn?: Enumerable<number> | null
+    lt?: number
+    lte?: number
+    gt?: number
+    gte?: number
+    not?: NestedFloatNullableWithAggregatesFilter | number | null
+    _count?: NestedIntNullableFilter
+    _avg?: NestedFloatNullableFilter
+    _sum?: NestedFloatNullableFilter
+    _min?: NestedFloatNullableFilter
+    _max?: NestedFloatNullableFilter
+  }
+
   export type InterventionCreateWithoutDossierInput = {
     dateDebutMission?: Date | string | null
     dateFinMission?: Date | string | null
     idEmployeIntervention?: number | null
     zones?: string | null
     isFirstIntervention?: boolean | null
+    updatedAt?: Date | string
     prelevements?: PrelevementCreateNestedManyWithoutInterventionInput
   }
 
@@ -6504,6 +6832,7 @@ export namespace Prisma {
     idEmployeIntervention?: number | null
     zones?: string | null
     isFirstIntervention?: boolean | null
+    updatedAt?: Date | string
     prelevements?: PrelevementUncheckedCreateNestedManyWithoutInterventionInput
   }
 
@@ -6543,6 +6872,7 @@ export namespace Prisma {
     zones?: StringNullableFilter | string | null
     isFirstIntervention?: BoolNullableFilter | boolean | null
     idDossier?: IntFilter | number
+    updatedAt?: DateTimeFilter | Date | string
   }
 
   export type DossierCreateWithoutInterventionsInput = {
@@ -6567,10 +6897,13 @@ export namespace Prisma {
   export type PrelevementCreateWithoutInterventionInput = {
     date?: Date | string | null
     emplacement?: string | null
-    latitude?: string | null
-    longitude?: string | null
-    altitude?: string | null
+    latitude?: number | null
+    longitude?: number | null
+    altitude?: number | null
     adresse?: string | null
+    codePostal?: number | null
+    ville?: string | null
+    departement?: string | null
     materiaux?: string | null
     taille?: number | null
     couleur?: string | null
@@ -6581,6 +6914,7 @@ export namespace Prisma {
     PrelevementPossible?: boolean | null
     choixPrelevementImPossible?: string | null
     numero?: number | null
+    updatedAt?: Date | string
     couches?: CoucheCreateNestedManyWithoutPrelevementInput
   }
 
@@ -6588,10 +6922,13 @@ export namespace Prisma {
     id?: number
     date?: Date | string | null
     emplacement?: string | null
-    latitude?: string | null
-    longitude?: string | null
-    altitude?: string | null
+    latitude?: number | null
+    longitude?: number | null
+    altitude?: number | null
     adresse?: string | null
+    codePostal?: number | null
+    ville?: string | null
+    departement?: string | null
     materiaux?: string | null
     taille?: number | null
     couleur?: string | null
@@ -6602,6 +6939,7 @@ export namespace Prisma {
     PrelevementPossible?: boolean | null
     choixPrelevementImPossible?: string | null
     numero?: number | null
+    updatedAt?: Date | string
     couches?: CoucheUncheckedCreateNestedManyWithoutPrelevementInput
   }
 
@@ -6656,10 +6994,13 @@ export namespace Prisma {
     id?: IntFilter | number
     date?: DateTimeNullableFilter | Date | string | null
     emplacement?: StringNullableFilter | string | null
-    latitude?: StringNullableFilter | string | null
-    longitude?: StringNullableFilter | string | null
-    altitude?: StringNullableFilter | string | null
+    latitude?: FloatNullableFilter | number | null
+    longitude?: FloatNullableFilter | number | null
+    altitude?: FloatNullableFilter | number | null
     adresse?: StringNullableFilter | string | null
+    codePostal?: IntNullableFilter | number | null
+    ville?: StringNullableFilter | string | null
+    departement?: StringNullableFilter | string | null
     materiaux?: StringNullableFilter | string | null
     taille?: IntNullableFilter | number | null
     couleur?: StringNullableFilter | string | null
@@ -6671,6 +7012,7 @@ export namespace Prisma {
     choixPrelevementImPossible?: StringNullableFilter | string | null
     idIntervention?: IntNullableFilter | number | null
     numero?: IntNullableFilter | number | null
+    updatedAt?: DateTimeFilter | Date | string
   }
 
   export type InterventionCreateWithoutPrelevementsInput = {
@@ -6680,6 +7022,7 @@ export namespace Prisma {
     zones?: string | null
     isFirstIntervention?: boolean | null
     dossier: DossierCreateNestedOneWithoutInterventionsInput
+    updatedAt?: Date | string
   }
 
   export type InterventionUncheckedCreateWithoutPrelevementsInput = {
@@ -6690,6 +7033,7 @@ export namespace Prisma {
     zones?: string | null
     isFirstIntervention?: boolean | null
     idDossier: number
+    updatedAt?: Date | string
   }
 
   export type InterventionCreateOrConnectWithoutPrelevementsInput = {
@@ -6698,26 +7042,32 @@ export namespace Prisma {
   }
 
   export type CoucheCreateWithoutPrelevementInput = {
-    taille?: string | null
+    taille?: number | null
     couleur?: string | null
     amiante?: boolean | null
     materiaux?: string | null
     HAP?: string | null
+    liant?: boolean | null
+    granulat?: boolean | null
     numero?: number | null
     laboratoire?: string | null
     bonCommandeLabo?: string | null
+    updatedAt?: Date | string
   }
 
   export type CoucheUncheckedCreateWithoutPrelevementInput = {
     id?: number
-    taille?: string | null
+    taille?: number | null
     couleur?: string | null
     amiante?: boolean | null
     materiaux?: string | null
     HAP?: string | null
+    liant?: boolean | null
+    granulat?: boolean | null
     numero?: number | null
     laboratoire?: string | null
     bonCommandeLabo?: string | null
+    updatedAt?: Date | string
   }
 
   export type CoucheCreateOrConnectWithoutPrelevementInput = {
@@ -6741,6 +7091,7 @@ export namespace Prisma {
     zones?: NullableStringFieldUpdateOperationsInput | string | null
     isFirstIntervention?: NullableBoolFieldUpdateOperationsInput | boolean | null
     dossier?: DossierUpdateOneRequiredWithoutInterventionsNestedInput
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type InterventionUncheckedUpdateWithoutPrelevementsInput = {
@@ -6751,6 +7102,7 @@ export namespace Prisma {
     zones?: NullableStringFieldUpdateOperationsInput | string | null
     isFirstIntervention?: NullableBoolFieldUpdateOperationsInput | boolean | null
     idDossier?: IntFieldUpdateOperationsInput | number
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type CoucheUpsertWithWhereUniqueWithoutPrelevementInput = {
@@ -6774,24 +7126,30 @@ export namespace Prisma {
     OR?: Enumerable<CoucheScalarWhereInput>
     NOT?: Enumerable<CoucheScalarWhereInput>
     id?: IntFilter | number
-    taille?: StringNullableFilter | string | null
+    taille?: IntNullableFilter | number | null
     couleur?: StringNullableFilter | string | null
     amiante?: BoolNullableFilter | boolean | null
     materiaux?: StringNullableFilter | string | null
     HAP?: StringNullableFilter | string | null
+    liant?: BoolNullableFilter | boolean | null
+    granulat?: BoolNullableFilter | boolean | null
     idPrelevement?: IntNullableFilter | number | null
     numero?: IntNullableFilter | number | null
     laboratoire?: StringNullableFilter | string | null
     bonCommandeLabo?: StringNullableFilter | string | null
+    updatedAt?: DateTimeFilter | Date | string
   }
 
   export type PrelevementCreateWithoutCouchesInput = {
     date?: Date | string | null
     emplacement?: string | null
-    latitude?: string | null
-    longitude?: string | null
-    altitude?: string | null
+    latitude?: number | null
+    longitude?: number | null
+    altitude?: number | null
     adresse?: string | null
+    codePostal?: number | null
+    ville?: string | null
+    departement?: string | null
     materiaux?: string | null
     taille?: number | null
     couleur?: string | null
@@ -6802,6 +7160,7 @@ export namespace Prisma {
     PrelevementPossible?: boolean | null
     choixPrelevementImPossible?: string | null
     numero?: number | null
+    updatedAt?: Date | string
     Intervention?: InterventionCreateNestedOneWithoutPrelevementsInput
   }
 
@@ -6809,10 +7168,13 @@ export namespace Prisma {
     id?: number
     date?: Date | string | null
     emplacement?: string | null
-    latitude?: string | null
-    longitude?: string | null
-    altitude?: string | null
+    latitude?: number | null
+    longitude?: number | null
+    altitude?: number | null
     adresse?: string | null
+    codePostal?: number | null
+    ville?: string | null
+    departement?: string | null
     materiaux?: string | null
     taille?: number | null
     couleur?: string | null
@@ -6824,6 +7186,7 @@ export namespace Prisma {
     choixPrelevementImPossible?: string | null
     idIntervention?: number | null
     numero?: number | null
+    updatedAt?: Date | string
   }
 
   export type PrelevementCreateOrConnectWithoutCouchesInput = {
@@ -6839,10 +7202,13 @@ export namespace Prisma {
   export type PrelevementUpdateWithoutCouchesInput = {
     date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     emplacement?: NullableStringFieldUpdateOperationsInput | string | null
-    latitude?: NullableStringFieldUpdateOperationsInput | string | null
-    longitude?: NullableStringFieldUpdateOperationsInput | string | null
-    altitude?: NullableStringFieldUpdateOperationsInput | string | null
+    latitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    longitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    altitude?: NullableFloatFieldUpdateOperationsInput | number | null
     adresse?: NullableStringFieldUpdateOperationsInput | string | null
+    codePostal?: NullableIntFieldUpdateOperationsInput | number | null
+    ville?: NullableStringFieldUpdateOperationsInput | string | null
+    departement?: NullableStringFieldUpdateOperationsInput | string | null
     materiaux?: NullableStringFieldUpdateOperationsInput | string | null
     taille?: NullableIntFieldUpdateOperationsInput | number | null
     couleur?: NullableStringFieldUpdateOperationsInput | string | null
@@ -6853,6 +7219,7 @@ export namespace Prisma {
     PrelevementPossible?: NullableBoolFieldUpdateOperationsInput | boolean | null
     choixPrelevementImPossible?: NullableStringFieldUpdateOperationsInput | string | null
     numero?: NullableIntFieldUpdateOperationsInput | number | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     Intervention?: InterventionUpdateOneWithoutPrelevementsNestedInput
   }
 
@@ -6860,10 +7227,13 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     emplacement?: NullableStringFieldUpdateOperationsInput | string | null
-    latitude?: NullableStringFieldUpdateOperationsInput | string | null
-    longitude?: NullableStringFieldUpdateOperationsInput | string | null
-    altitude?: NullableStringFieldUpdateOperationsInput | string | null
+    latitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    longitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    altitude?: NullableFloatFieldUpdateOperationsInput | number | null
     adresse?: NullableStringFieldUpdateOperationsInput | string | null
+    codePostal?: NullableIntFieldUpdateOperationsInput | number | null
+    ville?: NullableStringFieldUpdateOperationsInput | string | null
+    departement?: NullableStringFieldUpdateOperationsInput | string | null
     materiaux?: NullableStringFieldUpdateOperationsInput | string | null
     taille?: NullableIntFieldUpdateOperationsInput | number | null
     couleur?: NullableStringFieldUpdateOperationsInput | string | null
@@ -6875,6 +7245,7 @@ export namespace Prisma {
     choixPrelevementImPossible?: NullableStringFieldUpdateOperationsInput | string | null
     idIntervention?: NullableIntFieldUpdateOperationsInput | number | null
     numero?: NullableIntFieldUpdateOperationsInput | number | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type InterventionCreateManyDossierInput = {
@@ -6883,6 +7254,7 @@ export namespace Prisma {
     idEmployeIntervention?: number | null
     zones?: string | null
     isFirstIntervention?: boolean | null
+    updatedAt?: Date | string
   }
 
   export type InterventionUpdateWithoutDossierInput = {
@@ -6891,6 +7263,7 @@ export namespace Prisma {
     idEmployeIntervention?: NullableIntFieldUpdateOperationsInput | number | null
     zones?: NullableStringFieldUpdateOperationsInput | string | null
     isFirstIntervention?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     prelevements?: PrelevementUpdateManyWithoutInterventionNestedInput
   }
 
@@ -6901,6 +7274,7 @@ export namespace Prisma {
     idEmployeIntervention?: NullableIntFieldUpdateOperationsInput | number | null
     zones?: NullableStringFieldUpdateOperationsInput | string | null
     isFirstIntervention?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     prelevements?: PrelevementUncheckedUpdateManyWithoutInterventionNestedInput
   }
 
@@ -6911,15 +7285,19 @@ export namespace Prisma {
     idEmployeIntervention?: NullableIntFieldUpdateOperationsInput | number | null
     zones?: NullableStringFieldUpdateOperationsInput | string | null
     isFirstIntervention?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type PrelevementCreateManyInterventionInput = {
     date?: Date | string | null
     emplacement?: string | null
-    latitude?: string | null
-    longitude?: string | null
-    altitude?: string | null
+    latitude?: number | null
+    longitude?: number | null
+    altitude?: number | null
     adresse?: string | null
+    codePostal?: number | null
+    ville?: string | null
+    departement?: string | null
     materiaux?: string | null
     taille?: number | null
     couleur?: string | null
@@ -6930,15 +7308,19 @@ export namespace Prisma {
     PrelevementPossible?: boolean | null
     choixPrelevementImPossible?: string | null
     numero?: number | null
+    updatedAt?: Date | string
   }
 
   export type PrelevementUpdateWithoutInterventionInput = {
     date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     emplacement?: NullableStringFieldUpdateOperationsInput | string | null
-    latitude?: NullableStringFieldUpdateOperationsInput | string | null
-    longitude?: NullableStringFieldUpdateOperationsInput | string | null
-    altitude?: NullableStringFieldUpdateOperationsInput | string | null
+    latitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    longitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    altitude?: NullableFloatFieldUpdateOperationsInput | number | null
     adresse?: NullableStringFieldUpdateOperationsInput | string | null
+    codePostal?: NullableIntFieldUpdateOperationsInput | number | null
+    ville?: NullableStringFieldUpdateOperationsInput | string | null
+    departement?: NullableStringFieldUpdateOperationsInput | string | null
     materiaux?: NullableStringFieldUpdateOperationsInput | string | null
     taille?: NullableIntFieldUpdateOperationsInput | number | null
     couleur?: NullableStringFieldUpdateOperationsInput | string | null
@@ -6949,6 +7331,7 @@ export namespace Prisma {
     PrelevementPossible?: NullableBoolFieldUpdateOperationsInput | boolean | null
     choixPrelevementImPossible?: NullableStringFieldUpdateOperationsInput | string | null
     numero?: NullableIntFieldUpdateOperationsInput | number | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     couches?: CoucheUpdateManyWithoutPrelevementNestedInput
   }
 
@@ -6956,10 +7339,13 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     emplacement?: NullableStringFieldUpdateOperationsInput | string | null
-    latitude?: NullableStringFieldUpdateOperationsInput | string | null
-    longitude?: NullableStringFieldUpdateOperationsInput | string | null
-    altitude?: NullableStringFieldUpdateOperationsInput | string | null
+    latitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    longitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    altitude?: NullableFloatFieldUpdateOperationsInput | number | null
     adresse?: NullableStringFieldUpdateOperationsInput | string | null
+    codePostal?: NullableIntFieldUpdateOperationsInput | number | null
+    ville?: NullableStringFieldUpdateOperationsInput | string | null
+    departement?: NullableStringFieldUpdateOperationsInput | string | null
     materiaux?: NullableStringFieldUpdateOperationsInput | string | null
     taille?: NullableIntFieldUpdateOperationsInput | number | null
     couleur?: NullableStringFieldUpdateOperationsInput | string | null
@@ -6970,6 +7356,7 @@ export namespace Prisma {
     PrelevementPossible?: NullableBoolFieldUpdateOperationsInput | boolean | null
     choixPrelevementImPossible?: NullableStringFieldUpdateOperationsInput | string | null
     numero?: NullableIntFieldUpdateOperationsInput | number | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     couches?: CoucheUncheckedUpdateManyWithoutPrelevementNestedInput
   }
 
@@ -6977,10 +7364,13 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     date?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     emplacement?: NullableStringFieldUpdateOperationsInput | string | null
-    latitude?: NullableStringFieldUpdateOperationsInput | string | null
-    longitude?: NullableStringFieldUpdateOperationsInput | string | null
-    altitude?: NullableStringFieldUpdateOperationsInput | string | null
+    latitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    longitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    altitude?: NullableFloatFieldUpdateOperationsInput | number | null
     adresse?: NullableStringFieldUpdateOperationsInput | string | null
+    codePostal?: NullableIntFieldUpdateOperationsInput | number | null
+    ville?: NullableStringFieldUpdateOperationsInput | string | null
+    departement?: NullableStringFieldUpdateOperationsInput | string | null
     materiaux?: NullableStringFieldUpdateOperationsInput | string | null
     taille?: NullableIntFieldUpdateOperationsInput | number | null
     couleur?: NullableStringFieldUpdateOperationsInput | string | null
@@ -6991,52 +7381,65 @@ export namespace Prisma {
     PrelevementPossible?: NullableBoolFieldUpdateOperationsInput | boolean | null
     choixPrelevementImPossible?: NullableStringFieldUpdateOperationsInput | string | null
     numero?: NullableIntFieldUpdateOperationsInput | number | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type CoucheCreateManyPrelevementInput = {
-    taille?: string | null
+    taille?: number | null
     couleur?: string | null
     amiante?: boolean | null
     materiaux?: string | null
     HAP?: string | null
+    liant?: boolean | null
+    granulat?: boolean | null
     numero?: number | null
     laboratoire?: string | null
     bonCommandeLabo?: string | null
+    updatedAt?: Date | string
   }
 
   export type CoucheUpdateWithoutPrelevementInput = {
-    taille?: NullableStringFieldUpdateOperationsInput | string | null
+    taille?: NullableIntFieldUpdateOperationsInput | number | null
     couleur?: NullableStringFieldUpdateOperationsInput | string | null
     amiante?: NullableBoolFieldUpdateOperationsInput | boolean | null
     materiaux?: NullableStringFieldUpdateOperationsInput | string | null
     HAP?: NullableStringFieldUpdateOperationsInput | string | null
+    liant?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    granulat?: NullableBoolFieldUpdateOperationsInput | boolean | null
     numero?: NullableIntFieldUpdateOperationsInput | number | null
     laboratoire?: NullableStringFieldUpdateOperationsInput | string | null
     bonCommandeLabo?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type CoucheUncheckedUpdateWithoutPrelevementInput = {
     id?: IntFieldUpdateOperationsInput | number
-    taille?: NullableStringFieldUpdateOperationsInput | string | null
+    taille?: NullableIntFieldUpdateOperationsInput | number | null
     couleur?: NullableStringFieldUpdateOperationsInput | string | null
     amiante?: NullableBoolFieldUpdateOperationsInput | boolean | null
     materiaux?: NullableStringFieldUpdateOperationsInput | string | null
     HAP?: NullableStringFieldUpdateOperationsInput | string | null
+    liant?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    granulat?: NullableBoolFieldUpdateOperationsInput | boolean | null
     numero?: NullableIntFieldUpdateOperationsInput | number | null
     laboratoire?: NullableStringFieldUpdateOperationsInput | string | null
     bonCommandeLabo?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type CoucheUncheckedUpdateManyWithoutCouchesInput = {
     id?: IntFieldUpdateOperationsInput | number
-    taille?: NullableStringFieldUpdateOperationsInput | string | null
+    taille?: NullableIntFieldUpdateOperationsInput | number | null
     couleur?: NullableStringFieldUpdateOperationsInput | string | null
     amiante?: NullableBoolFieldUpdateOperationsInput | boolean | null
     materiaux?: NullableStringFieldUpdateOperationsInput | string | null
     HAP?: NullableStringFieldUpdateOperationsInput | string | null
+    liant?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    granulat?: NullableBoolFieldUpdateOperationsInput | boolean | null
     numero?: NullableIntFieldUpdateOperationsInput | number | null
     laboratoire?: NullableStringFieldUpdateOperationsInput | string | null
     bonCommandeLabo?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
 

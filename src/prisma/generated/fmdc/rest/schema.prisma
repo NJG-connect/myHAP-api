@@ -26,6 +26,7 @@ model Intervention {
   isFirstIntervention   Boolean?      @default(false)
   idDossier             Int
   dossier               Dossier       @relation(fields: [idDossier], references: [id])
+  updatedAt             DateTime      @default(now()) @updatedAt
   prelevements          Prelevement[]
 }
 
@@ -33,10 +34,13 @@ model Prelevement {
   id                         Int           @id @unique @default(autoincrement())
   date                       DateTime?
   emplacement                String?
-  latitude                   String?
-  longitude                  String?
-  altitude                   String?
+  latitude                   Float?
+  longitude                  Float?
+  altitude                   Float?
   adresse                    String?
+  codePostal                 Int?
+  ville                      String?
+  departement                String?
   materiaux                  String?
   taille                     Int?
   couleur                    String?
@@ -48,20 +52,24 @@ model Prelevement {
   choixPrelevementImPossible String?
   idIntervention             Int?
   numero                     Int?
+  updatedAt                  DateTime      @default(now()) @updatedAt
   Intervention               Intervention? @relation(fields: [idIntervention], references: [id])
   couches                    Couche[]
 }
 
 model Couche {
   id              Int          @id @unique @default(autoincrement())
-  taille          String?
+  taille          Int?
   couleur         String?
   amiante         Boolean?
   materiaux       String?
   HAP             String?
+  liant           Boolean?
+  granulat        Boolean?
   idPrelevement   Int?
   numero          Int?
   laboratoire     String?
   bonCommandeLabo String?
+  updatedAt       DateTime     @default(now()) @updatedAt
   Prelevement     Prelevement? @relation(fields: [idPrelevement], references: [id])
 }
