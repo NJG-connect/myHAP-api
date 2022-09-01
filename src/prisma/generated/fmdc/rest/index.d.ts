@@ -57,6 +57,9 @@ export type Prelevement = {
   taille: number | null
   couleur: string | null
   images: string | null
+  lineaireImage: string | null
+  mesureImage: string | null
+  prelevementImage: string | null
   laboratoire: string | null
   zone: string | null
   resultat: string | null
@@ -80,6 +83,7 @@ export type Couche = {
   HAP: string | null
   liant: boolean | null
   granulat: boolean | null
+  parkMakerImage: string | null
   idPrelevement: number | null
   numero: number | null
   laboratoire: string | null
@@ -3045,6 +3049,9 @@ export namespace Prisma {
     taille: number | null
     couleur: string | null
     images: string | null
+    lineaireImage: string | null
+    mesureImage: string | null
+    prelevementImage: string | null
     laboratoire: string | null
     zone: string | null
     resultat: string | null
@@ -3070,6 +3077,9 @@ export namespace Prisma {
     taille: number | null
     couleur: string | null
     images: string | null
+    lineaireImage: string | null
+    mesureImage: string | null
+    prelevementImage: string | null
     laboratoire: string | null
     zone: string | null
     resultat: string | null
@@ -3095,6 +3105,9 @@ export namespace Prisma {
     taille: number
     couleur: number
     images: number
+    lineaireImage: number
+    mesureImage: number
+    prelevementImage: number
     laboratoire: number
     zone: number
     resultat: number
@@ -3144,6 +3157,9 @@ export namespace Prisma {
     taille?: true
     couleur?: true
     images?: true
+    lineaireImage?: true
+    mesureImage?: true
+    prelevementImage?: true
     laboratoire?: true
     zone?: true
     resultat?: true
@@ -3169,6 +3185,9 @@ export namespace Prisma {
     taille?: true
     couleur?: true
     images?: true
+    lineaireImage?: true
+    mesureImage?: true
+    prelevementImage?: true
     laboratoire?: true
     zone?: true
     resultat?: true
@@ -3194,6 +3213,9 @@ export namespace Prisma {
     taille?: true
     couleur?: true
     images?: true
+    lineaireImage?: true
+    mesureImage?: true
+    prelevementImage?: true
     laboratoire?: true
     zone?: true
     resultat?: true
@@ -3312,6 +3334,9 @@ export namespace Prisma {
     taille: number | null
     couleur: string | null
     images: string | null
+    lineaireImage: string | null
+    mesureImage: string | null
+    prelevementImage: string | null
     laboratoire: string | null
     zone: string | null
     resultat: string | null
@@ -3356,6 +3381,9 @@ export namespace Prisma {
     taille?: boolean
     couleur?: boolean
     images?: boolean
+    lineaireImage?: boolean
+    mesureImage?: boolean
+    prelevementImage?: boolean
     laboratoire?: boolean
     zone?: boolean
     resultat?: boolean
@@ -4160,6 +4188,7 @@ export namespace Prisma {
     HAP: string | null
     liant: boolean | null
     granulat: boolean | null
+    parkMakerImage: string | null
     idPrelevement: number | null
     numero: number | null
     laboratoire: string | null
@@ -4176,6 +4205,7 @@ export namespace Prisma {
     HAP: string | null
     liant: boolean | null
     granulat: boolean | null
+    parkMakerImage: string | null
     idPrelevement: number | null
     numero: number | null
     laboratoire: string | null
@@ -4192,6 +4222,7 @@ export namespace Prisma {
     HAP: number
     liant: number
     granulat: number
+    parkMakerImage: number
     idPrelevement: number
     numero: number
     laboratoire: number
@@ -4224,6 +4255,7 @@ export namespace Prisma {
     HAP?: true
     liant?: true
     granulat?: true
+    parkMakerImage?: true
     idPrelevement?: true
     numero?: true
     laboratoire?: true
@@ -4240,6 +4272,7 @@ export namespace Prisma {
     HAP?: true
     liant?: true
     granulat?: true
+    parkMakerImage?: true
     idPrelevement?: true
     numero?: true
     laboratoire?: true
@@ -4256,6 +4289,7 @@ export namespace Prisma {
     HAP?: true
     liant?: true
     granulat?: true
+    parkMakerImage?: true
     idPrelevement?: true
     numero?: true
     laboratoire?: true
@@ -4365,6 +4399,7 @@ export namespace Prisma {
     HAP: string | null
     liant: boolean | null
     granulat: boolean | null
+    parkMakerImage: string | null
     idPrelevement: number | null
     numero: number | null
     laboratoire: string | null
@@ -4400,6 +4435,7 @@ export namespace Prisma {
     HAP?: boolean
     liant?: boolean
     granulat?: boolean
+    parkMakerImage?: boolean
     idPrelevement?: boolean
     numero?: boolean
     laboratoire?: boolean
@@ -5201,6 +5237,9 @@ export namespace Prisma {
     taille: 'taille',
     couleur: 'couleur',
     images: 'images',
+    lineaireImage: 'lineaireImage',
+    mesureImage: 'mesureImage',
+    prelevementImage: 'prelevementImage',
     laboratoire: 'laboratoire',
     zone: 'zone',
     resultat: 'resultat',
@@ -5223,6 +5262,7 @@ export namespace Prisma {
     HAP: 'HAP',
     liant: 'liant',
     granulat: 'granulat',
+    parkMakerImage: 'parkMakerImage',
     idPrelevement: 'idPrelevement',
     numero: 'numero',
     laboratoire: 'laboratoire',
@@ -5372,6 +5412,9 @@ export namespace Prisma {
     taille?: IntNullableFilter | number | null
     couleur?: StringNullableFilter | string | null
     images?: StringNullableFilter | string | null
+    lineaireImage?: StringNullableFilter | string | null
+    mesureImage?: StringNullableFilter | string | null
+    prelevementImage?: StringNullableFilter | string | null
     laboratoire?: StringNullableFilter | string | null
     zone?: StringNullableFilter | string | null
     resultat?: StringNullableFilter | string | null
@@ -5399,6 +5442,9 @@ export namespace Prisma {
     taille?: SortOrder
     couleur?: SortOrder
     images?: SortOrder
+    lineaireImage?: SortOrder
+    mesureImage?: SortOrder
+    prelevementImage?: SortOrder
     laboratoire?: SortOrder
     zone?: SortOrder
     resultat?: SortOrder
@@ -5430,6 +5476,9 @@ export namespace Prisma {
     taille?: SortOrder
     couleur?: SortOrder
     images?: SortOrder
+    lineaireImage?: SortOrder
+    mesureImage?: SortOrder
+    prelevementImage?: SortOrder
     laboratoire?: SortOrder
     zone?: SortOrder
     resultat?: SortOrder
@@ -5463,6 +5512,9 @@ export namespace Prisma {
     taille?: IntNullableWithAggregatesFilter | number | null
     couleur?: StringNullableWithAggregatesFilter | string | null
     images?: StringNullableWithAggregatesFilter | string | null
+    lineaireImage?: StringNullableWithAggregatesFilter | string | null
+    mesureImage?: StringNullableWithAggregatesFilter | string | null
+    prelevementImage?: StringNullableWithAggregatesFilter | string | null
     laboratoire?: StringNullableWithAggregatesFilter | string | null
     zone?: StringNullableWithAggregatesFilter | string | null
     resultat?: StringNullableWithAggregatesFilter | string | null
@@ -5485,6 +5537,7 @@ export namespace Prisma {
     HAP?: StringNullableFilter | string | null
     liant?: BoolNullableFilter | boolean | null
     granulat?: BoolNullableFilter | boolean | null
+    parkMakerImage?: StringNullableFilter | string | null
     idPrelevement?: IntNullableFilter | number | null
     numero?: IntNullableFilter | number | null
     laboratoire?: StringNullableFilter | string | null
@@ -5502,6 +5555,7 @@ export namespace Prisma {
     HAP?: SortOrder
     liant?: SortOrder
     granulat?: SortOrder
+    parkMakerImage?: SortOrder
     idPrelevement?: SortOrder
     numero?: SortOrder
     laboratoire?: SortOrder
@@ -5523,6 +5577,7 @@ export namespace Prisma {
     HAP?: SortOrder
     liant?: SortOrder
     granulat?: SortOrder
+    parkMakerImage?: SortOrder
     idPrelevement?: SortOrder
     numero?: SortOrder
     laboratoire?: SortOrder
@@ -5547,6 +5602,7 @@ export namespace Prisma {
     HAP?: StringNullableWithAggregatesFilter | string | null
     liant?: BoolNullableWithAggregatesFilter | boolean | null
     granulat?: BoolNullableWithAggregatesFilter | boolean | null
+    parkMakerImage?: StringNullableWithAggregatesFilter | string | null
     idPrelevement?: IntNullableWithAggregatesFilter | number | null
     numero?: IntNullableWithAggregatesFilter | number | null
     laboratoire?: StringNullableWithAggregatesFilter | string | null
@@ -5697,6 +5753,9 @@ export namespace Prisma {
     taille?: number | null
     couleur?: string | null
     images?: string | null
+    lineaireImage?: string | null
+    mesureImage?: string | null
+    prelevementImage?: string | null
     laboratoire?: string | null
     zone?: string | null
     resultat?: string | null
@@ -5723,6 +5782,9 @@ export namespace Prisma {
     taille?: number | null
     couleur?: string | null
     images?: string | null
+    lineaireImage?: string | null
+    mesureImage?: string | null
+    prelevementImage?: string | null
     laboratoire?: string | null
     zone?: string | null
     resultat?: string | null
@@ -5748,6 +5810,9 @@ export namespace Prisma {
     taille?: NullableIntFieldUpdateOperationsInput | number | null
     couleur?: NullableStringFieldUpdateOperationsInput | string | null
     images?: NullableStringFieldUpdateOperationsInput | string | null
+    lineaireImage?: NullableStringFieldUpdateOperationsInput | string | null
+    mesureImage?: NullableStringFieldUpdateOperationsInput | string | null
+    prelevementImage?: NullableStringFieldUpdateOperationsInput | string | null
     laboratoire?: NullableStringFieldUpdateOperationsInput | string | null
     zone?: NullableStringFieldUpdateOperationsInput | string | null
     resultat?: NullableStringFieldUpdateOperationsInput | string | null
@@ -5774,6 +5839,9 @@ export namespace Prisma {
     taille?: NullableIntFieldUpdateOperationsInput | number | null
     couleur?: NullableStringFieldUpdateOperationsInput | string | null
     images?: NullableStringFieldUpdateOperationsInput | string | null
+    lineaireImage?: NullableStringFieldUpdateOperationsInput | string | null
+    mesureImage?: NullableStringFieldUpdateOperationsInput | string | null
+    prelevementImage?: NullableStringFieldUpdateOperationsInput | string | null
     laboratoire?: NullableStringFieldUpdateOperationsInput | string | null
     zone?: NullableStringFieldUpdateOperationsInput | string | null
     resultat?: NullableStringFieldUpdateOperationsInput | string | null
@@ -5799,6 +5867,9 @@ export namespace Prisma {
     taille?: number | null
     couleur?: string | null
     images?: string | null
+    lineaireImage?: string | null
+    mesureImage?: string | null
+    prelevementImage?: string | null
     laboratoire?: string | null
     zone?: string | null
     resultat?: string | null
@@ -5823,6 +5894,9 @@ export namespace Prisma {
     taille?: NullableIntFieldUpdateOperationsInput | number | null
     couleur?: NullableStringFieldUpdateOperationsInput | string | null
     images?: NullableStringFieldUpdateOperationsInput | string | null
+    lineaireImage?: NullableStringFieldUpdateOperationsInput | string | null
+    mesureImage?: NullableStringFieldUpdateOperationsInput | string | null
+    prelevementImage?: NullableStringFieldUpdateOperationsInput | string | null
     laboratoire?: NullableStringFieldUpdateOperationsInput | string | null
     zone?: NullableStringFieldUpdateOperationsInput | string | null
     resultat?: NullableStringFieldUpdateOperationsInput | string | null
@@ -5847,6 +5921,9 @@ export namespace Prisma {
     taille?: NullableIntFieldUpdateOperationsInput | number | null
     couleur?: NullableStringFieldUpdateOperationsInput | string | null
     images?: NullableStringFieldUpdateOperationsInput | string | null
+    lineaireImage?: NullableStringFieldUpdateOperationsInput | string | null
+    mesureImage?: NullableStringFieldUpdateOperationsInput | string | null
+    prelevementImage?: NullableStringFieldUpdateOperationsInput | string | null
     laboratoire?: NullableStringFieldUpdateOperationsInput | string | null
     zone?: NullableStringFieldUpdateOperationsInput | string | null
     resultat?: NullableStringFieldUpdateOperationsInput | string | null
@@ -5865,6 +5942,7 @@ export namespace Prisma {
     HAP?: string | null
     liant?: boolean | null
     granulat?: boolean | null
+    parkMakerImage?: string | null
     numero?: number | null
     laboratoire?: string | null
     bonCommandeLabo?: string | null
@@ -5881,6 +5959,7 @@ export namespace Prisma {
     HAP?: string | null
     liant?: boolean | null
     granulat?: boolean | null
+    parkMakerImage?: string | null
     idPrelevement?: number | null
     numero?: number | null
     laboratoire?: string | null
@@ -5896,6 +5975,7 @@ export namespace Prisma {
     HAP?: NullableStringFieldUpdateOperationsInput | string | null
     liant?: NullableBoolFieldUpdateOperationsInput | boolean | null
     granulat?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    parkMakerImage?: NullableStringFieldUpdateOperationsInput | string | null
     numero?: NullableIntFieldUpdateOperationsInput | number | null
     laboratoire?: NullableStringFieldUpdateOperationsInput | string | null
     bonCommandeLabo?: NullableStringFieldUpdateOperationsInput | string | null
@@ -5912,6 +5992,7 @@ export namespace Prisma {
     HAP?: NullableStringFieldUpdateOperationsInput | string | null
     liant?: NullableBoolFieldUpdateOperationsInput | boolean | null
     granulat?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    parkMakerImage?: NullableStringFieldUpdateOperationsInput | string | null
     idPrelevement?: NullableIntFieldUpdateOperationsInput | number | null
     numero?: NullableIntFieldUpdateOperationsInput | number | null
     laboratoire?: NullableStringFieldUpdateOperationsInput | string | null
@@ -5927,6 +6008,7 @@ export namespace Prisma {
     HAP?: string | null
     liant?: boolean | null
     granulat?: boolean | null
+    parkMakerImage?: string | null
     idPrelevement?: number | null
     numero?: number | null
     laboratoire?: string | null
@@ -5942,6 +6024,7 @@ export namespace Prisma {
     HAP?: NullableStringFieldUpdateOperationsInput | string | null
     liant?: NullableBoolFieldUpdateOperationsInput | boolean | null
     granulat?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    parkMakerImage?: NullableStringFieldUpdateOperationsInput | string | null
     numero?: NullableIntFieldUpdateOperationsInput | number | null
     laboratoire?: NullableStringFieldUpdateOperationsInput | string | null
     bonCommandeLabo?: NullableStringFieldUpdateOperationsInput | string | null
@@ -5957,6 +6040,7 @@ export namespace Prisma {
     HAP?: NullableStringFieldUpdateOperationsInput | string | null
     liant?: NullableBoolFieldUpdateOperationsInput | boolean | null
     granulat?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    parkMakerImage?: NullableStringFieldUpdateOperationsInput | string | null
     idPrelevement?: NullableIntFieldUpdateOperationsInput | number | null
     numero?: NullableIntFieldUpdateOperationsInput | number | null
     laboratoire?: NullableStringFieldUpdateOperationsInput | string | null
@@ -6252,6 +6336,9 @@ export namespace Prisma {
     taille?: SortOrder
     couleur?: SortOrder
     images?: SortOrder
+    lineaireImage?: SortOrder
+    mesureImage?: SortOrder
+    prelevementImage?: SortOrder
     laboratoire?: SortOrder
     zone?: SortOrder
     resultat?: SortOrder
@@ -6288,6 +6375,9 @@ export namespace Prisma {
     taille?: SortOrder
     couleur?: SortOrder
     images?: SortOrder
+    lineaireImage?: SortOrder
+    mesureImage?: SortOrder
+    prelevementImage?: SortOrder
     laboratoire?: SortOrder
     zone?: SortOrder
     resultat?: SortOrder
@@ -6313,6 +6403,9 @@ export namespace Prisma {
     taille?: SortOrder
     couleur?: SortOrder
     images?: SortOrder
+    lineaireImage?: SortOrder
+    mesureImage?: SortOrder
+    prelevementImage?: SortOrder
     laboratoire?: SortOrder
     zone?: SortOrder
     resultat?: SortOrder
@@ -6364,6 +6457,7 @@ export namespace Prisma {
     HAP?: SortOrder
     liant?: SortOrder
     granulat?: SortOrder
+    parkMakerImage?: SortOrder
     idPrelevement?: SortOrder
     numero?: SortOrder
     laboratoire?: SortOrder
@@ -6387,6 +6481,7 @@ export namespace Prisma {
     HAP?: SortOrder
     liant?: SortOrder
     granulat?: SortOrder
+    parkMakerImage?: SortOrder
     idPrelevement?: SortOrder
     numero?: SortOrder
     laboratoire?: SortOrder
@@ -6403,6 +6498,7 @@ export namespace Prisma {
     HAP?: SortOrder
     liant?: SortOrder
     granulat?: SortOrder
+    parkMakerImage?: SortOrder
     idPrelevement?: SortOrder
     numero?: SortOrder
     laboratoire?: SortOrder
@@ -6908,6 +7004,9 @@ export namespace Prisma {
     taille?: number | null
     couleur?: string | null
     images?: string | null
+    lineaireImage?: string | null
+    mesureImage?: string | null
+    prelevementImage?: string | null
     laboratoire?: string | null
     zone?: string | null
     resultat?: string | null
@@ -6933,6 +7032,9 @@ export namespace Prisma {
     taille?: number | null
     couleur?: string | null
     images?: string | null
+    lineaireImage?: string | null
+    mesureImage?: string | null
+    prelevementImage?: string | null
     laboratoire?: string | null
     zone?: string | null
     resultat?: string | null
@@ -7005,6 +7107,9 @@ export namespace Prisma {
     taille?: IntNullableFilter | number | null
     couleur?: StringNullableFilter | string | null
     images?: StringNullableFilter | string | null
+    lineaireImage?: StringNullableFilter | string | null
+    mesureImage?: StringNullableFilter | string | null
+    prelevementImage?: StringNullableFilter | string | null
     laboratoire?: StringNullableFilter | string | null
     zone?: StringNullableFilter | string | null
     resultat?: StringNullableFilter | string | null
@@ -7049,6 +7154,7 @@ export namespace Prisma {
     HAP?: string | null
     liant?: boolean | null
     granulat?: boolean | null
+    parkMakerImage?: string | null
     numero?: number | null
     laboratoire?: string | null
     bonCommandeLabo?: string | null
@@ -7064,6 +7170,7 @@ export namespace Prisma {
     HAP?: string | null
     liant?: boolean | null
     granulat?: boolean | null
+    parkMakerImage?: string | null
     numero?: number | null
     laboratoire?: string | null
     bonCommandeLabo?: string | null
@@ -7133,6 +7240,7 @@ export namespace Prisma {
     HAP?: StringNullableFilter | string | null
     liant?: BoolNullableFilter | boolean | null
     granulat?: BoolNullableFilter | boolean | null
+    parkMakerImage?: StringNullableFilter | string | null
     idPrelevement?: IntNullableFilter | number | null
     numero?: IntNullableFilter | number | null
     laboratoire?: StringNullableFilter | string | null
@@ -7154,6 +7262,9 @@ export namespace Prisma {
     taille?: number | null
     couleur?: string | null
     images?: string | null
+    lineaireImage?: string | null
+    mesureImage?: string | null
+    prelevementImage?: string | null
     laboratoire?: string | null
     zone?: string | null
     resultat?: string | null
@@ -7179,6 +7290,9 @@ export namespace Prisma {
     taille?: number | null
     couleur?: string | null
     images?: string | null
+    lineaireImage?: string | null
+    mesureImage?: string | null
+    prelevementImage?: string | null
     laboratoire?: string | null
     zone?: string | null
     resultat?: string | null
@@ -7213,6 +7327,9 @@ export namespace Prisma {
     taille?: NullableIntFieldUpdateOperationsInput | number | null
     couleur?: NullableStringFieldUpdateOperationsInput | string | null
     images?: NullableStringFieldUpdateOperationsInput | string | null
+    lineaireImage?: NullableStringFieldUpdateOperationsInput | string | null
+    mesureImage?: NullableStringFieldUpdateOperationsInput | string | null
+    prelevementImage?: NullableStringFieldUpdateOperationsInput | string | null
     laboratoire?: NullableStringFieldUpdateOperationsInput | string | null
     zone?: NullableStringFieldUpdateOperationsInput | string | null
     resultat?: NullableStringFieldUpdateOperationsInput | string | null
@@ -7238,6 +7355,9 @@ export namespace Prisma {
     taille?: NullableIntFieldUpdateOperationsInput | number | null
     couleur?: NullableStringFieldUpdateOperationsInput | string | null
     images?: NullableStringFieldUpdateOperationsInput | string | null
+    lineaireImage?: NullableStringFieldUpdateOperationsInput | string | null
+    mesureImage?: NullableStringFieldUpdateOperationsInput | string | null
+    prelevementImage?: NullableStringFieldUpdateOperationsInput | string | null
     laboratoire?: NullableStringFieldUpdateOperationsInput | string | null
     zone?: NullableStringFieldUpdateOperationsInput | string | null
     resultat?: NullableStringFieldUpdateOperationsInput | string | null
@@ -7302,6 +7422,9 @@ export namespace Prisma {
     taille?: number | null
     couleur?: string | null
     images?: string | null
+    lineaireImage?: string | null
+    mesureImage?: string | null
+    prelevementImage?: string | null
     laboratoire?: string | null
     zone?: string | null
     resultat?: string | null
@@ -7325,6 +7448,9 @@ export namespace Prisma {
     taille?: NullableIntFieldUpdateOperationsInput | number | null
     couleur?: NullableStringFieldUpdateOperationsInput | string | null
     images?: NullableStringFieldUpdateOperationsInput | string | null
+    lineaireImage?: NullableStringFieldUpdateOperationsInput | string | null
+    mesureImage?: NullableStringFieldUpdateOperationsInput | string | null
+    prelevementImage?: NullableStringFieldUpdateOperationsInput | string | null
     laboratoire?: NullableStringFieldUpdateOperationsInput | string | null
     zone?: NullableStringFieldUpdateOperationsInput | string | null
     resultat?: NullableStringFieldUpdateOperationsInput | string | null
@@ -7350,6 +7476,9 @@ export namespace Prisma {
     taille?: NullableIntFieldUpdateOperationsInput | number | null
     couleur?: NullableStringFieldUpdateOperationsInput | string | null
     images?: NullableStringFieldUpdateOperationsInput | string | null
+    lineaireImage?: NullableStringFieldUpdateOperationsInput | string | null
+    mesureImage?: NullableStringFieldUpdateOperationsInput | string | null
+    prelevementImage?: NullableStringFieldUpdateOperationsInput | string | null
     laboratoire?: NullableStringFieldUpdateOperationsInput | string | null
     zone?: NullableStringFieldUpdateOperationsInput | string | null
     resultat?: NullableStringFieldUpdateOperationsInput | string | null
@@ -7375,6 +7504,9 @@ export namespace Prisma {
     taille?: NullableIntFieldUpdateOperationsInput | number | null
     couleur?: NullableStringFieldUpdateOperationsInput | string | null
     images?: NullableStringFieldUpdateOperationsInput | string | null
+    lineaireImage?: NullableStringFieldUpdateOperationsInput | string | null
+    mesureImage?: NullableStringFieldUpdateOperationsInput | string | null
+    prelevementImage?: NullableStringFieldUpdateOperationsInput | string | null
     laboratoire?: NullableStringFieldUpdateOperationsInput | string | null
     zone?: NullableStringFieldUpdateOperationsInput | string | null
     resultat?: NullableStringFieldUpdateOperationsInput | string | null
@@ -7392,6 +7524,7 @@ export namespace Prisma {
     HAP?: string | null
     liant?: boolean | null
     granulat?: boolean | null
+    parkMakerImage?: string | null
     numero?: number | null
     laboratoire?: string | null
     bonCommandeLabo?: string | null
@@ -7406,6 +7539,7 @@ export namespace Prisma {
     HAP?: NullableStringFieldUpdateOperationsInput | string | null
     liant?: NullableBoolFieldUpdateOperationsInput | boolean | null
     granulat?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    parkMakerImage?: NullableStringFieldUpdateOperationsInput | string | null
     numero?: NullableIntFieldUpdateOperationsInput | number | null
     laboratoire?: NullableStringFieldUpdateOperationsInput | string | null
     bonCommandeLabo?: NullableStringFieldUpdateOperationsInput | string | null
@@ -7421,6 +7555,7 @@ export namespace Prisma {
     HAP?: NullableStringFieldUpdateOperationsInput | string | null
     liant?: NullableBoolFieldUpdateOperationsInput | boolean | null
     granulat?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    parkMakerImage?: NullableStringFieldUpdateOperationsInput | string | null
     numero?: NullableIntFieldUpdateOperationsInput | number | null
     laboratoire?: NullableStringFieldUpdateOperationsInput | string | null
     bonCommandeLabo?: NullableStringFieldUpdateOperationsInput | string | null
@@ -7436,6 +7571,7 @@ export namespace Prisma {
     HAP?: NullableStringFieldUpdateOperationsInput | string | null
     liant?: NullableBoolFieldUpdateOperationsInput | boolean | null
     granulat?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    parkMakerImage?: NullableStringFieldUpdateOperationsInput | string | null
     numero?: NullableIntFieldUpdateOperationsInput | number | null
     laboratoire?: NullableStringFieldUpdateOperationsInput | string | null
     bonCommandeLabo?: NullableStringFieldUpdateOperationsInput | string | null

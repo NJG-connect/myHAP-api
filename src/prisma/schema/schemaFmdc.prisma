@@ -45,6 +45,9 @@ model Prelevement {
   taille                     Int?
   couleur                    String?
   images                     String?
+  lineaireImage              String?       @db.NVarChar(max)
+  mesureImage                String?       @db.NVarChar(max)
+  prelevementImage           String?       @db.NVarChar(max)
   laboratoire                String?
   zone                       String?       @db.NVarChar(max)
   resultat                   String?
@@ -66,6 +69,7 @@ model Couche {
   HAP             String?
   liant           Boolean?
   granulat        Boolean?
+  parkMakerImage  String?      @db.NVarChar(max)
   idPrelevement   Int?
   numero          Int?
   laboratoire     String?
