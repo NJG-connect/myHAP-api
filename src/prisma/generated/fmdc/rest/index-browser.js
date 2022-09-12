@@ -143,6 +143,7 @@ exports.Prisma.CoucheScalarFieldEnum = makeEnum({
   numero: 'numero',
   laboratoire: 'laboratoire',
   bonCommandeLabo: 'bonCommandeLabo',
+  sendInfoLaboAt: 'sendInfoLaboAt',
   updatedAt: 'updatedAt'
 });
 

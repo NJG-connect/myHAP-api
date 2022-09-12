@@ -89,7 +89,7 @@ const sendInfoToLabo = async (req: Request, res: Response) => {
       },
     });
     if (contrat.laboratoire === laboratoireType.ITGA) {
-      sendCouchesToITGA(
+      const result = await sendCouchesToITGA(
         {
           idDossier: Number(idDossier),
           referenceDossier: diagDossier?.reference,
@@ -97,6 +97,21 @@ const sendInfoToLabo = async (req: Request, res: Response) => {
         CouchesByPrelevement,
         contrat
       );
+
+      if (result.sucess) {
+        await prismaFmdc.couche.updateMany({
+          data: {
+            bonCommandeLabo: result.updateInfoCouche.bonCommandeLabo,
+            laboratoire: result.updateInfoCouche.labo,
+            sendInfoLaboAt: new Date(),
+          },
+          where: {
+            id: { in: result.updateInfoCouche.idsCouche },
+          },
+        });
+      } else {
+        return res.status(500).json("une erreur est survenue");
+      }
     }
 
     // do something with referenceCommande
@@ -121,6 +136,43 @@ const sendCouchesToITGA = async (
     Validation: "https://webservices.itga.fr/madra.WebAPI.valid/",
   };
   const idCommande = createId();
+
+  const ListeEchantillonsMateriaux: any[] = [];
+  const updateInfoCouche: {
+    bonCommandeLabo: string;
+    labo: laboratoireType;
+    idsCouche: number[];
+  } = {
+    labo: laboratoireType.ITGA,
+    bonCommandeLabo: idCommande,
+    idsCouche: [],
+  };
+  CouchesByPrelevement.forEach((onePrelevement, index) => {
+    onePrelevement.couches.forEach((oneCouche) => {
+      updateInfoCouche.idsCouche.push(oneCouche.id);
+      ListeEchantillonsMateriaux.push({
+        Description: onePrelevement.materiaux || "Enrobé bitumineuse",
+        Dossier: idDossier.toString(),
+        ChoixAnalyseCouche: "UneAnalysePourChaqueCouche",
+        IdSIClient: onePrelevement.id.toString(),
+        Reference: onePrelevement.id.toString(),
+        DatePrelevement: "2018-03-19",
+        Commentaires: "Analyse granulat + liant + HAP",
+        ListeMPSCA: "C",
+        AnalyseHAP: "Oui",
+        ListeReperages: {
+          Ordre: oneCouche.numero,
+          Description: oneCouche.materiaux || "Enrobé bitumineuse",
+          Analyse: 1,
+          Liste: "C",
+          Chapitre: "",
+          Composants: "",
+          PartiesComposants: "",
+        },
+      });
+    });
+  });
+
   const body = {
     compteUtilisateur: {
       Identifiant: "7759WCOM01",
@@ -139,36 +191,14 @@ const sendCouchesToITGA = async (
           Code: "7759W",
         },
       },
-      ListeEchantillonsMateriaux: CouchesByPrelevement.map(
-        (onePrelevement) => ({
-          Description: onePrelevement.materiaux,
-          Dossier: idDossier.toString(),
-          ChoixAnalyseCouche: "UneAnalysePourChaqueCouche",
-          IdSIClient: onePrelevement.id.toString(),
-          Reference: onePrelevement.id.toString(),
-          DatePrelevement: "2018-03-19",
-          Commentaires: "Analyse granulat + liant + HAP",
-          ListeMPSCA: "C",
-          AnalyseHAP: "Oui",
-          ListeReperages: onePrelevement.couches.map((oneCouche) => ({
-            Ordre: oneCouche.numero,
-            Description: oneCouche.materiaux,
-            Analyse: 1,
-            Liste: "C",
-            Chapitre: "",
-            Composants: "",
-            PartiesComposants: "",
-          })),
-        })
-      ),
+      ListeEchantillonsMateriaux,
       Origine: "Autre",
     },
   };
   console.log(idCommande);
 
   console.log(body);
-  console.log(body.commande.ListeEchantillonsMateriaux[0]);
-  console.log(body.commande.ListeEchantillonsMateriaux[1]);
+  console.log(body.commande.ListeEchantillonsMateriaux);
 
   const postData = await fetch(`${BASE_URL_ITGA.Validation}CommandesClient`, {
     method: "POST",
@@ -183,10 +213,11 @@ const sendCouchesToITGA = async (
   try {
     const responseJson = await postData.json();
     console.log(responseJson);
+    return { sucess: true, updateInfoCouche };
   } catch (error) {
     console.log("fail");
-
-    console.log(postData);
+    console.log(error);
+    return { sucess: false, updateInfoCouche };
   }
 };
 

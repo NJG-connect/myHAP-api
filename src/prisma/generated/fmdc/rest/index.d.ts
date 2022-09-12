@@ -88,6 +88,7 @@ export type Couche = {
   numero: number | null
   laboratoire: string | null
   bonCommandeLabo: string | null
+  sendInfoLaboAt: Date | null
   updatedAt: Date
 }
 
@@ -4193,6 +4194,7 @@ export namespace Prisma {
     numero: number | null
     laboratoire: string | null
     bonCommandeLabo: string | null
+    sendInfoLaboAt: Date | null
     updatedAt: Date | null
   }
 
@@ -4210,6 +4212,7 @@ export namespace Prisma {
     numero: number | null
     laboratoire: string | null
     bonCommandeLabo: string | null
+    sendInfoLaboAt: Date | null
     updatedAt: Date | null
   }
 
@@ -4227,6 +4230,7 @@ export namespace Prisma {
     numero: number
     laboratoire: number
     bonCommandeLabo: number
+    sendInfoLaboAt: number
     updatedAt: number
     _all: number
   }
@@ -4260,6 +4264,7 @@ export namespace Prisma {
     numero?: true
     laboratoire?: true
     bonCommandeLabo?: true
+    sendInfoLaboAt?: true
     updatedAt?: true
   }
 
@@ -4277,6 +4282,7 @@ export namespace Prisma {
     numero?: true
     laboratoire?: true
     bonCommandeLabo?: true
+    sendInfoLaboAt?: true
     updatedAt?: true
   }
 
@@ -4294,6 +4300,7 @@ export namespace Prisma {
     numero?: true
     laboratoire?: true
     bonCommandeLabo?: true
+    sendInfoLaboAt?: true
     updatedAt?: true
     _all?: true
   }
@@ -4404,6 +4411,7 @@ export namespace Prisma {
     numero: number | null
     laboratoire: string | null
     bonCommandeLabo: string | null
+    sendInfoLaboAt: Date | null
     updatedAt: Date
     _count: CoucheCountAggregateOutputType | null
     _avg: CoucheAvgAggregateOutputType | null
@@ -4440,6 +4448,7 @@ export namespace Prisma {
     numero?: boolean
     laboratoire?: boolean
     bonCommandeLabo?: boolean
+    sendInfoLaboAt?: boolean
     updatedAt?: boolean
     Prelevement?: boolean | PrelevementArgs
   }
@@ -5267,6 +5276,7 @@ export namespace Prisma {
     numero: 'numero',
     laboratoire: 'laboratoire',
     bonCommandeLabo: 'bonCommandeLabo',
+    sendInfoLaboAt: 'sendInfoLaboAt',
     updatedAt: 'updatedAt'
   };
 
@@ -5542,6 +5552,7 @@ export namespace Prisma {
     numero?: IntNullableFilter | number | null
     laboratoire?: StringNullableFilter | string | null
     bonCommandeLabo?: StringNullableFilter | string | null
+    sendInfoLaboAt?: DateTimeNullableFilter | Date | string | null
     updatedAt?: DateTimeFilter | Date | string
     Prelevement?: XOR<PrelevementRelationFilter, PrelevementWhereInput> | null
   }
@@ -5560,6 +5571,7 @@ export namespace Prisma {
     numero?: SortOrder
     laboratoire?: SortOrder
     bonCommandeLabo?: SortOrder
+    sendInfoLaboAt?: SortOrder
     updatedAt?: SortOrder
     Prelevement?: PrelevementOrderByWithRelationInput
   }
@@ -5582,6 +5594,7 @@ export namespace Prisma {
     numero?: SortOrder
     laboratoire?: SortOrder
     bonCommandeLabo?: SortOrder
+    sendInfoLaboAt?: SortOrder
     updatedAt?: SortOrder
     _count?: CoucheCountOrderByAggregateInput
     _avg?: CoucheAvgOrderByAggregateInput
@@ -5607,6 +5620,7 @@ export namespace Prisma {
     numero?: IntNullableWithAggregatesFilter | number | null
     laboratoire?: StringNullableWithAggregatesFilter | string | null
     bonCommandeLabo?: StringNullableWithAggregatesFilter | string | null
+    sendInfoLaboAt?: DateTimeNullableWithAggregatesFilter | Date | string | null
     updatedAt?: DateTimeWithAggregatesFilter | Date | string
   }
 
@@ -5946,6 +5960,7 @@ export namespace Prisma {
     numero?: number | null
     laboratoire?: string | null
     bonCommandeLabo?: string | null
+    sendInfoLaboAt?: Date | string | null
     updatedAt?: Date | string
     Prelevement?: PrelevementCreateNestedOneWithoutCouchesInput
   }
@@ -5964,6 +5979,7 @@ export namespace Prisma {
     numero?: number | null
     laboratoire?: string | null
     bonCommandeLabo?: string | null
+    sendInfoLaboAt?: Date | string | null
     updatedAt?: Date | string
   }
 
@@ -5979,6 +5995,7 @@ export namespace Prisma {
     numero?: NullableIntFieldUpdateOperationsInput | number | null
     laboratoire?: NullableStringFieldUpdateOperationsInput | string | null
     bonCommandeLabo?: NullableStringFieldUpdateOperationsInput | string | null
+    sendInfoLaboAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     Prelevement?: PrelevementUpdateOneWithoutCouchesNestedInput
   }
@@ -5997,6 +6014,7 @@ export namespace Prisma {
     numero?: NullableIntFieldUpdateOperationsInput | number | null
     laboratoire?: NullableStringFieldUpdateOperationsInput | string | null
     bonCommandeLabo?: NullableStringFieldUpdateOperationsInput | string | null
+    sendInfoLaboAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -6013,6 +6031,7 @@ export namespace Prisma {
     numero?: number | null
     laboratoire?: string | null
     bonCommandeLabo?: string | null
+    sendInfoLaboAt?: Date | string | null
     updatedAt?: Date | string
   }
 
@@ -6028,6 +6047,7 @@ export namespace Prisma {
     numero?: NullableIntFieldUpdateOperationsInput | number | null
     laboratoire?: NullableStringFieldUpdateOperationsInput | string | null
     bonCommandeLabo?: NullableStringFieldUpdateOperationsInput | string | null
+    sendInfoLaboAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -6045,6 +6065,7 @@ export namespace Prisma {
     numero?: NullableIntFieldUpdateOperationsInput | number | null
     laboratoire?: NullableStringFieldUpdateOperationsInput | string | null
     bonCommandeLabo?: NullableStringFieldUpdateOperationsInput | string | null
+    sendInfoLaboAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -6462,6 +6483,7 @@ export namespace Prisma {
     numero?: SortOrder
     laboratoire?: SortOrder
     bonCommandeLabo?: SortOrder
+    sendInfoLaboAt?: SortOrder
     updatedAt?: SortOrder
   }
 
@@ -6486,6 +6508,7 @@ export namespace Prisma {
     numero?: SortOrder
     laboratoire?: SortOrder
     bonCommandeLabo?: SortOrder
+    sendInfoLaboAt?: SortOrder
     updatedAt?: SortOrder
   }
 
@@ -6503,6 +6526,7 @@ export namespace Prisma {
     numero?: SortOrder
     laboratoire?: SortOrder
     bonCommandeLabo?: SortOrder
+    sendInfoLaboAt?: SortOrder
     updatedAt?: SortOrder
   }
 
@@ -7158,6 +7182,7 @@ export namespace Prisma {
     numero?: number | null
     laboratoire?: string | null
     bonCommandeLabo?: string | null
+    sendInfoLaboAt?: Date | string | null
     updatedAt?: Date | string
   }
 
@@ -7174,6 +7199,7 @@ export namespace Prisma {
     numero?: number | null
     laboratoire?: string | null
     bonCommandeLabo?: string | null
+    sendInfoLaboAt?: Date | string | null
     updatedAt?: Date | string
   }
 
@@ -7245,6 +7271,7 @@ export namespace Prisma {
     numero?: IntNullableFilter | number | null
     laboratoire?: StringNullableFilter | string | null
     bonCommandeLabo?: StringNullableFilter | string | null
+    sendInfoLaboAt?: DateTimeNullableFilter | Date | string | null
     updatedAt?: DateTimeFilter | Date | string
   }
 
@@ -7528,6 +7555,7 @@ export namespace Prisma {
     numero?: number | null
     laboratoire?: string | null
     bonCommandeLabo?: string | null
+    sendInfoLaboAt?: Date | string | null
     updatedAt?: Date | string
   }
 
@@ -7543,6 +7571,7 @@ export namespace Prisma {
     numero?: NullableIntFieldUpdateOperationsInput | number | null
     laboratoire?: NullableStringFieldUpdateOperationsInput | string | null
     bonCommandeLabo?: NullableStringFieldUpdateOperationsInput | string | null
+    sendInfoLaboAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -7559,6 +7588,7 @@ export namespace Prisma {
     numero?: NullableIntFieldUpdateOperationsInput | number | null
     laboratoire?: NullableStringFieldUpdateOperationsInput | string | null
     bonCommandeLabo?: NullableStringFieldUpdateOperationsInput | string | null
+    sendInfoLaboAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -7575,6 +7605,7 @@ export namespace Prisma {
     numero?: NullableIntFieldUpdateOperationsInput | number | null
     laboratoire?: NullableStringFieldUpdateOperationsInput | string | null
     bonCommandeLabo?: NullableStringFieldUpdateOperationsInput | string | null
+    sendInfoLaboAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
